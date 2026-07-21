@@ -27,7 +27,7 @@
 	import Select from '$lib/components/basic/Select.svelte';
 	import { untrack } from 'svelte';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { getAreas, getClients, getOptions, getProducts } from '$lib/utils/queries';
+	import { getAreas, getClients, getOptions } from '$lib/utils/queries';
 	import { cn } from '$lib/utils';
 
 	interface Props {
@@ -71,13 +71,7 @@
 		queryKey: ['inventory-areas'],
 		queryFn: getAreas
 	});
-	const areasList = $derived(getOptions($areasQuery?.data));
-
-	const productsQuery = createQuery({
-		queryKey: ['inventory-products'],
-		queryFn: getProducts
-	});
-	const products = $derived(getOptions($productsQuery?.data));
+	const areasList = $derived(getOptions($areasQuery?.data).filter((a: any) => a.type === 'prod'));
 
 	const areas = [
 		{ name: 'Corte', value: 'corte' },
@@ -326,22 +320,13 @@
 				</div>
 
 				<Label name="Parte">
-					<Input bind:value={formData.part} disabled={!!formData.productId} />
+					<Input bind:value={formData.part} />
 				</Label>
 				<Label name="Descripción" class="col-span-2">
 					<Input bind:value={formData.description} />
 				</Label>
 				<Label name="Area">
 					<Select items={areasList} bind:value={formData.areaId} placeholder="" />
-				</Label>
-				<Label name="Producto">
-					<Select
-						items={products}
-						bind:value={formData.productId}
-						disabled={!!selectedMovement.id}
-						allowDeselect
-						placeholder=""
-					/>
 				</Label>
 
 				<Label name="Corte">

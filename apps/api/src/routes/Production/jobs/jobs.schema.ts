@@ -32,7 +32,7 @@ export const exportSchema = z.object({
   programation: z.string().max(20).min(2),
   perBox: intSchema.min(1, 'Numero invalido'),
   amount: intSchema.min(1, 'Numero invalido'),
-  part: z.string().nullable(),
+  part: z.string().min(1, 'El No. de parte es requerido'),
   description: z.string().nullable(),
   jobs: z.array(z.string()).nonempty('Al menos un job es requerido.'),
   due: z.string(),
@@ -75,15 +75,15 @@ export const exportSchema = z.object({
   produccionTime: numberSchema,
   calidadTime: numberSchema,
   serigrafiaTime: numberSchema,
-  productId: idSchema.nullish(),
 });
 
 export const updateExportSchema = exportSchema
   .extend({
     id: idSchema,
     ref: z.string(),
+    // old jobs may predate part-driven registration
+    part: z.string().nullable(),
   })
   .omit({
-    productId: true,
     jobs: true,
   });

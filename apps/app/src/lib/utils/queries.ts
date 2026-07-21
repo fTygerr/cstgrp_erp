@@ -89,7 +89,8 @@ export function getAllOptions(object: Record<string, any> | undefined) {
 			name: object[key].name,
 			value: object[key].value,
 			color: object[key].color,
-			active: object[key].active
+			active: object[key].active,
+			type: object[key].type
 		});
 	});
 

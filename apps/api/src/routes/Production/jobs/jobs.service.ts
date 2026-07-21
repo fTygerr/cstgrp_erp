@@ -87,9 +87,36 @@ export class JobsService {
     return movements;
   }
 
+  // Finds the finished-product material for a part number, creating it if new.
+  // Every job links to a product material so quality releases feed inventory.
+  private async resolveProductMaterial(
+    sql2: any,
+    part: string,
+    description: string | null,
+    clientId: number | string,
+  ) {
+    const [material] =
+      await sql2`select id, product from materials where code = ${part}`;
+
+    if (material && !material.product)
+      throw new HttpException(
+        `El No. de parte ${part} ya existe como material de inventario (no producto)`,
+        400,
+      );
+    if (material) return material.id;
+
+    const [created] = await sql2`insert into materials ${sql2({
+      code: part,
+      description: description || part,
+      measurement: 'PZ',
+      clientId: clientId,
+      product: true,
+    })} returning id`;
+    return created.id;
+  }
+
   async post(body: z.infer<typeof exportSchema>) {
     const materials = body.materials.map((item: any) => item.code);
-    if (body.productId) body.part = null;
 
     const materialRows =
       await sql`SELECT code FROM materials WHERE code in ${sql(materials)}`;
@@ -130,20 +157,25 @@ export class JobsService {
             await updateMaterialAmount(movement.materialId, sql);
         }
 
-        //If there is a productId, create the movement
-        let productMovement;
-        if (body.productId) {
-          [productMovement] = await sql`insert into materialmovements ${sql({
-            materialId: body.productId,
+        // Link the finished-product movement, resolved from the part number
+        const productId = await this.resolveProductMaterial(
+          sql,
+          body.part,
+          body.description,
+          body.clientId,
+        );
+        const [productMovement] = await sql`insert into materialmovements ${sql(
+          {
+            materialId: productId,
             jobId: insertedJob.id,
             amount: 0,
             realAmount: 0,
             active: true,
             activeDate: new Date(),
-          })} returning id`;
+          },
+        )} returning id`;
 
-          await sql`update jobs set "movementId" = ${productMovement.id} where id = ${insertedJob.id}`;
-        }
+        await sql`update jobs set "movementId" = ${productMovement.id} where id = ${insertedJob.id}`;
 
         // Add destinations info
         if (body.destinations.length) {
@@ -232,6 +264,25 @@ export class JobsService {
         contractorAmount: 0,
       })} where id = ${body.id} returning id, ref, programation, part`;
 
+      // Keep the product movement's material in sync with the part number
+      const [jobRow] =
+        await sql`select "movementId" from jobs where id = ${body.id}`;
+      if (jobRow?.movementId && body.part) {
+        const [current] =
+          await sql`select "materialId" from materialmovements where id = ${jobRow.movementId}`;
+        const newMaterialId = await this.resolveProductMaterial(
+          sql,
+          body.part,
+          body.description,
+          body.clientId,
+        );
+        if (current && current.materialId !== newMaterialId) {
+          await sql`update materialmovements set "materialId" = ${newMaterialId} where id = ${jobRow.movementId}`;
+          await updateMaterialAmount(current.materialId, sql);
+          await updateMaterialAmount(newMaterialId, sql);
+        }
+      }
+
       // Update Materials
       for (const material of materials) {
         let inserted;
@@ -266,13 +317,24 @@ export class JobsService {
 
         for (const destination of body.destinations) {
           if (destination.transaction === 'delete') {
+            // deleting the line cascades its export movement; restore stock
+            const exportMovements =
+              await sql`select "materialId" from materialmovements where "orderDestinyId" = ${destination.id}`;
             await sql`delete from order_destiny where id = ${destination.id}`;
+            for (const movement of exportMovements)
+              await updateMaterialAmount(movement.materialId, sql);
           } else if (destination.transaction === 'insert') {
             await sql`insert into order_destiny ("orderId", "destinyId", "amount", "date", "po") values
           (${newJob.id}, (select id from destinys where so = ${destination.so}), ${destination.amount}, ${destination.date}, ${destination.po})`;
           } else if (!destination.transaction) {
             await sql`update order_destiny set "amount" = ${destination.amount}, "date" = ${destination.date}, "po" = ${destination.po}, "destinyId" = (select id from destinys where so = ${destination.so})
              where id = ${destination.id}`;
+            // keep any existing export movement in sync with the new amount
+            const syncedMovements =
+              await sql`update materialmovements set amount = ${-Math.abs(Number(destination.amount))}, "realAmount" = ${-Math.abs(Number(destination.amount))}
+               where "orderDestinyId" = ${destination.id} returning "materialId"`;
+            for (const movement of syncedMovements)
+              await updateMaterialAmount(movement.materialId, sql);
           }
         }
       }

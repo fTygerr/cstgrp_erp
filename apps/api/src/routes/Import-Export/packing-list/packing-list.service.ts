@@ -12,6 +12,7 @@ import path from 'path';
 import { promises as fs } from 'fs';
 import { idObjectSchema } from 'src/utils/schemas';
 import { format } from 'date-fns';
+import { updateMaterialAmount } from 'src/utils/functions';
 
 @Injectable()
 export class PackingListService {
@@ -97,6 +98,30 @@ export class PackingListService {
       };
 
       await sql`update destinys set ${sql(packingData)} where id = ${body.id}`;
+
+      // Saving the PL is the export act: rebuild the negative inventory
+      // movements for every shipped line (idempotent on re-save). Jobs
+      // without a product movement (pre part-driven registration) are skipped.
+      const deletedMovements =
+        await sql`delete from materialmovements where "orderDestinyId" in
+          (select id from order_destiny where "destinyId" = ${body.id})
+          returning "materialId"`;
+
+      const insertedMovements = await sql`
+        insert into materialmovements
+          ("materialId", "orderDestinyId", amount, "realAmount", active, "activeDate")
+        select mm."materialId", od.id, -od.amount, -od.amount, true, now()
+        from order_destiny od
+        join jobs j on j.id = od."orderId"
+        join materialmovements mm on mm.id = j."movementId"
+        where od."destinyId" = ${body.id}
+        returning "materialId"`;
+
+      const affectedMaterials = new Set(
+        [...deletedMovements, ...insertedMovements].map((m) => m.materialId),
+      );
+      for (const materialId of affectedMaterials)
+        await updateMaterialAmount(materialId, sql);
 
       await this.req.record(
         `Actualizo la informacion del packing list ${previousData.so}`,
