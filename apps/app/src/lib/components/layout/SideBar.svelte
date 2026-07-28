@@ -179,6 +179,9 @@
 				<Accordion.Content>
 					<Accordion.Option href="/quality/liberation" />
 					<Accordion.Option href="/quality/export" />
+					<Accordion.Option href="/quality/pallets" />
+					<Accordion.Option href="/quality/registered-pallets" />
+					<Accordion.Option href="/quality/registered-exports" />
 				</Accordion.Content>
 			</Accordion.Item>
 		{/if}

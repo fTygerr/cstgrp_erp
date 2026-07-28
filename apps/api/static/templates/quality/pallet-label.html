@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pallet Information</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .sheet {
+        border: 4px solid #c00000;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+      }
+      .top {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 12px;
+        align-items: start;
+      }
+      .logo img {
+        width: 150px;
+      }
+      .title {
+        font-size: 42px;
+        font-weight: bold;
+        text-decoration: underline;
+        text-align: center;
+      }
+      .box {
+        border: 2px solid #000;
+        padding: 6px 12px;
+      }
+      .box .label {
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: underline;
+      }
+      .client-value {
+        font-size: 90px;
+        text-align: center;
+        line-height: 1;
+      }
+      .pallet-value {
+        font-size: 150px;
+        text-align: center;
+        line-height: 1.05;
+      }
+      .content {
+        flex: 1;
+      }
+      .content-line {
+        display: flex;
+        justify-content: space-between;
+        font-size: 24px;
+        padding: 8px 20px 0 20px;
+      }
+      .content-desc {
+        text-align: center;
+        font-size: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px dotted #999;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        padding-top: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sheet">
+      <div class="top">
+        <div class="logo"><img src="{{{logo}}}" alt="logo" /></div>
+        <div>
+          <div class="title">PALLET INFORMATION</div>
+          <div class="box">
+            <span class="label">Client:</span>
+            <div class="client-value">{{client}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="box">
+        <span class="label">No. Pallet</span>
+        <div class="pallet-value">{{folio}}</div>
+      </div>
+      <div class="box content">
+        <span class="label">Content:</span>
+        {{#contents}}
+        <div class="content-line">
+          <span>-Job/PO: {{ref}};</span>
+          <span>{{part}};</span>
+          <span>{{amount}}pc.</span>
+        </div>
+        <div class="content-desc">{{description}}</div>
+        {{/contents}}
+      </div>
+    </div>
+    <div class="footer">
+      <span>CST-QC-006-F</span>
+      <span>REV. 3</span>
+    </div>
+  </body>
+</html>
