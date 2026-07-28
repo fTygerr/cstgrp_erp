@@ -154,7 +154,7 @@ export class PalletsService {
   async deletePallet(body: z.infer<typeof idObjectSchema>) {
     await sql.begin(async (sql) => {
       const [pallet] = await sql`
-        SELECT pallets.id, pallets.folio, pallets."exportOrderId", clients.name AS client
+        SELECT pallets.id, pallets.folio, pallets."clientId", pallets."exportOrderId", clients.name AS client
         FROM pallets JOIN clients ON clients.id = pallets."clientId"
         WHERE pallets.id = ${body.id}`;
       if (!pallet) throw new HttpException('Pallet no existente', 400);
@@ -162,6 +162,12 @@ export class PalletsService {
         throw new HttpException('El pallet ya está en una exportación', 400);
 
       await sql`DELETE FROM pallets WHERE id = ${body.id}`;
+
+      // if it was the client's latest folio, roll the counter back so the
+      // number gets reused; historical gaps are never reused
+      await sql`UPDATE clients SET "palletSeq" = "palletSeq" - 1
+        WHERE id = ${pallet.clientId} AND "palletSeq" = ${pallet.folio}`;
+
       await this.req.record(
         `Elimino el pallet ${pallet.client}-${pallet.folio}`,
         sql,
@@ -247,6 +253,14 @@ export class PalletsService {
       const [deleted] =
         await sql`DELETE FROM exportorders WHERE id = ${body.id} RETURNING id`;
       if (!deleted) throw new HttpException('Orden no existente', 400);
+
+      // if it held the newest number ever issued, roll the sequence back so
+      // the number gets reused; historical gaps are never reused
+      const [{ last_value }] =
+        await sql`SELECT last_value FROM exportorders_id_seq`;
+      if (Number(last_value) === Number(deleted.id))
+        await sql`SELECT setval('exportorders_id_seq', ${deleted.id}, false)`;
+
       await this.req.record(
         `Elimino la orden de exportación ${deleted.id} (pallets liberados)`,
         sql,
