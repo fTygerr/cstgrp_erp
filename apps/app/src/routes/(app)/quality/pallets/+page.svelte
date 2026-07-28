@@ -12,13 +12,17 @@
 	import Select from '$lib/components/basic/Select.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import PalletsForm from './PalletsForm.svelte';
+	import { getClients, getOptions } from '$lib/utils/queries';
 
 	const pendingOptions = [
 		{ name: 'Pendientes', value: 'true', color: 'yellow' },
 		{ name: 'Todos', value: '', color: 'blue' }
 	];
 
-	let filters = $state({ job: '', programation: '', pending: 'true' });
+	const clientsQuery = createQuery({ queryKey: ['inventory-clients'], queryFn: getClients });
+	const clients = $derived(getOptions($clientsQuery?.data));
+
+	let filters = $state({ job: '', programation: '', pending: 'true', clientId: '' });
 	let show = $state(false);
 	let selectedJob: any = $state(null);
 
@@ -37,6 +41,14 @@
 	<div class="flex flex-col gap-1.5 lg:flex-row">
 		<Input menu bind:value={filters.job} placeholder="Job" class="max-w-32" />
 		<Input menu bind:value={filters.programation} placeholder="Programación" class="max-w-32" />
+		<Select
+			menu
+			items={clients}
+			bind:value={filters.clientId}
+			allowDeselect
+			placeholder="Cliente"
+			class="min-w-36 max-w-44"
+		/>
 		<Select menu items={pendingOptions} bind:value={filters.pending} class="min-w-36 max-w-36" />
 	</div>
 </MenuBar>

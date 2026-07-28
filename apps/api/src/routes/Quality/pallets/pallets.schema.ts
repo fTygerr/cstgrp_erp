@@ -5,6 +5,7 @@ export const palletJobsFilterSchema = z.object({
   job: z.string().nullable(),
   programation: z.string().nullable(),
   pending: z.string().nullable(),
+  clientId: z.string().nullable(),
 });
 
 export const palletsFilterSchema = z.object({

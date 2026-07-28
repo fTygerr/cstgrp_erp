@@ -29,6 +29,7 @@ export class PalletsService {
       WHERE jobs.part IS NOT NULL
       ${query.job ? sql`AND jobs.ref ILIKE ${'%' + query.job + '%'}` : sql``}
       ${query.programation ? sql`AND jobs.programation ILIKE ${'%' + query.programation + '%'}` : sql``}
+      ${query.clientId ? sql`AND jobs."clientId" = ${query.clientId}` : sql``}
       ${
         query.pending === 'true'
           ? sql`AND COALESCE((SELECT SUM(pc.amount) FROM pallet_contents pc WHERE pc."jobId" = jobs.id), 0) < jobs.amount`
@@ -54,6 +55,7 @@ export class PalletsService {
       ${query.folio ? sql`AND pallets.folio = ${Number(query.folio) || 0}` : sql``}
       ${query.clientId ? sql`AND pallets."clientId" = ${query.clientId}` : sql``}
       ${query.pending === 'true' ? sql`AND pallets."exportOrderId" IS NULL` : sql``}
+      ${query.pending === 'false' ? sql`AND pallets."exportOrderId" IS NOT NULL` : sql``}
       ORDER BY pallets.id DESC
       LIMIT 200`;
   }

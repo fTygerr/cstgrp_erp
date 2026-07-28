@@ -21,6 +21,7 @@
 
 	const pendingOptions = [
 		{ name: 'Sin exportar', value: 'true', color: 'yellow' },
+		{ name: 'Exportados', value: 'false', color: 'green' },
 		{ name: 'Todos', value: '', color: 'blue' }
 	];
 
