@@ -22,11 +22,12 @@ export class PalletsService {
   async getJobs(query: z.infer<typeof palletJobsFilterSchema>) {
     return sql`
       SELECT jobs.id, jobs.ref, jobs.programation, jobs.part, jobs.description,
-        jobs.amount, jobs."perBox", jobs."clientId", clients.name AS client, jobs.due,
+        jobs.amount, jobs.calidad, jobs."perBox", jobs."clientId", clients.name AS client, jobs.due,
         COALESCE((SELECT SUM(pc.amount)::int FROM pallet_contents pc WHERE pc."jobId" = jobs.id), 0) AS palletized
       FROM jobs
       JOIN clients ON clients.id = jobs."clientId"
       WHERE jobs.part IS NOT NULL
+      AND jobs.calidad > 0
       ${query.job ? sql`AND jobs.ref ILIKE ${'%' + query.job + '%'}` : sql``}
       ${query.programation ? sql`AND jobs.programation ILIKE ${'%' + query.programation + '%'}` : sql``}
       ${query.clientId ? sql`AND jobs."clientId" = ${query.clientId}` : sql``}
