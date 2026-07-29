@@ -14,6 +14,9 @@
 	import Select from '$lib/components/basic/Select.svelte';
 	import { format } from 'date-fns';
 	import { refetch } from '$lib/utils/query';
+	import { Button } from '$lib/components/ui/button';
+	import { Badge } from '$lib/components/ui/badge';
+	import { X } from 'lucide-svelte';
 
 	interface Props {
 		show: boolean;
@@ -25,14 +28,21 @@
 	let data: Record<string, any> = $state({});
 	let orders: Record<string, any> = $state([]);
 	let options: any = $state(null);
+	let exportOrders: any = $state({ applied: [], available: [] });
+	let selectedOrder: any = $state('');
+
+	async function fetchExportOrders() {
+		exportOrders = (await api.get('/ie/packing-list/exportorders?id=' + selectedRow.id)).data;
+	}
 
 	async function fetchData() {
 		const result2 = await api.get('/ie/packing-list/options');
 		options = result2.data;
 
+		await fetchExportOrders();
+
 		const result = (await api.get('/ie/packing-list/data?id=' + selectedRow.id)).data;
 		orders = result.orders;
-		console.log(result.data);
 		data = {
 			...result.data,
 			shipDate: format(result.data.shipDate, 'yyyy-MM-dd'),
@@ -46,6 +56,35 @@
 				: options.shipTo.find((item: any) => item.name === result.data.destination?.name)?.value,
 			carrierExp: options.carriers.find((item: any) => item.name === result.data.carrierExp)?.value
 		};
+	}
+
+	const availableOptions = $derived(
+		(exportOrders.available || []).map((o: any) => ({
+			name: `Exportación ${o.id} — ${o.client} (${o.pallets} pallets, ${o.pieces} pzs)`,
+			value: String(o.id)
+		}))
+	);
+
+	async function applyOrder() {
+		if (!selectedOrder) return;
+		await api.post('/ie/packing-list/apply-exportorder', {
+			id: selectedRow.id,
+			exportOrderId: selectedOrder
+		});
+		selectedOrder = '';
+		showSuccess('Orden aplicada al packing list');
+		await fetchExportOrders();
+		refetch(['exports']);
+	}
+
+	async function removeOrder(exportOrderId: number) {
+		await api.post('/ie/packing-list/remove-exportorder', {
+			id: selectedRow.id,
+			exportOrderId
+		});
+		showSuccess('Orden quitada del packing list');
+		await fetchExportOrders();
+		refetch(['exports']);
 	}
 
 	$effect(() => {
@@ -70,6 +109,32 @@
 			</DialogTitle>
 		</DialogHeader>
 		<DialogBody grid="2">
+			<div class="col-span-2 rounded-md border border-input p-2">
+				<p class="mb-1.5 text-sm font-semibold">Órdenes de exportación (Calidad)</p>
+				<div class="flex items-end gap-2">
+					<Select
+						items={availableOptions}
+						bind:value={selectedOrder}
+						allowDeselect
+						placeholder="Selecciona una orden"
+						class="w-full"
+					/>
+					<Button class="h-8" onclick={applyOrder} disabled={!selectedOrder}>Aplicar</Button>
+				</div>
+				{#if exportOrders.applied?.length}
+					<div class="mt-2 flex flex-wrap gap-1.5">
+						{#each exportOrders.applied as order}
+							<Badge color="green" class="gap-1">
+								Exportación {order.id} ({order.pallets} pallets, {order.pieces} pzs)
+								<button onclick={() => removeOrder(order.id)} title="Quitar del PL">
+									<X class="size-3" />
+								</button>
+							</Badge>
+						{/each}
+					</div>
+				{/if}
+			</div>
+
 			<Label name="Pack Slip">
 				<Input bind:value={data.packSlip} />
 			</Label>

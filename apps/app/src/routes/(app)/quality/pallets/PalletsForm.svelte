@@ -39,7 +39,7 @@
 	let rows: palletRow[] = $state([]);
 
 	const remaining = $derived(
-		selectedJob ? Number(selectedJob.amount) - Number(selectedJob.palletized) : 0
+		selectedJob ? Number(selectedJob.calidad) - Number(selectedJob.palletized) : 0
 	);
 	const totalCaptured = $derived(rows.reduce((acc, r) => acc + (Number(r.amount) || 0), 0));
 

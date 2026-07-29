@@ -13,6 +13,9 @@ import { promises as fs } from 'fs';
 import { idObjectSchema } from 'src/utils/schemas';
 import { format } from 'date-fns';
 import { updateMaterialAmount } from 'src/utils/functions';
+import { HttpException } from '@nestjs/common';
+import { applyExportOrderSchema } from './packing-list.schema';
+import { generateExportOrderPdf } from 'src/routes/Quality/pallets/pallets.generate';
 
 @Injectable()
 export class PackingListService {
@@ -49,6 +52,131 @@ export class PackingListService {
     const [data] = await sql`select * from destinys where id = ${body.id}`;
 
     return { orders, data };
+  }
+
+  // Export orders created by Calidad, available for (or applied to) this PL
+  async getExportOrders(body: z.infer<typeof idObjectSchema>) {
+    const orders = await sql`
+      SELECT eo.id, eo.date, eo."destinyId", clients.name AS client,
+        (SELECT COUNT(*)::int FROM pallets p WHERE p."exportOrderId" = eo.id) AS pallets,
+        (SELECT COALESCE(SUM(pc.amount), 0)::int FROM pallets p
+          JOIN pallet_contents pc ON pc."palletId" = p.id
+          WHERE p."exportOrderId" = eo.id) AS pieces
+      FROM exportorders eo
+      JOIN clients ON clients.id = eo."clientId"
+      WHERE eo."destinyId" IS NULL OR eo."destinyId" = ${body.id}
+      ORDER BY eo.id DESC LIMIT 100`;
+
+    return {
+      applied: orders.filter((o) => o.destinyId),
+      available: orders.filter((o) => !o.destinyId),
+    };
+  }
+
+  // Pour an export order's pallets into the PL as order_destiny lines
+  async applyExportOrder(body: z.infer<typeof applyExportOrderSchema>) {
+    await sql.begin(async (sql) => {
+      const [order] = await sql`
+        SELECT id, "destinyId" FROM exportorders WHERE id = ${body.exportOrderId}`;
+      if (!order) throw new HttpException('Orden no existente', 400);
+      if (order.destinyId)
+        throw new HttpException(
+          'La orden ya está aplicada a otro packing list',
+          400,
+        );
+
+      // per job: total pieces and fractional pallets (share of each pallet)
+      const lines = await sql`
+        SELECT pc."jobId",
+          SUM(pc.amount)::int AS amount,
+          ROUND(SUM(pc.amount::numeric / pt.total), 4) AS pallets
+        FROM pallets p
+        JOIN pallet_contents pc ON pc."palletId" = p.id
+        JOIN LATERAL (
+          SELECT SUM(amount)::numeric AS total FROM pallet_contents WHERE "palletId" = p.id
+        ) pt ON true
+        WHERE p."exportOrderId" = ${body.exportOrderId}
+        GROUP BY pc."jobId"`;
+      if (!lines.length)
+        throw new HttpException('La orden no tiene pallets', 400);
+
+      for (const line of lines) {
+        await sql`INSERT INTO order_destiny ${sql({
+          orderId: line.jobId,
+          destinyId: body.id,
+          amount: line.amount,
+          date: new Date(),
+          po: '',
+          pallets: line.pallets,
+          exportOrderId: body.exportOrderId,
+        })}`;
+      }
+
+      await sql`UPDATE exportorders SET "destinyId" = ${body.id} WHERE id = ${body.exportOrderId}`;
+
+      await this.req.record(
+        `Aplico la orden de exportación ${body.exportOrderId} al packing list`,
+        sql,
+      );
+    });
+    return;
+  }
+
+  // Detach an export order: remove exactly the lines it generated
+  async removeExportOrder(body: z.infer<typeof applyExportOrderSchema>) {
+    await sql.begin(async (sql) => {
+      const movements = await sql`
+        SELECT "materialId" FROM materialmovements
+        WHERE "orderDestinyId" IN
+          (SELECT id FROM order_destiny WHERE "exportOrderId" = ${body.exportOrderId} AND "destinyId" = ${body.id})`;
+
+      await sql`DELETE FROM order_destiny WHERE "exportOrderId" = ${body.exportOrderId} AND "destinyId" = ${body.id}`;
+      await sql`UPDATE exportorders SET "destinyId" = NULL WHERE id = ${body.exportOrderId}`;
+
+      for (const movement of movements)
+        await updateMaterialAmount(movement.materialId, sql);
+
+      await this.req.record(
+        `Quito la orden de exportación ${body.exportOrderId} del packing list`,
+        sql,
+      );
+    });
+    return;
+  }
+
+  // "Desgloce de pallets": same layout as the Orden de Exportación, per-pallet
+  // detail of everything shipped by this PL
+  async downloadDesglose(body: z.infer<typeof idObjectSchema>) {
+    const [destiny] = await sql`
+      SELECT id, so, "packSlip" FROM destinys WHERE id = ${body.id}`;
+    if (!destiny) throw new HttpException('Packing list no existente', 400);
+
+    const orders = await sql`
+      SELECT eo.id, eo.date, clients.name AS client
+      FROM exportorders eo JOIN clients ON clients.id = eo."clientId"
+      WHERE eo."destinyId" = ${body.id} ORDER BY eo.id`;
+    if (!orders.length)
+      throw new HttpException(
+        'El packing list no tiene ordenes de exportación aplicadas',
+        400,
+      );
+
+    const pallets = await sql`
+      SELECT pallets.folio,
+        (SELECT json_agg(json_build_object(
+            'ref', j.ref, 'part', j.part, 'description', j.description,
+            'amount', pc.amount, 'boxes', pc.boxes) ORDER BY pc.id)
+          FROM pallet_contents pc JOIN jobs j ON j.id = pc."jobId"
+          WHERE pc."palletId" = pallets.id) AS contents
+      FROM pallets
+      WHERE "exportOrderId" IN ${sql(orders.map((o) => o.id))}
+      ORDER BY pallets.folio ASC`;
+
+    return generateExportOrderPdf(
+      { id: destiny.id, date: orders[0].date, client: orders[0].client } as any,
+      pallets as any,
+      { title: 'DESGLOCE DE PALLETS', packSlip: destiny.packSlip || destiny.so },
+    );
   }
 
   async update(body: z.infer<typeof editPackingListSchema>) {

@@ -78,6 +78,7 @@ export async function generateExportOrderPdf(
       boxes: number;
     }[];
   }[],
+  opts: { title?: string; packSlip?: string } = {},
 ) {
   const template = await fs.readFile(
     path.join(TEMPLATES, 'quality', 'export-order.html'),
@@ -105,6 +106,8 @@ export async function generateExportOrderPdf(
 
   const html = Mustache.render(template, {
     logo: await getLogo(),
+    title: opts.title || 'ORDEN DE EXPORTACIÓN',
+    packSlip: opts.packSlip || null,
     date: format(order.date, 'dd-MMM'),
     client: order.client,
     rows,

@@ -33,7 +33,7 @@ export class PalletsService {
       ${query.clientId ? sql`AND jobs."clientId" = ${query.clientId}` : sql``}
       ${
         query.pending === 'true'
-          ? sql`AND COALESCE((SELECT SUM(pc.amount) FROM pallet_contents pc WHERE pc."jobId" = jobs.id), 0) < jobs.amount`
+          ? sql`AND COALESCE((SELECT SUM(pc.amount) FROM pallet_contents pc WHERE pc."jobId" = jobs.id), 0) < jobs.calidad`
           : sql``
       }
       ORDER BY jobs.due DESC, jobs.id DESC
@@ -66,7 +66,7 @@ export class PalletsService {
 
     await sql.begin(async (sql) => {
       const [job] = await sql`
-        SELECT jobs.id, jobs.ref, jobs.amount, jobs."clientId", clients.name AS client
+        SELECT jobs.id, jobs.ref, jobs.amount, jobs.calidad, jobs."clientId", clients.name AS client
         FROM jobs JOIN clients ON clients.id = jobs."clientId"
         WHERE jobs.id = ${body.jobId}`;
       if (!job) throw new HttpException('Job no existente', 400);
@@ -76,9 +76,9 @@ export class PalletsService {
         FROM pallet_contents WHERE "jobId" = ${body.jobId}`;
 
       const requested = body.rows.reduce((acc, r) => acc + r.amount, 0);
-      if (palletized + requested > job.amount)
+      if (palletized + requested > job.calidad)
         throw new HttpException(
-          `La cantidad excede el total del job (${palletized + requested} de ${job.amount})`,
+          `La cantidad excede lo liberado por calidad (${palletized + requested} de ${job.calidad} liberadas)`,
           400,
         );
 

@@ -43,7 +43,7 @@
       .header .meta {
         border-left: 1px solid #000;
         display: grid;
-        grid-template-rows: 1fr 1fr;
+        grid-auto-rows: 1fr;
       }
       .header .meta div {
         display: grid;
@@ -101,10 +101,13 @@
     <div class="frame">
       <div class="header">
         <div class="logo"><img src="{{{logo}}}" alt="logo" /></div>
-        <div class="title">ORDEN DE EXPORTACIÓN</div>
+        <div class="title">{{title}}</div>
         <div class="meta">
           <div><span>Fecha:</span><span>{{date}}</span></div>
           <div><span>Cliente:</span><span>{{client}}</span></div>
+          {{#packSlip}}
+          <div><span>PL:</span><span>{{packSlip}}</span></div>
+          {{/packSlip}}
         </div>
       </div>
       <table>

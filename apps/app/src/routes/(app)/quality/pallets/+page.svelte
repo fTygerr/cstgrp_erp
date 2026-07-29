@@ -61,6 +61,7 @@
 		<TableHead>Parte</TableHead>
 		<TableHead>Cliente</TableHead>
 		<TableHead>Cantidad</TableHead>
+		<TableHead>Liberado</TableHead>
 		<TableHead>Paletizado</TableHead>
 		<TableHead>Pendiente</TableHead>
 		<TableHead>Due date</TableHead>
@@ -79,8 +80,9 @@
 				<TableCell>{job.part}</TableCell>
 				<TableCell>{job.client}</TableCell>
 				<TableCell>{job.amount}</TableCell>
+				<TableCell>{job.calidad}</TableCell>
 				<TableCell>{job.palletized}</TableCell>
-				<TableCell>{job.amount - job.palletized}</TableCell>
+				<TableCell>{job.calidad - job.palletized}</TableCell>
 				<TableCell>{formatDate(job.due)}</TableCell>
 			</TableRow>
 		{/each}

@@ -76,7 +76,6 @@
 							show = false;
 							showForm = true;
 						}}
-						disabled={data.some((row) => !row.pallets)}
 					>
 						Editar packing list
 					</Button>

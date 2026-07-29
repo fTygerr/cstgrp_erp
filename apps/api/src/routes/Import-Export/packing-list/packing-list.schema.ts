@@ -17,6 +17,11 @@ export const editPackingListSchema = z.object({
   shipTo: idSchema,
 });
 
+export const applyExportOrderSchema = z.object({
+  id: idSchema,
+  exportOrderId: idSchema,
+});
+
 export const downloadPackingListSchema = z.object({
   id: idSchema,
 });

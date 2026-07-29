@@ -10,14 +10,19 @@ export class ExportService {
   constructor(private readonly context: ContextProvider) {}
 
   async findAll(filter: z.infer<typeof getExportSchema>) {
-    return sql`select destinys.so, destinys.id, destinys."packSlip", (destinys.exported IS NOT NULL) as exported
-    from destinys 
+    return sql`select destinys.so, destinys.id, destinys."packSlip", (destinys.exported IS NOT NULL) as exported,
+    string_agg(DISTINCT jobs.ref, ', ') as jobs,
+    string_agg(DISTINCT jobs.part, ', ') as parts,
+    string_agg(DISTINCT clients.name, ', ') as client
+    from destinys
     left join order_destiny on order_destiny."destinyId" = destinys.id
     left join jobs on jobs.id = order_destiny."orderId"
+    left join clients on clients.id = jobs."clientId"
     WHERE
-    ${filter.jobpo ? sql`jobs.ref = ${filter.jobpo}` : sql`TRUE`}
-    ${filter.pl ? sql`AND destinys."packSlip" = ${filter.pl}` : sql``}
-    group by destinys.id`;
+    ${filter.jobpo ? sql`jobs.ref ILIKE ${'%' + filter.jobpo + '%'}` : sql`TRUE`}
+    ${filter.pl ? sql`AND destinys."packSlip" ILIKE ${'%' + filter.pl + '%'}` : sql``}
+    group by destinys.id
+    order by destinys.id desc`;
   }
 
   async findOne(body: z.infer<typeof idObjectSchema>) {

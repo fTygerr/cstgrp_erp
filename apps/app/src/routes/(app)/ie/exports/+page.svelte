@@ -57,6 +57,13 @@
 			'_blank'
 		);
 	}
+
+	function downloadDesglose(i: number) {
+		window.open(
+			import.meta.env.VITE_BASEURL + '/ie/packing-list/desglose?id=' + movements[i]?.id,
+			'_blank'
+		);
+	}
 </script>
 
 <MenuBar>
@@ -88,6 +95,9 @@
 <CusTable>
 	<TableHeader>
 		<OptionsHead />
+		<TableHead>Cliente</TableHead>
+		<TableHead>Job(s)</TableHead>
+		<TableHead>Parte(s)</TableHead>
 		<TableHead>SO</TableHead>
 		<TableHead class="w-[100%]">Packing List</TableHead>
 	</TableHeader>
@@ -101,12 +111,20 @@
 						? [
 								{
 									fn: () => downloadPackingList(i),
-									name: 'Descargar',
+									name: 'Descargar PL',
+									icon: FileDown
+								},
+								{
+									fn: () => downloadDesglose(i),
+									name: 'Desglose de pallets',
 									icon: FileDown
 								}
 							]
 						: undefined}
 				/>
+				<TableCell>{movement.client || ''}</TableCell>
+				<TableCell class="max-w-44 truncate">{movement.jobs || ''}</TableCell>
+				<TableCell class="max-w-44 truncate">{movement.parts || ''}</TableCell>
 				<TableCell>{movement.so}</TableCell>
 				<TableCell>{movement.packSlip}</TableCell>
 			</TableRow>
