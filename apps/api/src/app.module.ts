@@ -14,6 +14,7 @@ import { QualityModule } from './routes/Quality/quality.module';
 import { ProgressModule } from './routes/Progress/progress.module';
 import { MaintenanceModule } from './routes/Maintenance/maintenance.module';
 import { ContractorsModule } from './routes/Contractors/contractors.module';
+import { ZenPetModule } from './routes/ZenPet/zenpet.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ContractorsModule } from './routes/Contractors/contractors.module';
     QualityModule,
     MaintenanceModule,
     ContractorsModule,
+    ZenPetModule,
   ],
 })
 export class AppModule {}

@@ -1,0 +1,3387 @@
+{
+ "extracted_at": "2026-07-31",
+ "source": "CST-Tracker — instance/cst.db (solo lectura)",
+ "products": [
+  {
+   "line": "BUDDY LIFT",
+   "size": "L/XL",
+   "labor_usd": 6.15,
+   "subcon_mxn": 28.0,
+   "minutes": 25.0,
+   "material_cost": 5.2328,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0063,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z1-9102",
+     "desc": "TELA ABORREGADA",
+     "qty": 0.16,
+     "unit": "YD",
+     "cost": 4.2329,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z1-9103",
+     "desc": "TELA NYLON NEGRA 420-DENIER",
+     "qty": 0.16,
+     "unit": "YD",
+     "cost": 4.4957,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z1-9104",
+     "desc": "TELA MESH",
+     "qty": 0.039,
+     "unit": "YD",
+     "cost": 7.6082,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z2-9105",
+     "desc": "ESPONJA 3/16\"",
+     "qty": 0.16,
+     "unit": "YD",
+     "cost": 6.9718,
+     "family": "Z2"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.23,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.17,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2103",
+     "desc": "WEBBING 1\"",
+     "qty": 5.0,
+     "unit": "YD",
+     "cost": 0.1383,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3103",
+     "desc": "½” Black Knitted Elastic (Cinta elástica ½”)",
+     "qty": 0.28,
+     "unit": "YD",
+     "cost": 0.0415,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3105",
+     "desc": "BIES",
+     "qty": 0.56,
+     "unit": "YD",
+     "cost": 0.166,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z5-9103",
+     "desc": "D-RING 1\"",
+     "qty": 2.0,
+     "unit": "PC",
+     "cost": 0.083,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z5-9104",
+     "desc": "BUCKLE 1\"",
+     "qty": 1.0,
+     "unit": "SET",
+     "cost": 0.1798,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z5-9105",
+     "desc": "TRIGLIDE 1\"",
+     "qty": 2.0,
+     "unit": "PC",
+     "cost": 0.0415,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z6-9109",
+     "desc": "CORRUGADO BOX - Buddy - 14X14X10",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 2.31,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-9119",
+     "desc": "PRINTED BOX - Buddy Lift",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "BUDDY LIFT",
+   "size": "M/L",
+   "labor_usd": 6.15,
+   "subcon_mxn": 28.0,
+   "minutes": 25.0,
+   "material_cost": 4.6047,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0063,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z1-9102",
+     "desc": "TELA ABORREGADA",
+     "qty": 0.12,
+     "unit": "YD",
+     "cost": 4.2329,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z1-9103",
+     "desc": "TELA NYLON NEGRA 420-DENIER",
+     "qty": 0.12,
+     "unit": "YD",
+     "cost": 4.4957,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z1-9104",
+     "desc": "TELA MESH",
+     "qty": 0.039,
+     "unit": "YD",
+     "cost": 7.6082,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z2-9105",
+     "desc": "ESPONJA 3/16\"",
+     "qty": 0.12,
+     "unit": "YD",
+     "cost": 6.9718,
+     "family": "Z2"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.23,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.17,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2103",
+     "desc": "WEBBING 1\"",
+     "qty": 5.0,
+     "unit": "YD",
+     "cost": 0.1383,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3103",
+     "desc": "½” Black Knitted Elastic (Cinta elástica ½”)",
+     "qty": 0.28,
+     "unit": "YD",
+     "cost": 0.0415,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3105",
+     "desc": "BIES",
+     "qty": 0.56,
+     "unit": "YD",
+     "cost": 0.166,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z5-9103",
+     "desc": "D-RING 1\"",
+     "qty": 2.0,
+     "unit": "PC",
+     "cost": 0.083,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z5-9104",
+     "desc": "BUCKLE 1\"",
+     "qty": 1.0,
+     "unit": "SET",
+     "cost": 0.1798,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z5-9105",
+     "desc": "TRIGLIDE 1\"",
+     "qty": 2.0,
+     "unit": "PC",
+     "cost": 0.0415,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z6-9109",
+     "desc": "CORRUGADO BOX - Buddy - 14X14X10",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 2.31,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-9119",
+     "desc": "PRINTED BOX - Buddy Lift",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "E-COLLAR",
+   "size": "L",
+   "labor_usd": 1.6,
+   "subcon_mxn": 10.0,
+   "minutes": 5.0,
+   "material_cost": 0.3278,
+   "bom": [
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.2,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.09,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3101",
+     "desc": "¾” Black Nylon Soft Finish Binding Tape  (Cinta de Nylon webbing ¾”)",
+     "qty": 1.7,
+     "unit": "YD",
+     "cost": 0.0692,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-4506",
+     "desc": "E-Collar / L - Cut Piece (PVC cortado)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z6-4115",
+     "desc": "CORRUGADO BOX - E-Collar - L - 25X14X4 ECT32",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 3.85,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "E-COLLAR",
+   "size": "M",
+   "labor_usd": 1.34,
+   "subcon_mxn": 7.0,
+   "minutes": 3.6,
+   "material_cost": 0.2244,
+   "bom": [
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.2,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.09,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3101",
+     "desc": "¾” Black Nylon Soft Finish Binding Tape  (Cinta de Nylon webbing ¾”)",
+     "qty": 1.38,
+     "unit": "YD",
+     "cost": 0.0692,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-4505",
+     "desc": "E-Collar / M - Cut Piece (PVC cortado)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z6-4114",
+     "desc": "CORRUGADO BOX - E-Collar - M - 19X11X4 ECT32",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 1.9,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "E-COLLAR",
+   "size": "S",
+   "labor_usd": 1.2,
+   "subcon_mxn": 6.0,
+   "minutes": 3.2,
+   "material_cost": 0.1855,
+   "bom": [
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.2,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.09,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3101",
+     "desc": "¾” Black Nylon Soft Finish Binding Tape  (Cinta de Nylon webbing ¾”)",
+     "qty": 1.12,
+     "unit": "YD",
+     "cost": 0.0692,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-4504",
+     "desc": "E-Collar / S - Cut Piece (PVC cortado)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z6-4113",
+     "desc": "CORRUGADO BOX - E-Collar - S - 16X10X4 ECT32",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 1.4,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "E-COLLAR",
+   "size": "XL",
+   "labor_usd": 1.7,
+   "subcon_mxn": 12.5,
+   "minutes": 6.2,
+   "material_cost": 0.4009,
+   "bom": [
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.3,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.13,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3101",
+     "desc": "¾” Black Nylon Soft Finish Binding Tape  (Cinta de Nylon webbing ¾”)",
+     "qty": 2.2,
+     "unit": "YD",
+     "cost": 0.0692,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-4507",
+     "desc": "E-Collar / XL - Cut Piece (PVC cortado)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z6-4116",
+     "desc": "CORRUGADO BOX - E-Collar - XL - 32X17X4 ECT32",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 4.4,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "E-COLLAR",
+   "size": "XXL",
+   "labor_usd": 1.8,
+   "subcon_mxn": 13.5,
+   "minutes": 6.8,
+   "material_cost": 0.5814,
+   "bom": [
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.3,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.13,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3101",
+     "desc": "¾” Black Nylon Soft Finish Binding Tape  (Cinta de Nylon webbing ¾”)",
+     "qty": 2.64,
+     "unit": "YD",
+     "cost": 0.0692,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-4508",
+     "desc": "E-Collar / XXL - Cut Piece (PVC cortado)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z6-4117",
+     "desc": "CORRUGADO BOX - E-Collar - XXL - 40X21X4 ECT32",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 8.0,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ELBOW",
+   "size": "L",
+   "labor_usd": 0,
+   "subcon_mxn": 0,
+   "minutes": 17.0,
+   "material_cost": 2.7123,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0167,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.53,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6118-2",
+     "desc": "PRINTED BOX - Elbow L/XL",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ELBOW",
+   "size": "M",
+   "labor_usd": 0,
+   "subcon_mxn": 0,
+   "minutes": 16.9,
+   "material_cost": 2.0882,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0125,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.48,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6118",
+     "desc": "PRINTED BOX - Elbow XS/S/M",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ELBOW",
+   "size": "S",
+   "labor_usd": 0,
+   "subcon_mxn": 0,
+   "minutes": 16.9,
+   "material_cost": 1.787,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0105,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.42,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6118",
+     "desc": "PRINTED BOX - Elbow XS/S/M",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ELBOW",
+   "size": "XL",
+   "labor_usd": 0,
+   "subcon_mxn": 0,
+   "minutes": 17.3,
+   "material_cost": 3.6898,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0233,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.58,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6118-2",
+     "desc": "PRINTED BOX - Elbow L/XL",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ELBOW",
+   "size": "XS",
+   "labor_usd": 0,
+   "subcon_mxn": 0,
+   "minutes": 16.8,
+   "material_cost": 1.3549,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0076,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.375,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6118",
+     "desc": "PRINTED BOX - Elbow XS/S/M",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "HOCK",
+   "size": "L",
+   "labor_usd": 0.71,
+   "subcon_mxn": 0,
+   "minutes": 3.8,
+   "material_cost": 3.3128,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0208,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.5,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6117",
+     "desc": "PRINTED BOX - Hock L",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "HOCK",
+   "size": "M",
+   "labor_usd": 0.7,
+   "subcon_mxn": 0,
+   "minutes": 3.8,
+   "material_cost": 2.1346,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0128,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.5,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6116",
+     "desc": "PRINTED BOX - Hock S/M",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "HOCK",
+   "size": "S",
+   "labor_usd": 0.62,
+   "subcon_mxn": 0,
+   "minutes": 3.4,
+   "material_cost": 1.6169,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0093,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.48,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6116",
+     "desc": "PRINTED BOX - Hock S/M",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "LIGAMENT",
+   "size": "L",
+   "labor_usd": 0.93,
+   "subcon_mxn": 0,
+   "minutes": 5.2,
+   "material_cost": 2.9464,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0185,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.25,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6115",
+     "desc": "PRINTED BOX - Ligament",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "LIGAMENT",
+   "size": "M",
+   "labor_usd": 0.92,
+   "subcon_mxn": 0,
+   "minutes": 5.2,
+   "material_cost": 1.443,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0083,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.24,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6115",
+     "desc": "PRINTED BOX - Ligament",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "LIGAMENT",
+   "size": "S",
+   "labor_usd": 0.47,
+   "subcon_mxn": 0,
+   "minutes": 2.6,
+   "material_cost": 1.0001,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-6105",
+     "desc": "NEOPRENE 3.0MM BLACK VELCRO PLUSH",
+     "qty": 0.0053,
+     "unit": "PC",
+     "cost": 147.28,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.23,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-6112",
+     "desc": "CORRUGADO BOX - Wraps - 11X8X8 - 28X20X20 CM.",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.8247,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-6115",
+     "desc": "PRINTED BOX - Ligament",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN COLLAR",
+   "size": "L",
+   "labor_usd": 3.28,
+   "subcon_mxn": 19.0,
+   "minutes": 17.9,
+   "material_cost": 2.5008,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-1101",
+     "desc": "P6*3 Gray PVC55 (polyester cubierto de PVC)",
+     "qty": 0.3594,
+     "unit": "YD",
+     "cost": 1.3695,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.1878,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.1968,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2102",
+     "desc": "1” Black Nylon Webbing (Listón nylon 1\")",
+     "qty": 0.81,
+     "unit": "YD",
+     "cost": 0.152,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2107",
+     "desc": "#3 Black Nylon Long Chain  (Zippers de plástico)",
+     "qty": 0.313,
+     "unit": "YD",
+     "cost": 0.1245,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-2115",
+     "desc": "PVC Film (0.20mm X 850mm) Pro Collar M & L",
+     "qty": 0.1148,
+     "unit": "KG",
+     "cost": 7.6635,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z5-2101",
+     "desc": "#3 Nylon Black Non-Lock Long-Pull (Cabeza de zipper)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0277,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z5-2102",
+     "desc": "HI-459 Air Valve",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.2767,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z6-2107",
+     "desc": "CORRUGATED BOX - Collar L-XL - 20X16X12",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 2.75,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-2108",
+     "desc": "PRINTED BOX - Collar L",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.48,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN COLLAR",
+   "size": "M",
+   "labor_usd": 2.65,
+   "subcon_mxn": 19.0,
+   "minutes": 15.3,
+   "material_cost": 1.7975,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-1101",
+     "desc": "P6*3 Gray PVC55 (polyester cubierto de PVC)",
+     "qty": 0.2014,
+     "unit": "YD",
+     "cost": 1.3695,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.1444,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.1514,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2102",
+     "desc": "1” Black Nylon Webbing (Listón nylon 1\")",
+     "qty": 0.6527,
+     "unit": "YD",
+     "cost": 0.152,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2107",
+     "desc": "#3 Black Nylon Long Chain  (Zippers de plástico)",
+     "qty": 0.2832,
+     "unit": "YD",
+     "cost": 0.1245,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-2115",
+     "desc": "PVC Film (0.20mm X 850mm) Pro Collar M & L",
+     "qty": 0.0647,
+     "unit": "KG",
+     "cost": 7.6635,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z5-2101",
+     "desc": "#3 Nylon Black Non-Lock Long-Pull (Cabeza de zipper)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0277,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z5-2102",
+     "desc": "HI-459 Air Valve",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.2767,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z6-2106",
+     "desc": "CORRUGATED BOX - Collar S-M - 16X16X10",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 2.14,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-2107",
+     "desc": "PRINTED BOX - Collar M",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.44,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN COLLAR",
+   "size": "S",
+   "labor_usd": 2.31,
+   "subcon_mxn": 19.0,
+   "minutes": 14.4,
+   "material_cost": 1.536,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-1101",
+     "desc": "P6*3 Gray PVC55 (polyester cubierto de PVC)",
+     "qty": 0.1424,
+     "unit": "YD",
+     "cost": 1.3695,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.1156,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.1211,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2102",
+     "desc": "1” Black Nylon Webbing (Listón nylon 1\")",
+     "qty": 0.55,
+     "unit": "YD",
+     "cost": 0.152,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2107",
+     "desc": "#3 Black Nylon Long Chain  (Zippers de plástico)",
+     "qty": 0.2832,
+     "unit": "YD",
+     "cost": 0.1245,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-2116",
+     "desc": "PVC Film (0.20mm X 1000mm) Pro Collar XS & XL",
+     "qty": 0.044,
+     "unit": "KG",
+     "cost": 7.6635,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z5-2101",
+     "desc": "#3 Nylon Black Non-Lock Long-Pull (Cabeza de zipper)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0277,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z5-2102",
+     "desc": "HI-459 Air Valve",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.2767,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z6-2106",
+     "desc": "CORRUGATED BOX - Collar S-M - 16X16X10",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 2.14,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-2106",
+     "desc": "PRINTED BOX - Collar S",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.44,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN COLLAR",
+   "size": "XL",
+   "labor_usd": 3.28,
+   "subcon_mxn": 19.0,
+   "minutes": 17.9,
+   "material_cost": 2.5587,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-1101",
+     "desc": "P6*3 Gray PVC55 (polyester cubierto de PVC)",
+     "qty": 0.5357,
+     "unit": "YD",
+     "cost": 1.3695,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.2456,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.2574,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2102",
+     "desc": "1” Black Nylon Webbing (Listón nylon 1\")",
+     "qty": 0.93,
+     "unit": "YD",
+     "cost": 0.152,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2107",
+     "desc": "#3 Black Nylon Long Chain  (Zippers de plástico)",
+     "qty": 0.313,
+     "unit": "YD",
+     "cost": 0.1245,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-2116",
+     "desc": "PVC Film (0.20mm X 1000mm) Pro Collar XS & XL",
+     "qty": 0.1494,
+     "unit": "KG",
+     "cost": 7.6635,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z5-2101",
+     "desc": "#3 Nylon Black Non-Lock Long-Pull (Cabeza de zipper)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0277,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z5-2102",
+     "desc": "HI-459 Air Valve",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.2767,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z6-2107",
+     "desc": "CORRUGATED BOX - Collar L-XL - 20X16X12",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 2.75,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-2109",
+     "desc": "PRINTED BOX - Collar XL",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN COLLAR",
+   "size": "XS",
+   "labor_usd": 2.19,
+   "subcon_mxn": 19.0,
+   "minutes": 13.6,
+   "material_cost": 1.2572,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-1101",
+     "desc": "P6*3 Gray PVC55 (polyester cubierto de PVC)",
+     "qty": 0.0863,
+     "unit": "YD",
+     "cost": 1.3695,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.0722,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.0757,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2102",
+     "desc": "1” Black Nylon Webbing (Listón nylon 1\")",
+     "qty": 0.45,
+     "unit": "YD",
+     "cost": 0.152,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2107",
+     "desc": "#3 Black Nylon Long Chain  (Zippers de plástico)",
+     "qty": 0.1937,
+     "unit": "YD",
+     "cost": 0.1245,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-2116",
+     "desc": "PVC Film (0.20mm X 1000mm) Pro Collar XS & XL",
+     "qty": 0.0234,
+     "unit": "KG",
+     "cost": 7.6635,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z5-2101",
+     "desc": "#3 Nylon Black Non-Lock Long-Pull (Cabeza de zipper)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0277,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z5-2102",
+     "desc": "HI-459 Air Valve",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.2767,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z6-2105",
+     "desc": "CORRUGATED BOX - Collar XS - 15X11X7",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 1.95,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-2105",
+     "desc": "PRINTED BOX - Collar XS",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.44,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN COLLAR",
+   "size": "XXL",
+   "labor_usd": 3.32,
+   "subcon_mxn": 19.0,
+   "minutes": 17.9,
+   "material_cost": 4.3236,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-1101",
+     "desc": "P6*3 Gray PVC55 (polyester cubierto de PVC)",
+     "qty": 0.8241,
+     "unit": "YD",
+     "cost": 1.3695,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.3033,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.3179,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2102",
+     "desc": "1” Black Nylon Webbing (Listón nylon 1\")",
+     "qty": 1.5,
+     "unit": "YD",
+     "cost": 0.152,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-2107",
+     "desc": "#3 Black Nylon Long Chain  (Zippers de plástico)",
+     "qty": 0.3726,
+     "unit": "YD",
+     "cost": 0.1245,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-2115",
+     "desc": "PVC Film (0.20mm X 850mm) Pro Collar M & L",
+     "qty": 0.3071,
+     "unit": "KG",
+     "cost": 7.6635,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z5-2101",
+     "desc": "#3 Nylon Black Non-Lock Long-Pull (Cabeza de zipper)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0277,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z5-2102",
+     "desc": "HI-459 Air Valve",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.2767,
+     "family": "Z5"
+    },
+    {
+     "pn": "ZEN-Z6-2108",
+     "desc": "CORRUGATED BOX - Collar XXL - 20X16X16",
+     "qty": 0.0417,
+     "unit": "PC",
+     "cost": 4.05,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-2110",
+     "desc": "PRINTED BOX - Collar XXL",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.042,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN CONE",
+   "size": "L",
+   "labor_usd": 3.2,
+   "subcon_mxn": 24.0,
+   "minutes": 23.6,
+   "material_cost": 2.1195,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-1101",
+     "desc": "P6*3 Gray PVC55 (polyester cubierto de PVC)",
+     "qty": 0.17,
+     "unit": "YD",
+     "cost": 1.3695,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z2-3103",
+     "desc": "Foan 1.5 x 1.19m (L)",
+     "qty": 0.1313,
+     "unit": "PC",
+     "cost": 4.6485,
+     "family": "Z2"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.9911,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 1.1354,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3101",
+     "desc": "¾” Black Nylon Soft Finish Binding Tape  (Cinta de Nylon webbing ¾”)",
+     "qty": 2.8975,
+     "unit": "YD",
+     "cost": 0.0692,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3103",
+     "desc": "½” Black Knitted Elastic (Cinta elástica ½”)",
+     "qty": 0.4444,
+     "unit": "YD",
+     "cost": 0.0415,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-3119",
+     "desc": "Pet Film (96\" x 40\") (1m x 2.44m)",
+     "qty": 0.0476,
+     "unit": "PC",
+     "cost": 9.0907,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z6-3104",
+     "desc": "CORRUGATED BOX - Cono L - 13X10X10",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.37,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-3103",
+     "desc": "PRINTED SLEEVE - Cono L",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.2,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0004",
+     "desc": "Labels - Transparent 1-1-/2\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0417,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0005",
+     "desc": "Plastic Hook (Cincho en Gancho)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0136,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN CONE",
+   "size": "M",
+   "labor_usd": 2.89,
+   "subcon_mxn": 24.0,
+   "minutes": 21.7,
+   "material_cost": 1.6997,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-1101",
+     "desc": "P6*3 Gray PVC55 (polyester cubierto de PVC)",
+     "qty": 0.13,
+     "unit": "YD",
+     "cost": 1.3695,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z2-3102",
+     "desc": "Foam 1.5 x 1.33m (M)",
+     "qty": 0.0875,
+     "unit": "PC",
+     "cost": 5.0785,
+     "family": "Z2"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.82,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.9083,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3101",
+     "desc": "¾” Black Nylon Soft Finish Binding Tape  (Cinta de Nylon webbing ¾”)",
+     "qty": 2.5465,
+     "unit": "YD",
+     "cost": 0.0692,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3103",
+     "desc": "½” Black Knitted Elastic (Cinta elástica ½”)",
+     "qty": 0.4444,
+     "unit": "YD",
+     "cost": 0.0415,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-3119",
+     "desc": "Pet Film (96\" x 40\") (1m x 2.44m)",
+     "qty": 0.0357,
+     "unit": "PC",
+     "cost": 9.0907,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z6-3103",
+     "desc": "CORRUGATED BOX - Cono M - 10X10X10",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 1.1,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-3102",
+     "desc": "PRINTED SLEEVE - Cono M",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.2,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0004",
+     "desc": "Labels - Transparent 1-1-/2\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0417,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0005",
+     "desc": "Plastic Hook (Cincho en Gancho)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0136,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN CONE",
+   "size": "S",
+   "labor_usd": 2.0,
+   "subcon_mxn": 24.0,
+   "minutes": 14.7,
+   "material_cost": 1.1376,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-1101",
+     "desc": "P6*3 Gray PVC55 (polyester cubierto de PVC)",
+     "qty": 0.07,
+     "unit": "YD",
+     "cost": 1.3695,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z2-3101",
+     "desc": "Foam 1.5 x 1.76m (S)",
+     "qty": 0.0328,
+     "unit": "PC",
+     "cost": 6.4285,
+     "family": "Z2"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.5694,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.6131,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3101",
+     "desc": "¾” Black Nylon Soft Finish Binding Tape  (Cinta de Nylon webbing ¾”)",
+     "qty": 1.94,
+     "unit": "YD",
+     "cost": 0.0692,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3103",
+     "desc": "½” Black Knitted Elastic (Cinta elástica ½”)",
+     "qty": 0.4444,
+     "unit": "YD",
+     "cost": 0.0415,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-3119",
+     "desc": "Pet Film (96\" x 40\") (1m x 2.44m)",
+     "qty": 0.0227,
+     "unit": "PC",
+     "cost": 9.0907,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z6-3101",
+     "desc": "CORRUGATED BOX - Cono S - 8X8X8",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.79,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-3101",
+     "desc": "PRINTED SLEEVE - Cono S",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.2,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0004",
+     "desc": "Labels - Transparent 1-1-/2\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0417,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0005",
+     "desc": "Plastic Hook (Cincho en Gancho)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0136,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN CONE",
+   "size": "XL",
+   "labor_usd": 3.65,
+   "subcon_mxn": 24.0,
+   "minutes": 27.0,
+   "material_cost": 2.9747,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-1101",
+     "desc": "P6*3 Gray PVC55 (polyester cubierto de PVC)",
+     "qty": 0.35,
+     "unit": "YD",
+     "cost": 1.3695,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z2-3104",
+     "desc": "Foam 1.5 x 1.82m (XL)",
+     "qty": 0.1313,
+     "unit": "PC",
+     "cost": 6.6185,
+     "family": "Z2"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 1.5639,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 1.476,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3101",
+     "desc": "¾” Black Nylon Soft Finish Binding Tape  (Cinta de Nylon webbing ¾”)",
+     "qty": 3.4544,
+     "unit": "YD",
+     "cost": 0.0692,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-3103",
+     "desc": "½” Black Knitted Elastic (Cinta elástica ½”)",
+     "qty": 0.4444,
+     "unit": "YD",
+     "cost": 0.0415,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z4-3119",
+     "desc": "Pet Film (96\" x 40\") (1m x 2.44m)",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 9.0907,
+     "family": "Z4"
+    },
+    {
+     "pn": "ZEN-Z6-3105",
+     "desc": "CORRUGATED BOX - Cono XL - 13X13X13",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-3104",
+     "desc": "PRINTED SLEEVE - Cono XL",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.2,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0004",
+     "desc": "Labels - Transparent 1-1-/2\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0417,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0005",
+     "desc": "Plastic Hook (Cincho en Gancho)",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0136,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN DOG",
+   "size": "L",
+   "labor_usd": 5.5,
+   "subcon_mxn": 37.07,
+   "minutes": 32.5,
+   "material_cost": 2.5166,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-5102",
+     "desc": "Polyester-spandex knitted fabric (tela de polyester con spandex",
+     "qty": 0.41,
+     "unit": "YD",
+     "cost": 5.8099,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.625,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.2111,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-5119",
+     "desc": "CORRUGATED BOX - ZenDog L/XL/XXL - 16X10X8",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-5112",
+     "desc": "PRINTED BOX - ZEN DOG L/XL/XXL",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN DOG",
+   "size": "M",
+   "labor_usd": 5.26,
+   "subcon_mxn": 35.5,
+   "minutes": 31.2,
+   "material_cost": 2.0211,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-5102",
+     "desc": "Polyester-spandex knitted fabric (tela de polyester con spandex",
+     "qty": 0.33,
+     "unit": "YD",
+     "cost": 5.8099,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.4167,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.1417,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-5118",
+     "desc": "CORRUGATED BOX - ZenDog XS/S/M - 12X6X8",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-5111",
+     "desc": "PRINTED BOX - ZEN DOG XS/S/M",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN DOG",
+   "size": "S",
+   "labor_usd": 4.23,
+   "subcon_mxn": 28.43,
+   "minutes": 25.0,
+   "material_cost": 1.6021,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-5102",
+     "desc": "Polyester-spandex knitted fabric (tela de polyester con spandex",
+     "qty": 0.26,
+     "unit": "YD",
+     "cost": 5.8099,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.3333,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.1139,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-5118",
+     "desc": "CORRUGATED BOX - ZenDog XS/S/M - 12X6X8",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-5111",
+     "desc": "PRINTED BOX - ZEN DOG XS/S/M",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN DOG",
+   "size": "XL",
+   "labor_usd": 5.85,
+   "subcon_mxn": 39.47,
+   "minutes": 34.6,
+   "material_cost": 3.2231,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-5102",
+     "desc": "Polyester-spandex knitted fabric (tela de polyester con spandex",
+     "qty": 0.53,
+     "unit": "YD",
+     "cost": 5.8099,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.6875,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.2322,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-5119",
+     "desc": "CORRUGATED BOX - ZenDog L/XL/XXL - 16X10X8",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-5112",
+     "desc": "PRINTED BOX - ZEN DOG L/XL/XXL",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN DOG",
+   "size": "XS",
+   "labor_usd": 4.61,
+   "subcon_mxn": 31.01,
+   "minutes": 27.2,
+   "material_cost": 1.4217,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-5102",
+     "desc": "Polyester-spandex knitted fabric (tela de polyester con spandex",
+     "qty": 0.23,
+     "unit": "YD",
+     "cost": 5.8099,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.2917,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.1,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-5118",
+     "desc": "CORRUGATED BOX - ZenDog XS/S/M - 12X6X8",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-5111",
+     "desc": "PRINTED BOX - ZEN DOG XS/S/M",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  },
+  {
+   "line": "ZEN DOG",
+   "size": "XXL",
+   "labor_usd": 6.14,
+   "subcon_mxn": 41.45,
+   "minutes": 36.4,
+   "material_cost": 3.8133,
+   "bom": [
+    {
+     "pn": "ZEN-Z1-5102",
+     "desc": "Polyester-spandex knitted fabric (tela de polyester con spandex",
+     "qty": 0.63,
+     "unit": "YD",
+     "cost": 5.8099,
+     "family": "Z1"
+    },
+    {
+     "pn": "ZEN-Z3-1105",
+     "desc": "1” Black Sewable Loop Nylon and Polyester Yarn  (Velcro 1” - hembra)",
+     "qty": 0.75,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z3-1106",
+     "desc": "1” Black Sewable Hook Nylon and Polyester Yarn  (Velcro 1” - macho)",
+     "qty": 0.2528,
+     "unit": "YD",
+     "cost": 0.1107,
+     "family": "Z3"
+    },
+    {
+     "pn": "ZEN-Z6-5119",
+     "desc": "CORRUGATED BOX - ZenDog L/XL/XXL - 16X10X8",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z6"
+    },
+    {
+     "pn": "ZEN-Z7-5112",
+     "desc": "PRINTED BOX - ZEN DOG L/XL/XXL",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0,
+     "family": "Z7"
+    },
+    {
+     "pn": "ZEN-Z8-0001",
+     "desc": "Labels - Master Box 4 x 2\"",
+     "qty": 0.0833,
+     "unit": "PC",
+     "cost": 0.055,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0002",
+     "desc": "Labels - Barcode 1-3/4 x 1\"",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0147,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0003",
+     "desc": "Labels - Cirular 3/4",
+     "qty": 1.0,
+     "unit": "PC",
+     "cost": 0.0075,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0006",
+     "desc": "Ribon AXR9 - Made in Mexico Label",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 56.0528,
+     "family": "Z8"
+    },
+    {
+     "pn": "ZEN-Z8-0007",
+     "desc": "Tyvek Tieback Label 3\"/3.5\" Roll",
+     "qty": 0.0001,
+     "unit": "ROLL",
+     "cost": 96.3461,
+     "family": "Z8"
+    }
+   ]
+  }
+ ],
+ "rules": {
+  "pet_cut_to_sheet": {
+   "ZEN-Z4-3520": "S: 0.023/4 hojas por corte",
+   "ZEN-Z4-3521": "M: 0.036/4",
+   "ZEN-Z4-3522": "L: 0.048/4",
+   "ZEN-Z4-3523": "XL: 0.084/4"
+  },
+  "bladder": "Cada bladder = PVC Film (KG) + 1 válvula de aire (ZEN-Z5-2102)",
+  "packaging_families": [
+   "Z6 (cajas corrugadas)",
+   "Z7 (cajas impresas)",
+   "Z8 parcial (etiquetas)"
+  ],
+  "families": {
+   "Z0": "Producto terminado",
+   "Z1": "Telas",
+   "Z2": "EVA / Foam",
+   "Z3": "Componentes (velcro, cintas, zippers)",
+   "Z4": "Películas (PVC y PET)",
+   "Z5": "Piezas menores (válvulas, cabos)",
+   "Z6": "Cajas corrugadas",
+   "Z7": "Cajas impresas",
+   "Z8": "Etiquetas / ribbons"
+  }
+ }
+}
