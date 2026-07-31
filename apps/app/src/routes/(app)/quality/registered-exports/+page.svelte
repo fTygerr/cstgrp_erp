@@ -14,9 +14,11 @@
 	import { downloadFile } from '$lib/utils/files';
 	import { showSuccess } from '$lib/utils/showToast';
 	import { FileDown } from 'lucide-svelte';
+	import { userData } from '$lib/utils/store';
 
 	let filters = $state({ id: '' });
 	let showDelete = $state(false);
+	const canDelete = $derived(($userData?.permissions?.['quality'] || 0) >= 3);
 	let toDelete: any = $state(null);
 
 	const orders = createQuery({
@@ -70,10 +72,12 @@
 								})
 						}
 					]}
-					deleteFunc={() => {
-						toDelete = order;
-						showDelete = true;
-					}}
+					deleteFunc={canDelete
+						? () => {
+								toDelete = order;
+								showDelete = true;
+							}
+						: undefined}
 				/>
 				<TableCell class="font-semibold">{order.id}</TableCell>
 				<TableCell>{formatDate(order.date)}</TableCell>

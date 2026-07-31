@@ -1,0 +1,620 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - link "logo CST Group":
+          - /url: /
+          - img "logo"
+          - text: CST Group
+        - generic:
+          - generic:
+            - heading "Reportes" [level=3]:
+              - button "Reportes":
+                - generic:
+                  - img
+                  - text: Reportes
+                - img
+          - generic:
+            - heading "Producción" [level=3]:
+              - button "Producción":
+                - generic:
+                  - img
+                  - text: Producción
+                - img
+          - generic:
+            - heading "Progreso" [level=3]:
+              - button "Progreso":
+                - generic:
+                  - img
+                  - text: Progreso
+                - img
+          - generic:
+            - heading "Almacen" [level=3]:
+              - button "Almacen":
+                - generic:
+                  - img
+                  - text: Almacen
+                - img
+          - generic:
+            - heading "Calidad" [level=3]:
+              - button "Calidad":
+                - generic:
+                  - img
+                  - text: Calidad
+                - img
+          - generic:
+            - heading "Imp-Exp" [level=3]:
+              - button "Imp-Exp":
+                - generic:
+                  - img
+                  - text: Imp-Exp
+                - img
+          - generic:
+            - heading "Compras" [level=3]:
+              - button "Compras":
+                - generic:
+                  - img
+                  - text: Compras
+                - img
+          - generic:
+            - heading "Mantenimiento" [level=3]:
+              - button "Mantenimiento":
+                - generic:
+                  - img
+                  - text: Mantenimiento
+                - img
+          - generic:
+            - heading "RRHH" [level=3]:
+              - button "RRHH":
+                - generic:
+                  - img
+                  - text: RRHH
+                - img
+          - generic:
+            - heading "Sistemas" [level=3]:
+              - button "Sistemas":
+                - generic:
+                  - img
+                  - text: Sistemas
+                - img
+          - generic:
+            - heading "Contratistas" [level=3]:
+              - button "Contratistas":
+                - generic:
+                  - img
+                  - text: Contratistas
+                - img
+          - generic:
+            - heading "Estructura" [level=3]:
+              - button "Estructura":
+                - generic:
+                  - img
+                  - text: Estructura
+                - img
+          - generic:
+            - heading "Clients" [level=3]:
+              - button "Clients":
+                - generic:
+                  - img
+                  - text: Clients
+                - img
+          - generic:
+            - heading "Admin" [level=3]:
+              - button "Admin":
+                - generic:
+                  - img
+                  - text: Admin
+                - img
+          - generic:
+            - heading "Recursos" [level=3]:
+              - button "Recursos":
+                - generic:
+                  - img
+                  - text: Recursos
+                - img
+        - generic:
+          - paragraph:
+            - img
+            - text: test
+          - button "Salir":
+            - img
+            - text: Salir
+      - main:
+        - generic:
+          - heading "Inicio" [level=3]:
+            - img
+            - text: Inicio
+          - generic:
+            - button "Buscar":
+              - img
+              - generic: Buscar
+            - button:
+              - button:
+                - img
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - textbox "Job PO"
+                - textbox "Packing List"
+            - generic:
+              - button "Registrar":
+                - img
+                - text: Registrar
+        - generic:
+          - table:
+            - rowgroup:
+              - columnheader
+              - columnheader "SO"
+              - columnheader "Packing List"
+            - rowgroup:
+              - row "170016":
+                - cell:
+                  - button:
+                    - img
+                - cell "170016"
+                - cell
+              - row "169071":
+                - cell:
+                  - button:
+                    - img
+                - cell "169071"
+                - cell
+              - row "168687":
+                - cell:
+                  - button:
+                    - img
+                - cell "168687"
+                - cell
+              - row "170015":
+                - cell:
+                  - button:
+                    - img
+                - cell "170015"
+                - cell
+              - row "169378":
+                - cell:
+                  - button:
+                    - img
+                - cell "169378"
+                - cell
+              - row "168021":
+                - cell:
+                  - button:
+                    - img
+                - cell "168021"
+                - cell
+              - row "167468":
+                - cell:
+                  - button:
+                    - img
+                - cell "167468"
+                - cell
+              - row "170011":
+                - cell:
+                  - button:
+                    - img
+                - cell "170011"
+                - cell
+              - row "171659":
+                - cell:
+                  - button:
+                    - img
+                - cell "171659"
+                - cell
+              - row "167172":
+                - cell:
+                  - button:
+                    - img
+                - cell "167172"
+                - cell
+              - row "168168":
+                - cell:
+                  - button:
+                    - img
+                - cell "168168"
+                - cell
+              - row "169472":
+                - cell:
+                  - button:
+                    - img
+                - cell "169472"
+                - cell
+              - row "169471":
+                - cell:
+                  - button:
+                    - img
+                - cell "169471"
+                - cell
+              - row "171402":
+                - cell:
+                  - button:
+                    - img
+                - cell "171402"
+                - cell
+              - row "169370":
+                - cell:
+                  - button:
+                    - img
+                - cell "169370"
+                - cell
+              - row "168988":
+                - cell:
+                  - button:
+                    - img
+                - cell "168988"
+                - cell
+              - row "167428":
+                - cell:
+                  - button:
+                    - img
+                - cell "167428"
+                - cell
+              - row "171119":
+                - cell:
+                  - button:
+                    - img
+                - cell "171119"
+                - cell
+              - row "168541":
+                - cell:
+                  - button:
+                    - img
+                - cell "168541"
+                - cell
+              - row "169954":
+                - cell:
+                  - button:
+                    - img
+                - cell "169954"
+                - cell
+              - row "171117":
+                - cell:
+                  - button:
+                    - img
+                - cell "171117"
+                - cell
+              - row "168022":
+                - cell:
+                  - button:
+                    - img
+                - cell "168022"
+                - cell
+              - row "170745":
+                - cell:
+                  - button:
+                    - img
+                - cell "170745"
+                - cell
+              - row "167029":
+                - cell:
+                  - button:
+                    - img
+                - cell "167029"
+                - cell
+              - row "168198":
+                - cell:
+                  - button:
+                    - img
+                - cell "168198"
+                - cell
+              - row "169372":
+                - cell:
+                  - button:
+                    - img
+                - cell "169372"
+                - cell
+              - row "168113":
+                - cell:
+                  - button:
+                    - img
+                - cell "168113"
+                - cell
+              - row "170504":
+                - cell:
+                  - button:
+                    - img
+                - cell "170504"
+                - cell
+              - row "169729":
+                - cell:
+                  - button:
+                    - img
+                - cell "169729"
+                - cell
+              - row "167592":
+                - cell:
+                  - button:
+                    - img
+                - cell "167592"
+                - cell
+              - row "168686":
+                - cell:
+                  - button:
+                    - img
+                - cell "168686"
+                - cell
+              - row "168985":
+                - cell:
+                  - button:
+                    - img
+                - cell "168985"
+                - cell
+              - row "168693":
+                - cell:
+                  - button:
+                    - img
+                - cell "168693"
+                - cell
+              - row "170069":
+                - cell:
+                  - button:
+                    - img
+                - cell "170069"
+                - cell
+              - row "169953":
+                - cell:
+                  - button:
+                    - img
+                - cell "169953"
+                - cell
+              - row "168986":
+                - cell:
+                  - button:
+                    - img
+                - cell "168986"
+                - cell
+              - row "170494":
+                - cell:
+                  - button:
+                    - img
+                - cell "170494"
+                - cell
+              - row "167591":
+                - cell:
+                  - button:
+                    - img
+                - cell "167591"
+                - cell
+              - row "171217":
+                - cell:
+                  - button:
+                    - img
+                - cell "171217"
+                - cell
+              - row "168955":
+                - cell:
+                  - button:
+                    - img
+                - cell "168955"
+                - cell
+              - row "168956 2790":
+                - cell:
+                  - button:
+                    - img
+                - cell "168956"
+                - cell "2790"
+              - row "169383":
+                - cell:
+                  - button:
+                    - img
+                - cell "169383"
+                - cell
+              - row "168682":
+                - cell:
+                  - button:
+                    - img
+                - cell "168682"
+                - cell
+              - row "170071":
+                - cell:
+                  - button:
+                    - img
+                - cell "170071"
+                - cell
+              - row "171215":
+                - cell:
+                  - button:
+                    - img
+                - cell "171215"
+                - cell
+              - row "168157":
+                - cell:
+                  - button:
+                    - img
+                - cell "168157"
+                - cell
+              - row "168683":
+                - cell:
+                  - button:
+                    - img
+                - cell "168683"
+                - cell
+              - row "169373":
+                - cell:
+                  - button:
+                    - img
+                - cell "169373"
+                - cell
+              - row "170747":
+                - cell:
+                  - button:
+                    - img
+                - cell "170747"
+                - cell
+              - row "169371":
+                - cell:
+                  - button:
+                    - img
+                - cell "169371"
+                - cell
+              - row "CLTEST-SO-1":
+                - cell:
+                  - button:
+                    - img
+                - cell "CLTEST-SO-1"
+                - cell
+              - row "168597":
+                - cell:
+                  - button:
+                    - img
+                - cell "168597"
+                - cell
+              - row "171183":
+                - cell:
+                  - button:
+                    - img
+                - cell "171183"
+                - cell
+              - row "168856":
+                - cell:
+                  - button:
+                    - img
+                - cell "168856"
+                - cell
+              - row "168957":
+                - cell:
+                  - button:
+                    - img
+                - cell "168957"
+                - cell
+              - row "170488":
+                - cell:
+                  - button:
+                    - img
+                - cell "170488"
+                - cell
+              - row "168163":
+                - cell:
+                  - button:
+                    - img
+                - cell "168163"
+                - cell
+              - row "167035":
+                - cell:
+                  - button:
+                    - img
+                - cell "167035"
+                - cell
+              - row "166980":
+                - cell:
+                  - button:
+                    - img
+                - cell "166980"
+                - cell
+              - row "167115 181420":
+                - cell:
+                  - button:
+                    - img
+                - cell "167115"
+                - cell "181420"
+              - row "171547":
+                - cell:
+                  - button:
+                    - img
+                - cell "171547"
+                - cell
+              - row "169482":
+                - cell:
+                  - button:
+                    - img
+                - cell "169482"
+                - cell
+              - row "168542":
+                - cell:
+                  - button:
+                    - img
+                - cell "168542"
+                - cell
+              - row "170743":
+                - cell:
+                  - button:
+                    - img
+                - cell "170743"
+                - cell
+              - row "170487":
+                - cell:
+                  - button:
+                    - img
+                - cell "170487"
+                - cell
+              - row "170070":
+                - cell:
+                  - button:
+                    - img
+                - cell "170070"
+                - cell
+              - row "168171":
+                - cell:
+                  - button:
+                    - img
+                - cell "168171"
+                - cell
+              - row "168301":
+                - cell:
+                  - button:
+                    - img
+                - cell "168301"
+                - cell
+              - row "167815":
+                - cell:
+                  - button:
+                    - img
+                - cell "167815"
+                - cell
+    - region "Notifications alt+T"
+  - dialog "CLTEST-SO-1" [ref=e572]:
+    - heading "CLTEST-SO-1" [level=2] [ref=e574]
+    - generic [ref=e575]:
+      - generic [ref=e576]:
+        - generic [ref=e577]: Pack Slip
+        - textbox [ref=e578]: CLTEST-PL-1
+      - generic [ref=e579]:
+        - generic [ref=e580]: Ship Via
+        - button "AG&M TRANSPORT" [ref=e644] [cursor=pointer]:
+          - generic [ref=e583]: AG&M TRANSPORT
+          - img [ref=e584]
+      - generic [ref=e585]:
+        - generic [ref=e586]: Consignee
+        - button "COMMERCIAL SEWING" [ref=e658] [cursor=pointer]:
+          - generic [ref=e589]: COMMERCIAL SEWING
+          - img [ref=e590]
+      - generic [ref=e591]:
+        - generic [ref=e592]: Ship Date
+        - textbox [ref=e593]: 2026-07-28
+      - generic [ref=e594]:
+        - generic [ref=e595]: B/L No
+        - textbox [ref=e596]
+      - generic [ref=e597]:
+        - generic [ref=e598]: TRK#
+        - textbox [ref=e599]
+      - generic [ref=e600]:
+        - generic [ref=e601]: PO
+        - textbox [ref=e602]
+      - generic [ref=e603]:
+        - generic [ref=e604]: Invoice
+        - textbox [ref=e605]
+      - generic [ref=e606]:
+        - generic [ref=e607]: Weight
+        - textbox [ref=e608]
+      - generic [ref=e609]:
+        - generic [ref=e610]: Destination
+        - button "CHAPARRAL BOATS - WAREHOUSE" [active] [ref=e694] [cursor=pointer]:
+          - generic [ref=e613]: CHAPARRAL BOATS - WAREHOUSE
+          - img [ref=e614]
+      - generic [ref=e615]:
+        - generic [ref=e616]: Carrier Exp
+        - button "Selecciona una opción" [ref=e617] [cursor=pointer]:
+          - generic [ref=e619]: Selecciona una opción
+          - img [ref=e620]
+      - generic [ref=e621]:
+        - generic [ref=e622]: Ship To
+        - button "M&M APEX SERV/CST GROUP INC" [ref=e623] [cursor=pointer]:
+          - generic [ref=e625]: M&M APEX SERV/CST GROUP INC
+          - img [ref=e626]
+    - generic [ref=e627]:
+      - button "Guardar" [ref=e628] [cursor=pointer]
+      - button "Cancelar" [ref=e629] [cursor=pointer]
+    - button "Close" [ref=e630] [cursor=pointer]:
+      - img [ref=e631]
+      - generic [ref=e632]: Close

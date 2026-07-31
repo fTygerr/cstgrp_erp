@@ -1,0 +1,1445 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - link "logo CST Group":
+          - /url: /
+          - img "logo"
+          - text: CST Group
+        - generic:
+          - generic:
+            - heading "Reportes" [level=3]:
+              - button "Reportes":
+                - generic:
+                  - img
+                  - text: Reportes
+                - img
+          - generic:
+            - heading "Producción" [level=3]:
+              - button "Producción":
+                - generic:
+                  - img
+                  - text: Producción
+                - img
+          - generic:
+            - heading "Progreso" [level=3]:
+              - button "Progreso":
+                - generic:
+                  - img
+                  - text: Progreso
+                - img
+          - generic:
+            - heading "Almacen" [level=3]:
+              - button "Almacen":
+                - generic:
+                  - img
+                  - text: Almacen
+                - img
+          - generic:
+            - heading "Calidad" [level=3]:
+              - button "Calidad":
+                - generic:
+                  - img
+                  - text: Calidad
+                - img
+          - generic:
+            - heading "Imp-Exp" [level=3]:
+              - button "Imp-Exp":
+                - generic:
+                  - img
+                  - text: Imp-Exp
+                - img
+          - generic:
+            - heading "Compras" [level=3]:
+              - button "Compras":
+                - generic:
+                  - img
+                  - text: Compras
+                - img
+          - generic:
+            - heading "Mantenimiento" [level=3]:
+              - button "Mantenimiento":
+                - generic:
+                  - img
+                  - text: Mantenimiento
+                - img
+          - generic:
+            - heading "RRHH" [level=3]:
+              - button "RRHH":
+                - generic:
+                  - img
+                  - text: RRHH
+                - img
+          - generic:
+            - heading "Sistemas" [level=3]:
+              - button "Sistemas":
+                - generic:
+                  - img
+                  - text: Sistemas
+                - img
+          - generic:
+            - heading "Contratistas" [level=3]:
+              - button "Contratistas":
+                - generic:
+                  - img
+                  - text: Contratistas
+                - img
+          - generic:
+            - heading "Estructura" [level=3]:
+              - button "Estructura":
+                - generic:
+                  - img
+                  - text: Estructura
+                - img
+          - generic:
+            - heading "Clients" [level=3]:
+              - button "Clients":
+                - generic:
+                  - img
+                  - text: Clients
+                - img
+          - generic:
+            - heading "Admin" [level=3]:
+              - button "Admin":
+                - generic:
+                  - img
+                  - text: Admin
+                - img
+          - generic:
+            - heading "Recursos" [level=3]:
+              - button "Recursos":
+                - generic:
+                  - img
+                  - text: Recursos
+                - img
+        - generic:
+          - paragraph:
+            - img
+            - text: test
+          - button "Salir":
+            - img
+            - text: Salir
+      - main:
+        - generic:
+          - heading "Inicio" [level=3]:
+            - img
+            - text: Inicio
+          - generic:
+            - button "Buscar":
+              - img
+              - generic: Buscar
+            - button:
+              - button:
+                - img
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - textbox "Job"
+                - textbox "Programación"
+                - button:
+                  - img
+            - generic:
+              - button "Registrar":
+                - img
+                - text: Registrar
+        - generic:
+          - table:
+            - rowgroup:
+              - columnheader
+              - columnheader "Job-PO"
+              - columnheader "Programacion"
+              - columnheader "Fecha"
+              - columnheader "Parte"
+            - rowgroup:
+              - row "264208 185 07/08/2026 MWV-CVRVX-LT-23":
+                - cell:
+                  - button:
+                    - img
+                - cell "264208"
+                - cell "185"
+                - cell "07/08/2026"
+                - cell "MWV-CVRVX-LT-23"
+              - row "264206 185 07/08/2026 MWV-CVRFX-LT-20":
+                - cell:
+                  - button:
+                    - img
+                - cell "264206"
+                - cell "185"
+                - cell "07/08/2026"
+                - cell "MWV-CVRFX-LT-20"
+              - row "261253 185 31/07/2026 2891949":
+                - cell:
+                  - button:
+                    - img
+                - cell "261253"
+                - cell "185"
+                - cell "31/07/2026"
+                - cell "2891949"
+              - row "S-16794 JULIO 30/07/2026 COLLAR ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16794"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "COLLAR ENSAMBLADO - S"
+              - row "S-16754 1465 30/07/2026 ZENDOG CALMING SHIRT - MEDIUM":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16754"
+                - cell "1465"
+                - cell "30/07/2026"
+                - cell "ZENDOG CALMING SHIRT - MEDIUM"
+              - row "S-16753 1465 30/07/2026 ZENDOG CALMING SHIRT - SMALL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16753"
+                - cell "1465"
+                - cell "30/07/2026"
+                - cell "ZENDOG CALMING SHIRT - SMALL"
+              - row "S-16725 JULIO 30/07/2026 CONO ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16725"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - XL"
+              - row "S-16724 JULIO 30/07/2026 CONO ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16724"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - XL"
+              - row "S-16723 JULIO 30/07/2026 CONO ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16723"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - XL"
+              - row "S-16722 JULIO 30/07/2026 CONO ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16722"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - L"
+              - row "S-16721 JULIO 30/07/2026 CONO ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16721"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - L"
+              - row "S-16720 JULIO 30/07/2026 CONO ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16720"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - L"
+              - row "S-16719 JULIO 30/07/2026 CONO ENSAMBLADO - M":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16719"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - M"
+              - row "S-16718 JULIO 30/07/2026 CONO ENSAMBLADO - M":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16718"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - M"
+              - row "S-16717 JULIO 30/07/2026 CONO ENSAMBLADO - M":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16717"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - M"
+              - row "S-16716 JULIO 30/07/2026 CONO ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16716"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - S"
+              - row "S-16715 JULIO 30/07/2026 CONO ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16715"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - S"
+              - row "S-16714 JULIO 30/07/2026 CONO ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16714"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - S"
+              - row "S-16713 JULIO 30/07/2026 CONO ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16713"
+                - cell "JULIO"
+                - cell "30/07/2026"
+                - cell "CONO ENSAMBLADO - S"
+              - row "261382 185 29/07/2026 2891948":
+                - cell:
+                  - button:
+                    - img
+                - cell "261382"
+                - cell "185"
+                - cell "29/07/2026"
+                - cell "2891948"
+              - row "264611 184 24/07/2026 MWV-CVRVR-BC-19":
+                - cell:
+                  - button:
+                    - img
+                - cell "264611"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "MWV-CVRVR-BC-19"
+              - row "264610 184 24/07/2026 MWV-CVRVX-RD-21":
+                - cell:
+                  - button:
+                    - img
+                - cell "264610"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "MWV-CVRVX-RD-21"
+              - row "264609 184 24/07/2026 MWV-CVRVX-CR-19":
+                - cell:
+                  - button:
+                    - img
+                - cell "264609"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "MWV-CVRVX-CR-19"
+              - row "264608 184 24/07/2026 MWV-CVRVX-BC-19":
+                - cell:
+                  - button:
+                    - img
+                - cell "264608"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "MWV-CVRVX-BC-19"
+              - row "264607 184 24/07/2026 MWV-CVRVX-MC-23":
+                - cell:
+                  - button:
+                    - img
+                - cell "264607"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "MWV-CVRVX-MC-23"
+              - row "264605 184 24/07/2026 MWV-CVRJB-3U-25":
+                - cell:
+                  - button:
+                    - img
+                - cell "264605"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "MWV-CVRJB-3U-25"
+              - row "264604 184 24/07/2026 MWV-CVRJB-2U-25":
+                - cell:
+                  - button:
+                    - img
+                - cell "264604"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "MWV-CVRJB-2U-25"
+              - row "264603 184 24/07/2026 MWV-CVRGP-MC-24":
+                - cell:
+                  - button:
+                    - img
+                - cell "264603"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "MWV-CVRGP-MC-24"
+              - row "264602 184 24/07/2026 MWV-CVRFX-CH-19":
+                - cell:
+                  - button:
+                    - img
+                - cell "264602"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "MWV-CVRFX-CH-19"
+              - row "264601 184 24/07/2026 MWV-CVRCR-CH-19":
+                - cell:
+                  - button:
+                    - img
+                - cell "264601"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "MWV-CVRCR-CH-19"
+              - row "264235 184 24/07/2026 99994-2391":
+                - cell:
+                  - button:
+                    - img
+                - cell "264235"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "99994-2391"
+              - row "264226 184 24/07/2026 99994-2392":
+                - cell:
+                  - button:
+                    - img
+                - cell "264226"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "99994-2392"
+              - row "264225 184 24/07/2026 99994-1864":
+                - cell:
+                  - button:
+                    - img
+                - cell "264225"
+                - cell "184"
+                - cell "24/07/2026"
+                - cell "99994-1864"
+              - row "264207 184 17/07/2026 MWV-CVRVX-LT-23":
+                - cell:
+                  - button:
+                    - img
+                - cell "264207"
+                - cell "184"
+                - cell "17/07/2026"
+                - cell "MWV-CVRVX-LT-23"
+              - row "264190 184 17/07/2026 MWV-CVRFX-LT-20":
+                - cell:
+                  - button:
+                    - img
+                - cell "264190"
+                - cell "184"
+                - cell "17/07/2026"
+                - cell "MWV-CVRFX-LT-20"
+              - row "S-16752 1466 16/07/2026 ZENDOG CALMING SHIRT - MEDIUM":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16752"
+                - cell "1466"
+                - cell "16/07/2026"
+                - cell "ZENDOG CALMING SHIRT - MEDIUM"
+              - row "S-16751 1466 16/07/2026 ZENDOG CALMING SHIRT - SMALL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16751"
+                - cell "1466"
+                - cell "16/07/2026"
+                - cell "ZENDOG CALMING SHIRT - SMALL"
+              - row "S-16712 JULIO 15/07/2026 COLLAR ENSAMBLADO - XXL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16712"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - XXL"
+              - row "S-16711 JULIO 15/07/2026 COLLAR ENSAMBLADO - XXL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16711"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - XXL"
+              - row "S-16710 JULIO 15/07/2026 COLLAR ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16710"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - XL"
+              - row "S-16709 JULIO 15/07/2026 COLLAR ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16709"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - XL"
+              - row "S-16708 JULIO 15/07/2026 COLLAR ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16708"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - L"
+              - row "S-16707 JULIO 15/07/2026 COLLAR ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16707"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - L"
+              - row "S-16706 JULIO 15/07/2026 COLLAR ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16706"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - L"
+              - row "S-16704 JULIO 15/07/2026 COLLAR ENSAMBLADO - M":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16704"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - M"
+              - row "S-16703 JULIO 15/07/2026 COLLAR ENSAMBLADO - M":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16703"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - M"
+              - row "S-16702 JULIO 15/07/2026 COLLAR ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16702"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - S"
+              - row "S-16701 JULIO 15/07/2026 COLLAR ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16701"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - S"
+              - row "S-16700 JULIO 15/07/2026 COLLAR ENSAMBLADO - XS":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16700"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - XS"
+              - row "S-16699 JULIO 15/07/2026 COLLAR ENSAMBLADO - XS":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16699"
+                - cell "JULIO"
+                - cell "15/07/2026"
+                - cell "COLLAR ENSAMBLADO - XS"
+              - row "R264839 183 15/07/2026 R&DMISC":
+                - cell:
+                  - button:
+                    - img
+                - cell "R264839"
+                - cell "183"
+                - cell "15/07/2026"
+                - cell "R&DMISC"
+              - row "264422 220 10/07/2026 18.00638":
+                - cell:
+                  - button:
+                    - img
+                - cell "264422"
+                - cell "220"
+                - cell "10/07/2026"
+                - cell "18.00638"
+              - row "264420 220 10/07/2026 18.00061":
+                - cell:
+                  - button:
+                    - img
+                - cell "264420"
+                - cell "220"
+                - cell "10/07/2026"
+                - cell "18.00061"
+              - row "264228 183 10/07/2026 99994-1449B":
+                - cell:
+                  - button:
+                    - img
+                - cell "264228"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "99994-1449B"
+              - row "264197 183 10/07/2026 MWV-CVRJB-LT-25":
+                - cell:
+                  - button:
+                    - img
+                - cell "264197"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MWV-CVRJB-LT-25"
+              - row "264065 183 10/07/2026 MWV-CVRGP-MC-24":
+                - cell:
+                  - button:
+                    - img
+                - cell "264065"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MWV-CVRGP-MC-24"
+              - row "264058 183 10/07/2026 MAR-MTRCV-RX-T0":
+                - cell:
+                  - button:
+                    - img
+                - cell "264058"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MAR-MTRCV-RX-T0"
+              - row "264055 183 10/07/2026 MAR-MTRCV-F2-01":
+                - cell:
+                  - button:
+                    - img
+                - cell "264055"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MAR-MTRCV-F2-01"
+              - row "264050 183 10/07/2026 MAR-MTRCV-F4-20":
+                - cell:
+                  - button:
+                    - img
+                - cell "264050"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MAR-MTRCV-F4-20"
+              - row "264045 183 10/07/2026 MAR-MTRCV-ER-40":
+                - cell:
+                  - button:
+                    - img
+                - cell "264045"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MAR-MTRCV-ER-40"
+              - row "264044 183 10/07/2026 MAR-MTRCV-ER-60":
+                - cell:
+                  - button:
+                    - img
+                - cell "264044"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MAR-MTRCV-ER-60"
+              - row "264042 183 10/07/2026 MAR-MTRCV-11-50":
+                - cell:
+                  - button:
+                    - img
+                - cell "264042"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MAR-MTRCV-11-50"
+              - row "264041 183 10/07/2026 MAR-MTRCV-F9-0B":
+                - cell:
+                  - button:
+                    - img
+                - cell "264041"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MAR-MTRCV-F9-0B"
+              - row "264040 183 10/07/2026 MAR-MTRCV-F4-2L":
+                - cell:
+                  - button:
+                    - img
+                - cell "264040"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MAR-MTRCV-F4-2L"
+              - row "264039 183 10/07/2026 MAR-MTRCV-11-40":
+                - cell:
+                  - button:
+                    - img
+                - cell "264039"
+                - cell "183"
+                - cell "10/07/2026"
+                - cell "MAR-MTRCV-11-40"
+              - row "263528 220 10/07/2026 F6V-U3280-00":
+                - cell:
+                  - button:
+                    - img
+                - cell "263528"
+                - cell "220"
+                - cell "10/07/2026"
+                - cell "F6V-U3280-00"
+              - row "263527 220 10/07/2026 F6V-U3280-00":
+                - cell:
+                  - button:
+                    - img
+                - cell "263527"
+                - cell "220"
+                - cell "10/07/2026"
+                - cell "F6V-U3280-00"
+              - row "263526 220 10/07/2026 F6V-U3280-00":
+                - cell:
+                  - button:
+                    - img
+                - cell "263526"
+                - cell "220"
+                - cell "10/07/2026"
+                - cell "F6V-U3280-00"
+              - row "262853 220 10/07/2026 F6V-U3280-00":
+                - cell:
+                  - button:
+                    - img
+                - cell "262853"
+                - cell "220"
+                - cell "10/07/2026"
+                - cell "F6V-U3280-00"
+              - row "264425 220 09/07/2026 18.00674":
+                - cell:
+                  - button:
+                    - img
+                - cell "264425"
+                - cell "220"
+                - cell "09/07/2026"
+                - cell "18.00674"
+              - row "264424 220 09/07/2026 18.00673":
+                - cell:
+                  - button:
+                    - img
+                - cell "264424"
+                - cell "220"
+                - cell "09/07/2026"
+                - cell "18.00673"
+              - row "264423 220 09/07/2026 18.00654":
+                - cell:
+                  - button:
+                    - img
+                - cell "264423"
+                - cell "220"
+                - cell "09/07/2026"
+                - cell "18.00654"
+              - row "264421 220 09/07/2026 18.00324":
+                - cell:
+                  - button:
+                    - img
+                - cell "264421"
+                - cell "220"
+                - cell "09/07/2026"
+                - cell "18.00324"
+              - row "264053 182 06/07/2026 MWV-CVRVR-BC-19":
+                - cell:
+                  - button:
+                    - img
+                - cell "264053"
+                - cell "182"
+                - cell "06/07/2026"
+                - cell "MWV-CVRVR-BC-19"
+              - row "264047 182 06/07/2026 MWV-CVRVX-RD-21":
+                - cell:
+                  - button:
+                    - img
+                - cell "264047"
+                - cell "182"
+                - cell "06/07/2026"
+                - cell "MWV-CVRVX-RD-21"
+              - row "264066 182 03/07/2026 MWV-CVRFX-CH-19":
+                - cell:
+                  - button:
+                    - img
+                - cell "264066"
+                - cell "182"
+                - cell "03/07/2026"
+                - cell "MWV-CVRFX-CH-19"
+              - row "264064 182 03/07/2026 MWV-CVRVX-MC-23":
+                - cell:
+                  - button:
+                    - img
+                - cell "264064"
+                - cell "182"
+                - cell "03/07/2026"
+                - cell "MWV-CVRVX-MC-23"
+              - row "264063 182 03/07/2026 MWV-CVRCR-CH-19":
+                - cell:
+                  - button:
+                    - img
+                - cell "264063"
+                - cell "182"
+                - cell "03/07/2026"
+                - cell "MWV-CVRCR-CH-19"
+              - row "264061 182 03/07/2026 MWV-CVRVX-BC-19":
+                - cell:
+                  - button:
+                    - img
+                - cell "264061"
+                - cell "182"
+                - cell "03/07/2026"
+                - cell "MWV-CVRVX-BC-19"
+              - row "264057 182 03/07/2026 MWV-CVRFX-RD-21":
+                - cell:
+                  - button:
+                    - img
+                - cell "264057"
+                - cell "182"
+                - cell "03/07/2026"
+                - cell "MWV-CVRFX-RD-21"
+              - row "S-16735 1462 30/06/2026 E-COLLAR; XX-Large":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16735"
+                - cell "1462"
+                - cell "30/06/2026"
+                - cell "E-COLLAR; XX-Large"
+              - row "S-16734 1462 30/06/2026 E-COLLAR; X-Large":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16734"
+                - cell "1462"
+                - cell "30/06/2026"
+                - cell "E-COLLAR; X-Large"
+              - row "S-16733 1462 30/06/2026 E-COLLAR; Large":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16733"
+                - cell "1462"
+                - cell "30/06/2026"
+                - cell "E-COLLAR; Large"
+              - row "S-16732 1462 30/06/2026 E-COLLAR; Medium":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16732"
+                - cell "1462"
+                - cell "30/06/2026"
+                - cell "E-COLLAR; Medium"
+              - row "S-16731 1462 30/06/2026 E-COLLAR; Small":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16731"
+                - cell "1462"
+                - cell "30/06/2026"
+                - cell "E-COLLAR; Small"
+              - row "S-16730 1461 30/06/2026 E-COLLAR; XX-Large":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16730"
+                - cell "1461"
+                - cell "30/06/2026"
+                - cell "E-COLLAR; XX-Large"
+              - row "S-16729 1461 30/06/2026 E-COLLAR; X-Large":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16729"
+                - cell "1461"
+                - cell "30/06/2026"
+                - cell "E-COLLAR; X-Large"
+              - row "S-16728 1461 30/06/2026 E-COLLAR; Large":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16728"
+                - cell "1461"
+                - cell "30/06/2026"
+                - cell "E-COLLAR; Large"
+              - row "S-16727 1461 30/06/2026 E-COLLAR; Medium":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16727"
+                - cell "1461"
+                - cell "30/06/2026"
+                - cell "E-COLLAR; Medium"
+              - row "S-16726 1461 30/06/2026 E-COLLAR; Small":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16726"
+                - cell "1461"
+                - cell "30/06/2026"
+                - cell "E-COLLAR; Small"
+              - row "S-16608 JUNIO 30/06/2026 CONO ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16608"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - XL"
+              - row "S-16607 JUNIO 30/06/2026 CONO ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16607"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - XL"
+              - row "S-16606 JUNIO 30/06/2026 CONO ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16606"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - XL"
+              - row "S-16605 JUNIO 30/06/2026 CONO ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16605"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - XL"
+              - row "S-16604 JUNIO 30/06/2026 CONO ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16604"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - XL"
+              - row "S-16603 JUNIO 30/06/2026 CONO ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16603"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - XL"
+              - row "S-16602 JUNIO 30/06/2026 CONO ENSAMBLADO - XL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16602"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - XL"
+              - row "S-16601 JUNIO 30/06/2026 CONO ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16601"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - L"
+              - row "S-16600 JUNIO 30/06/2026 CONO ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16600"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - L"
+              - row "S-16599 JUNIO 30/06/2026 CONO ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16599"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - L"
+              - row "S-16598 JUNIO 30/06/2026 CONO ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16598"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - L"
+              - row "S-16597 JUNIO 30/06/2026 CONO ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16597"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - L"
+              - row "S-16596 JUNIO 30/06/2026 CONO ENSAMBLADO - L":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16596"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - L"
+              - row "S-16595 JUNIO 30/06/2026 CONO ENSAMBLADO - M":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16595"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - M"
+              - row "S-16594 JUNIO 30/06/2026 CONO ENSAMBLADO - M":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16594"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - M"
+              - row "S-16593 JUNIO 30/06/2026 CONO ENSAMBLADO - M":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16593"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - M"
+              - row "S-16592 JUNIO 30/06/2026 CONO ENSAMBLADO - M":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16592"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - M"
+              - row "S-16591 JUNIO 30/06/2026 CONO ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16591"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - S"
+              - row "S-16590 JUNIO 30/06/2026 CONO ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16590"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - S"
+              - row "S-16589 JUNIO 30/06/2026 CONO ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16589"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - S"
+              - row "S-16588 JUNIO 30/06/2026 CONO ENSAMBLADO - S":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16588"
+                - cell "JUNIO"
+                - cell "30/06/2026"
+                - cell "CONO ENSAMBLADO - S"
+              - row "264062 182 26/06/2026 MWV-CVRJB-3U-25":
+                - cell:
+                  - button:
+                    - img
+                - cell "264062"
+                - cell "182"
+                - cell "26/06/2026"
+                - cell "MWV-CVRJB-3U-25"
+              - row "264059 182 26/06/2026 MWV-CVRJB-2U-25":
+                - cell:
+                  - button:
+                    - img
+                - cell "264059"
+                - cell "182"
+                - cell "26/06/2026"
+                - cell "MWV-CVRJB-2U-25"
+              - row "260054 182 26/06/2026 2891949":
+                - cell:
+                  - button:
+                    - img
+                - cell "260054"
+                - cell "182"
+                - cell "26/06/2026"
+                - cell "2891949"
+              - row "R264261 220 25/06/2026 R&DMISC":
+                - cell:
+                  - button:
+                    - img
+                - cell "R264261"
+                - cell "220"
+                - cell "25/06/2026"
+                - cell "R&DMISC"
+              - 'row "S-16744 301 24/06/2026 Mesh 920, organizer #8727"':
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16744"
+                - cell "301"
+                - cell "24/06/2026"
+                - 'cell "Mesh 920, organizer #8727"'
+              - row "260053 182 19/06/2026 2880515":
+                - cell:
+                  - button:
+                    - img
+                - cell "260053"
+                - cell "182"
+                - cell "19/06/2026"
+                - cell "2880515"
+              - row "S-16669 1462 18/06/2026 L/XL - Canine Support and Rehabilitation Sling":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16669"
+                - cell "1462"
+                - cell "18/06/2026"
+                - cell "L/XL - Canine Support and Rehabilitation Sling"
+              - row "S-16668 1462 18/06/2026 M/L - Canine Support and Rehabilitation Sling":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16668"
+                - cell "1462"
+                - cell "18/06/2026"
+                - cell "M/L - Canine Support and Rehabilitation Sling"
+              - row "S-16660 1462 18/06/2026 ZENDOG CALMING SHIRT - XXLARGE":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16660"
+                - cell "1462"
+                - cell "18/06/2026"
+                - cell "ZENDOG CALMING SHIRT - XXLARGE"
+              - row "S-16658 1462 18/06/2026 ZENDOG CALMING SHIRT - LARGE":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16658"
+                - cell "1462"
+                - cell "18/06/2026"
+                - cell "ZENDOG CALMING SHIRT - LARGE"
+              - row "S-16657 1462 18/06/2026 ZENDOG CALMING SHIRT - MEDIUM":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16657"
+                - cell "1462"
+                - cell "18/06/2026"
+                - cell "ZENDOG CALMING SHIRT - MEDIUM"
+              - row "S-16656 1462 18/06/2026 ZENDOG CALMING SHIRT - SMALL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16656"
+                - cell "1462"
+                - cell "18/06/2026"
+                - cell "ZENDOG CALMING SHIRT - SMALL"
+              - row "S-16655 1462 18/06/2026 ZENDOG CALMING SHIRT - XSMALL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16655"
+                - cell "1462"
+                - cell "18/06/2026"
+                - cell "ZENDOG CALMING SHIRT - XSMALL"
+              - row "264009 181 12/06/2026 99994-2653":
+                - cell:
+                  - button:
+                    - img
+                - cell "264009"
+                - cell "181"
+                - cell "12/06/2026"
+                - cell "99994-2653"
+              - row "263588 220 12/06/2026 F4Y-U3280-21":
+                - cell:
+                  - button:
+                    - img
+                - cell "263588"
+                - cell "220"
+                - cell "12/06/2026"
+                - cell "F4Y-U3280-21"
+              - row "263587 220 12/06/2026 F4Y-U3280-01":
+                - cell:
+                  - button:
+                    - img
+                - cell "263587"
+                - cell "220"
+                - cell "12/06/2026"
+                - cell "F4Y-U3280-01"
+              - row "263586 220 12/06/2026 F4T-U3280-02":
+                - cell:
+                  - button:
+                    - img
+                - cell "263586"
+                - cell "220"
+                - cell "12/06/2026"
+                - cell "F4T-U3280-02"
+              - row "263525 220 12/06/2026 F6V-U3280-00":
+                - cell:
+                  - button:
+                    - img
+                - cell "263525"
+                - cell "220"
+                - cell "12/06/2026"
+                - cell "F6V-U3280-00"
+              - row "263421 181 12/06/2026 99994-1864":
+                - cell:
+                  - button:
+                    - img
+                - cell "263421"
+                - cell "181"
+                - cell "12/06/2026"
+                - cell "99994-1864"
+              - row "263420 181 12/06/2026 99994-1698":
+                - cell:
+                  - button:
+                    - img
+                - cell "263420"
+                - cell "181"
+                - cell "12/06/2026"
+                - cell "99994-1698"
+              - row "262144 220 12/06/2026 P0633-02":
+                - cell:
+                  - button:
+                    - img
+                - cell "262144"
+                - cell "220"
+                - cell "12/06/2026"
+                - cell "P0633-02"
+              - row "261528 220 12/06/2026 F6V-U3280-00":
+                - cell:
+                  - button:
+                    - img
+                - cell "261528"
+                - cell "220"
+                - cell "12/06/2026"
+                - cell "F6V-U3280-00"
+              - row "261527 220 12/06/2026 F6V-U3280-00":
+                - cell:
+                  - button:
+                    - img
+                - cell "261527"
+                - cell "220"
+                - cell "12/06/2026"
+                - cell "F6V-U3280-00"
+              - row "261150 220 12/06/2026 P0632-02":
+                - cell:
+                  - button:
+                    - img
+                - cell "261150"
+                - cell "220"
+                - cell "12/06/2026"
+                - cell "P0632-02"
+              - row "261149 220 12/06/2026 P0632-02":
+                - cell:
+                  - button:
+                    - img
+                - cell "261149"
+                - cell "220"
+                - cell "12/06/2026"
+                - cell "P0632-02"
+              - row "262974 181 11/06/2026 99994-2652":
+                - cell:
+                  - button:
+                    - img
+                - cell "262974"
+                - cell "181"
+                - cell "11/06/2026"
+                - cell "99994-2652"
+              - row "263083 181 08/06/2026 MAR-MTRCV-F4-2L":
+                - cell:
+                  - button:
+                    - img
+                - cell "263083"
+                - cell "181"
+                - cell "08/06/2026"
+                - cell "MAR-MTRCV-F4-2L"
+              - row "263089 181 05/06/2026 MAR-MTRCV-11-00":
+                - cell:
+                  - button:
+                    - img
+                - cell "263089"
+                - cell "181"
+                - cell "05/06/2026"
+                - cell "MAR-MTRCV-11-00"
+              - row "263087 181 05/06/2026 MAR-MTRCV-ER-20":
+                - cell:
+                  - button:
+                    - img
+                - cell "263087"
+                - cell "181"
+                - cell "05/06/2026"
+                - cell "MAR-MTRCV-ER-20"
+              - row "263086 181 05/06/2026 MAR-MTRCV-ER-60":
+                - cell:
+                  - button:
+                    - img
+                - cell "263086"
+                - cell "181"
+                - cell "05/06/2026"
+                - cell "MAR-MTRCV-ER-60"
+              - row "263085 181 05/06/2026 MAR-MTRCV-F2-01":
+                - cell:
+                  - button:
+                    - img
+                - cell "263085"
+                - cell "181"
+                - cell "05/06/2026"
+                - cell "MAR-MTRCV-F2-01"
+              - row "263084 181 05/06/2026 MAR-MTRCV-F4-20":
+                - cell:
+                  - button:
+                    - img
+                - cell "263084"
+                - cell "181"
+                - cell "05/06/2026"
+                - cell "MAR-MTRCV-F4-20"
+              - row "261251 181 05/06/2026 MWV-CVRFX-LT-20":
+                - cell:
+                  - button:
+                    - img
+                - cell "261251"
+                - cell "181"
+                - cell "05/06/2026"
+                - cell "MWV-CVRFX-LT-20"
+              - row "S-16667 1461 04/06/2026 L/XL - Canine Support and Rehabilitation Sling":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16667"
+                - cell "1461"
+                - cell "04/06/2026"
+                - cell "L/XL - Canine Support and Rehabilitation Sling"
+              - row "S-16666 1461 04/06/2026 M/L - Canine Support and Rehabilitation Sling":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16666"
+                - cell "1461"
+                - cell "04/06/2026"
+                - cell "M/L - Canine Support and Rehabilitation Sling"
+              - row "S-16654 1461 04/06/2026 ZENDOG CALMING SHIRT - XXLARGE":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16654"
+                - cell "1461"
+                - cell "04/06/2026"
+                - cell "ZENDOG CALMING SHIRT - XXLARGE"
+              - row "S-16652 1461 04/06/2026 ZENDOG CALMING SHIRT - LARGE":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16652"
+                - cell "1461"
+                - cell "04/06/2026"
+                - cell "ZENDOG CALMING SHIRT - LARGE"
+              - row "S-16651 1461 04/06/2026 ZENDOG CALMING SHIRT - MEDIUM":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16651"
+                - cell "1461"
+                - cell "04/06/2026"
+                - cell "ZENDOG CALMING SHIRT - MEDIUM"
+              - row "S-16650 1461 04/06/2026 ZENDOG CALMING SHIRT - SMALL":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16650"
+                - cell "1461"
+                - cell "04/06/2026"
+                - cell "ZENDOG CALMING SHIRT - SMALL"
+    - region "Notifications alt+T"
+  - dialog "Registrar job-po" [ref=e1332]:
+    - heading "Registrar job-po" [level=2] [ref=e1334]
+    - generic [ref=e1335]:
+      - generic [ref=e1336]:
+        - generic [ref=e1337]:
+          - generic [ref=e1338]: Programación
+          - textbox [ref=e1339]: CLTEST-PROG
+        - generic [ref=e1340]:
+          - generic [ref=e1341]:
+            - generic [ref=e1342]: Job o PO
+            - textbox [disabled] [ref=e1343]: CLTEST-1
+          - generic [ref=e1344]:
+            - generic [ref=e1345]: Cantidad
+            - textbox [ref=e1346]: "10"
+          - generic [ref=e1347]:
+            - generic [ref=e1348]: Pz/Caja
+            - textbox [ref=e1349]: "1"
+        - generic [ref=e1350]:
+          - generic [ref=e1351]: Fecha
+          - textbox [ref=e1352]: 2026-07-25
+        - generic [ref=e1353]:
+          - generic [ref=e1354]:
+            - generic [ref=e1355]: Cliente
+            - button "CSI" [ref=e1500] [cursor=pointer]:
+              - generic [ref=e1502]: CSI
+              - img [ref=e1357]
+          - img [ref=e1360] [cursor=pointer]
+        - generic [ref=e1361]:
+          - generic [ref=e1362]: Parte
+          - textbox [ref=e1363]: CLAUDE-TEST-001
+        - generic [ref=e1364]:
+          - generic [ref=e1365]: Descripción
+          - textbox [ref=e1366]: Producto de prueba Claude
+        - generic [ref=e1367]:
+          - generic [ref=e1368]: Area
+          - button "CSI CB" [ref=e1473] [cursor=pointer]:
+            - generic [ref=e1475]: CSI CB
+            - img [ref=e1370]
+        - generic [ref=e1371]:
+          - generic [ref=e1372]: Corte
+          - textbox [ref=e1373]
+        - generic [ref=e1374]:
+          - generic [ref=e1375]: Serigrafia
+          - textbox [ref=e1376]
+        - generic [ref=e1377]:
+          - generic [ref=e1378]: Cortes varios
+          - textbox [ref=e1379]
+        - generic [ref=e1380]:
+          - generic [ref=e1381]: Produccion
+          - textbox [ref=e1382]
+        - generic [ref=e1383]:
+          - generic [ref=e1384]: Calidad
+          - textbox [ref=e1385]: "1"
+      - generic [ref=e1386]:
+        - tablist [ref=e1387]:
+          - tab "Materiales" [ref=e1388] [cursor=pointer]
+          - tab "Operaciones" [ref=e1389] [cursor=pointer]
+          - tab "Destinos" [selected] [ref=e1390] [cursor=pointer]
+          - tab "Bastones" [ref=e1391] [cursor=pointer]
+          - tab "Jobs" [ref=e1392] [cursor=pointer]
+        - tabpanel "Destinos" [ref=e1526]:
+          - table [ref=e1528]:
+            - rowgroup [ref=e1529]:
+              - columnheader [ref=e1530]
+              - columnheader "SO" [ref=e1531]
+              - columnheader "PO" [ref=e1532]
+              - columnheader "Pz" [ref=e1533]
+              - columnheader "Fecha" [ref=e1534]
+              - columnheader [ref=e1535]
+            - rowgroup [ref=e1537]:
+              - row "CLTEST-SO-1 CLTEST-PO-1 5 2026-07-28" [ref=e1556]:
+                - cell [ref=e1539]
+                - cell "CLTEST-SO-1" [ref=e1551]:
+                  - textbox [ref=e1541]: CLTEST-SO-1
+                - cell "CLTEST-PO-1" [ref=e1553]:
+                  - textbox [ref=e1543]: CLTEST-PO-1
+                - cell "5" [ref=e1555]:
+                  - textbox [ref=e1545]: "5"
+                - cell "2026-07-28" [ref=e1557]:
+                  - textbox [ref=e1547]: 2026-07-28
+                - cell [ref=e1548]:
+                  - button [ref=e1549] [cursor=pointer]:
+                    - img
+          - button "Agregar destino" [ref=e1536] [cursor=pointer]
+    - generic [ref=e1424]:
+      - button "Guardar" [active] [ref=e1425] [cursor=pointer]
+      - button "Cancelar" [ref=e1426] [cursor=pointer]
+    - button "Close" [ref=e1427] [cursor=pointer]:
+      - img [ref=e1428]
+      - generic [ref=e1429]: Close

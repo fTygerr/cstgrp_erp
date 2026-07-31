@@ -15,7 +15,12 @@ type permissionType = keyof typeof permissionsList;
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly requiredPermission?: permissionType) {}
+  constructor(
+    private readonly requiredPermission?: permissionType,
+    private readonly levelOverrides?: Partial<
+      Record<'GET' | 'POST' | 'PUT' | 'DELETE', number>
+    >,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const httpContext = context.switchToHttp();
@@ -43,7 +48,9 @@ export class AuthGuard implements CanActivate {
 
       res.setCookie('areas', user.perm_assistance_areas, cookieConfig);
 
-      return user.permissions[this.requiredPermission] >= methods[req.method];
+      const required =
+        this.levelOverrides?.[req.method] ?? methods[req.method];
+      return user.permissions[this.requiredPermission] >= required;
     } catch (err) {
       throw new HttpException('Token invalido', 401);
     }

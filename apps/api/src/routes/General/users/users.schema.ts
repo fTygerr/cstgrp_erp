@@ -37,6 +37,7 @@ export const permissionsList = {
   labels: permType,
   quality: permType,
   ie_options: permType,
+  ie_packing_list: permType,
   maintenance: permType,
   material_adjustments: permType,
   contractors_orders: permType,

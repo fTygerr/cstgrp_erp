@@ -1,6 +1,7 @@
 import { z } from 'zod/v4';
 
 export const getExportSchema = z.object({
-  jobpo: z.string().nullable(),
-  pl: z.string().nullable(),
+  job: z.string().nullish(),
+  part: z.string().nullish(),
+  clientId: z.string().nullish(),
 });

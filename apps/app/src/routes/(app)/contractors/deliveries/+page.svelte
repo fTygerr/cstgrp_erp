@@ -16,6 +16,9 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import DeletePopUp from '$lib/components/complex/DeletePopUp.svelte';
 	import { showSuccess } from '$lib/utils/showToast';
+	import { userData } from '$lib/utils/store';
+
+	const canDelete = $derived(($userData?.permissions?.['contractors_deliveries'] || 0) >= 3);
 
 	let showForm: boolean = $state(false);
 	let selectedMovement: any = $state({});
@@ -93,10 +96,17 @@
 		{#each $deliveries?.data as delivery}
 			<TableRow>
 				<OptionsCell
+					editName="Ingresar datos"
 					editFunc={() => {
 						selectedMovement = delivery;
 						showForm = true;
 					}}
+					deleteFunc={canDelete
+						? () => {
+								selectedMovement = delivery;
+								showDelete = true;
+							}
+						: undefined}
 				/>
 				<TableCell>
 					<Badge color="gray">

@@ -1,16 +1,8 @@
-import {
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/interceptors/auth/authorization.guard';
 import { ExportService } from './export.service';
 import { getExportSchema } from './export.schema';
 import { ZodPiPe } from 'src/interceptors/validation/validation.pipe';
-import { idObjectSchema } from 'src/utils/schemas';
 
 @Controller('ie/exports')
 @UseGuards(new AuthGuard('exports'))
@@ -20,15 +12,5 @@ export class ExportController {
   @Get()
   async findAll(@Query(new ZodPiPe(getExportSchema)) query) {
     return this.exportService.findAll(query);
-  }
-
-  @Get(':id')
-  async findOne(@Param(new ZodPiPe(idObjectSchema)) body) {
-    return this.exportService.findOne(body);
-  }
-
-  @Delete(':id')
-  async delete(@Param(new ZodPiPe(idObjectSchema)) body) {
-    return this.exportService.delete(body);
   }
 }

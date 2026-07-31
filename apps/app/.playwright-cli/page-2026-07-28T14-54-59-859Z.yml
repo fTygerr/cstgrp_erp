@@ -1,0 +1,168 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - link "TEST":
+          - /url: /
+          - img
+          - text: TEST
+        - generic:
+          - generic:
+            - heading "Reportes" [level=3]:
+              - button "Reportes":
+                - generic:
+                  - img
+                  - text: Reportes
+                - img
+          - generic:
+            - heading "Producción" [level=3]:
+              - button "Producción":
+                - generic:
+                  - img
+                  - text: Producción
+                - img
+          - generic:
+            - heading "Progreso" [level=3]:
+              - button "Progreso":
+                - generic:
+                  - img
+                  - text: Progreso
+                - img
+          - generic:
+            - heading "Almacen" [level=3]:
+              - button "Almacen":
+                - generic:
+                  - img
+                  - text: Almacen
+                - img
+          - generic:
+            - heading "Calidad" [level=3]:
+              - button "Calidad":
+                - generic:
+                  - img
+                  - text: Calidad
+                - img
+          - generic:
+            - heading "Imp-Exp" [level=3]:
+              - button "Imp-Exp":
+                - generic:
+                  - img
+                  - text: Imp-Exp
+                - img
+          - generic:
+            - heading "Compras" [level=3]:
+              - button "Compras":
+                - generic:
+                  - img
+                  - text: Compras
+                - img
+          - generic:
+            - heading "Mantenimiento" [level=3]:
+              - button "Mantenimiento":
+                - generic:
+                  - img
+                  - text: Mantenimiento
+                - img
+          - generic:
+            - heading "RRHH" [level=3]:
+              - button "RRHH":
+                - generic:
+                  - img
+                  - text: RRHH
+                - img
+          - generic:
+            - heading "Sistemas" [level=3]:
+              - button "Sistemas":
+                - generic:
+                  - img
+                  - text: Sistemas
+                - img
+          - generic:
+            - heading "Contratistas" [level=3]:
+              - button "Contratistas":
+                - generic:
+                  - img
+                  - text: Contratistas
+                - img
+          - generic:
+            - heading "Estructura" [level=3]:
+              - button "Estructura":
+                - generic:
+                  - img
+                  - text: Estructura
+                - img
+          - generic:
+            - heading "Clients" [level=3]:
+              - button "Clients":
+                - generic:
+                  - img
+                  - text: Clients
+                - img
+          - generic:
+            - heading "Admin" [level=3]:
+              - button "Admin":
+                - generic:
+                  - img
+                  - text: Admin
+                - img
+          - generic:
+            - heading "Recursos" [level=3]:
+              - button "Recursos":
+                - generic:
+                  - img
+                  - text: Recursos
+                - img
+        - generic:
+          - paragraph:
+            - img
+            - text: test
+          - button "Salir":
+            - img
+            - text: Salir
+      - main:
+        - generic:
+          - heading "Inicio" [level=3]:
+            - img
+            - text: Inicio
+          - generic:
+            - button "Buscar":
+              - img
+              - generic: Buscar
+            - button:
+              - button:
+                - img
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - textbox "No. de exportación"
+        - generic:
+          - table:
+            - rowgroup:
+              - columnheader
+              - columnheader "No."
+              - columnheader "Fecha"
+              - columnheader "Cliente"
+              - columnheader "Pallets"
+              - columnheader "Piezas"
+              - columnheader "Cajas"
+            - rowgroup:
+              - row "1 28/07/2026 ZENPET 2 162 14":
+                - cell:
+                  - button [expanded]:
+                    - img
+                - cell "1"
+                - cell "28/07/2026"
+                - cell "ZENPET"
+                - cell "2"
+                - cell "162"
+                - cell "14"
+    - region "Notifications alt+T"
+  - menu [active] [ref=e140]:
+    - menuitem "Descargar orden" [ref=e141]:
+      - img
+      - text: Descargar orden
+    - group [ref=e142]
+    - menuitem "Eliminar" [ref=e143]:
+      - img
+      - text: Eliminar

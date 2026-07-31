@@ -1,0 +1,160 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - link "TEST" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img [ref=e6]
+        - text: TEST
+      - generic [ref=e7]:
+        - heading "Reportes" [level=3] [ref=e9]:
+          - button "Reportes" [ref=e10] [cursor=pointer]:
+            - generic [ref=e11]:
+              - img [ref=e12]
+              - text: Reportes
+            - img [ref=e13]
+        - heading "Producción" [level=3] [ref=e15]:
+          - button "Producción" [ref=e16] [cursor=pointer]:
+            - generic [ref=e17]:
+              - img [ref=e18]
+              - text: Producción
+            - img [ref=e19]
+        - heading "Progreso" [level=3] [ref=e21]:
+          - button "Progreso" [ref=e22] [cursor=pointer]:
+            - generic [ref=e23]:
+              - img [ref=e24]
+              - text: Progreso
+            - img [ref=e25]
+        - heading "Almacen" [level=3] [ref=e27]:
+          - button "Almacen" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29]:
+              - img [ref=e30]
+              - text: Almacen
+            - img [ref=e31]
+        - heading "Calidad" [level=3] [ref=e33]:
+          - button "Calidad" [ref=e34] [cursor=pointer]:
+            - generic [ref=e35]:
+              - img [ref=e36]
+              - text: Calidad
+            - img [ref=e37]
+        - heading "ZenPet Datos" [level=3] [ref=e39]:
+          - button "ZenPet Datos" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41]:
+              - img [ref=e42]
+              - text: ZenPet Datos
+            - img [ref=e43]
+        - heading "Imp-Exp" [level=3] [ref=e45]:
+          - button "Imp-Exp" [ref=e46] [cursor=pointer]:
+            - generic [ref=e47]:
+              - img [ref=e48]
+              - text: Imp-Exp
+            - img [ref=e49]
+        - heading "Compras" [level=3] [ref=e51]:
+          - button "Compras" [ref=e52] [cursor=pointer]:
+            - generic [ref=e53]:
+              - img [ref=e54]
+              - text: Compras
+            - img [ref=e55]
+        - heading "Mantenimiento" [level=3] [ref=e57]:
+          - button "Mantenimiento" [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]:
+              - img [ref=e60]
+              - text: Mantenimiento
+            - img [ref=e61]
+        - heading "RRHH" [level=3] [ref=e63]:
+          - button "RRHH" [ref=e64] [cursor=pointer]:
+            - generic [ref=e65]:
+              - img [ref=e66]
+              - text: RRHH
+            - img [ref=e67]
+        - heading "Sistemas" [level=3] [ref=e69]:
+          - button "Sistemas" [ref=e70] [cursor=pointer]:
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - text: Sistemas
+            - img [ref=e73]
+        - heading "Contratistas" [level=3] [ref=e75]:
+          - button "Contratistas" [ref=e76] [cursor=pointer]:
+            - generic [ref=e77]:
+              - img [ref=e78]
+              - text: Contratistas
+            - img [ref=e79]
+        - heading "Estructura" [level=3] [ref=e81]:
+          - button "Estructura" [ref=e82] [cursor=pointer]:
+            - generic [ref=e83]:
+              - img [ref=e84]
+              - text: Estructura
+            - img [ref=e85]
+        - heading "Clients" [level=3] [ref=e87]:
+          - button "Clients" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89]:
+              - img [ref=e90]
+              - text: Clients
+            - img [ref=e91]
+        - heading "Admin" [level=3] [ref=e93]:
+          - button "Admin" [ref=e94] [cursor=pointer]:
+            - generic [ref=e95]:
+              - img [ref=e96]
+              - text: Admin
+            - img [ref=e97]
+        - heading "Recursos" [level=3] [ref=e99]:
+          - button "Recursos" [ref=e100] [cursor=pointer]:
+            - generic [ref=e101]:
+              - img [ref=e102]
+              - text: Recursos
+            - img [ref=e103]
+      - generic [ref=e104]:
+        - paragraph [ref=e105]:
+          - img [ref=e106]
+          - text: test
+        - button "Salir" [ref=e107] [cursor=pointer]:
+          - img [ref=e108]
+          - text: Salir
+    - main [ref=e109]:
+      - generic [ref=e110]:
+        - heading "Inicio" [level=3] [ref=e111]:
+          - img [ref=e112]
+          - text: Inicio
+        - generic [ref=e113]:
+          - button "Buscar" [ref=e114] [cursor=pointer]:
+            - img
+            - generic [ref=e115]: Buscar
+          - button [ref=e116] [cursor=pointer]:
+            - button [ref=e117]:
+              - img
+      - generic [ref=e118]:
+        - generic [ref=e119]:
+          - heading "ZenPet Datos" [level=1] [ref=e120]
+          - paragraph [ref=e121]: "Página de verificación: qué necesita ver ZenPet, qué tenemos hoy en el ERP, y de dónde sale cada número — para que Juan confirme las fuentes antes de conectar los sistemas."
+        - generic [ref=e122]:
+          - tablist [ref=e123]:
+            - tab "Las 13 etapas" [ref=e124] [cursor=pointer]
+            - tab "Fórmulas de kits" [ref=e125] [cursor=pointer]
+            - tab "Qué falta por definir" [active] [selected] [ref=e126] [cursor=pointer]
+          - tabpanel "Qué falta por definir" [ref=e327]:
+            - generic [ref=e328]:
+              - generic [ref=e329]: "Qué es esto: las 4 decisiones que faltan para cerrar el mapeo y conectar con ZenPet. Cada una dice quién la responde y qué desbloquea."
+              - generic [ref=e330]:
+                - generic [ref=e331]:
+                  - paragraph [ref=e332]: 1 · Atribución de los cortes (etapas 2, 4, 5, 6)
+                  - generic [ref=e333]: "RESPONDE: JUAN"
+                - paragraph [ref=e334]: ¿Es correcto separar los cortes por la familia del material del BOM? (Z1 = tela, Z4 = películas PVC/PET, Z2/Z3 = componentes). Y cuando un job corta varias familias, ¿se reparte o se clasifica por la principal?
+                - paragraph [ref=e335]: "Desbloquea: las 4 etapas de corte dejan de ser un pool y se muestran separadas como las quiere ZenPet."
+              - generic [ref=e336]:
+                - generic [ref=e337]:
+                  - paragraph [ref=e338]: 2 · Kits y bladders (etapas 7 y 8)
+                  - generic [ref=e339]: "RESPONDE: JUAN"
+                - paragraph [ref=e340]: "¿El proxy de kits (material surtido sin iniciar producción) refleja el piso? ¿Y los bladders: se cuentan, se estiman por válvulas consumidas, o se agrupan en producción?"
+                - paragraph [ref=e341]: "Desbloquea: las 2 etapas intermedias de producción."
+              - generic [ref=e342]:
+                - generic [ref=e343]:
+                  - paragraph [ref=e344]: 3 · Vigencia de costos y fórmulas
+                  - generic [ref=e345]: "RESPONDE: PAPÁ"
+                - paragraph [ref=e346]: Las fórmulas y costos vienen de CST-Tracker (extracto 2026-07-31). ¿Siguen vigentes? ¿Los costos para ZenPet salen de aquí o los pone ZenPet de su lado?
+                - paragraph [ref=e347]: "Desbloquea: la valuación en dólares por etapa (hoy solo mostramos unidades)."
+              - generic [ref=e348]:
+                - generic [ref=e349]:
+                  - paragraph [ref=e350]: 4 · Cadencia del envío a ZenPet
+                  - generic [ref=e351]: "RESPONDE: HÉCTOR + JUAN"
+                - paragraph [ref=e352]: "Propuesta: lunes y miércoles, proceso de solo lectura (el ERP no se toca, nadie captura nada extra). Puede ser diario si se quiere."
+                - paragraph [ref=e353]: "Desbloquea: el arranque del envío automático de datos."
+  - region "Notifications alt+T"

@@ -19,6 +19,10 @@ export class InventoryService {
         materialmovements."activeDate",
         jobs.programation,
         COALESCE(
+          CASE
+            WHEN destinys.id IS NULL THEN NULL
+            ELSE CONCAT('PL-', COALESCE(NULLIF(destinys."packSlip", ''), destinys.so))
+          END,
           jobs.ref, 
           imports.ref, 
           CASE
@@ -51,6 +55,8 @@ export class InventoryService {
         LEFT JOIN imports ON imports.id = materialmovements."importId"
         LEFT JOIN requisitions on requisitions.id = materialmovements."reqId"
         LEFT JOIN purchaseorders on purchaseorders.id = materialmovements."purchaseId"
+        LEFT JOIN order_destiny on order_destiny.id = materialmovements."orderDestinyId"
+        LEFT JOIN destinys on destinys.id = order_destiny."destinyId"
 
         WHERE
             materials.id = ${body.id} 

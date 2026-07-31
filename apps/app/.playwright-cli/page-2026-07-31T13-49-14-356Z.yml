@@ -1,0 +1,15 @@
+- generic [ref=e2]:
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - img "logo" [ref=e6]
+      - heading "Ingresar" [level=1] [ref=e7]
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - generic [ref=e11]: Usuario
+          - textbox "Usuario" [ref=e12]
+        - generic [ref=e13]:
+          - generic [ref=e14]: Contraseña
+          - textbox "••••••••" [ref=e15]
+        - button "Acceder" [ref=e16] [cursor=pointer]
+  - region "Notifications alt+T"
+  - generic [ref=e17]: untitled page

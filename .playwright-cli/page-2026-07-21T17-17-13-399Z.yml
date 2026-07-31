@@ -1,0 +1,549 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - link "logo CST Group" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img "logo" [ref=e6]
+        - text: CST Group
+      - generic [ref=e7]:
+        - heading "Reportes" [level=3] [ref=e9]:
+          - button "Reportes" [ref=e10] [cursor=pointer]:
+            - generic [ref=e11]:
+              - img [ref=e12]
+              - text: Reportes
+            - img [ref=e13]
+        - heading "Producción" [level=3] [ref=e15]:
+          - button "Producción" [ref=e16] [cursor=pointer]:
+            - generic [ref=e17]:
+              - img [ref=e18]
+              - text: Producción
+            - img [ref=e19]
+        - heading "Progreso" [level=3] [ref=e21]:
+          - button "Progreso" [ref=e22] [cursor=pointer]:
+            - generic [ref=e23]:
+              - img [ref=e24]
+              - text: Progreso
+            - img [ref=e25]
+        - heading "Almacen" [level=3] [ref=e27]:
+          - button "Almacen" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29]:
+              - img [ref=e30]
+              - text: Almacen
+            - img [ref=e31]
+        - heading "Calidad" [level=3] [ref=e33]:
+          - button "Calidad" [ref=e34] [cursor=pointer]:
+            - generic [ref=e35]:
+              - img [ref=e36]
+              - text: Calidad
+            - img [ref=e37]
+        - heading "Imp-Exp" [level=3] [ref=e39]:
+          - button "Imp-Exp" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41]:
+              - img [ref=e42]
+              - text: Imp-Exp
+            - img [ref=e43]
+        - heading "Compras" [level=3] [ref=e45]:
+          - button "Compras" [ref=e46] [cursor=pointer]:
+            - generic [ref=e47]:
+              - img [ref=e48]
+              - text: Compras
+            - img [ref=e49]
+        - heading "Mantenimiento" [level=3] [ref=e51]:
+          - button "Mantenimiento" [ref=e52] [cursor=pointer]:
+            - generic [ref=e53]:
+              - img [ref=e54]
+              - text: Mantenimiento
+            - img [ref=e55]
+        - heading "RRHH" [level=3] [ref=e57]:
+          - button "RRHH" [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]:
+              - img [ref=e60]
+              - text: RRHH
+            - img [ref=e61]
+        - heading "Sistemas" [level=3] [ref=e63]:
+          - button "Sistemas" [ref=e64] [cursor=pointer]:
+            - generic [ref=e65]:
+              - img [ref=e66]
+              - text: Sistemas
+            - img [ref=e67]
+        - heading "Contratistas" [level=3] [ref=e69]:
+          - button "Contratistas" [ref=e70] [cursor=pointer]:
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - text: Contratistas
+            - img [ref=e73]
+        - heading "Estructura" [level=3] [ref=e75]:
+          - button "Estructura" [ref=e76] [cursor=pointer]:
+            - generic [ref=e77]:
+              - img [ref=e78]
+              - text: Estructura
+            - img [ref=e79]
+        - heading "Clients" [level=3] [ref=e81]:
+          - button "Clients" [ref=e82] [cursor=pointer]:
+            - generic [ref=e83]:
+              - img [ref=e84]
+              - text: Clients
+            - img [ref=e85]
+        - heading "Admin" [level=3] [ref=e87]:
+          - button "Admin" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89]:
+              - img [ref=e90]
+              - text: Admin
+            - img [ref=e91]
+        - heading "Recursos" [level=3] [ref=e93]:
+          - button "Recursos" [ref=e94] [cursor=pointer]:
+            - generic [ref=e95]:
+              - img [ref=e96]
+              - text: Recursos
+            - img [ref=e97]
+      - generic [ref=e98]:
+        - paragraph [ref=e99]:
+          - img [ref=e100]
+          - text: test
+        - button "Salir" [ref=e101] [cursor=pointer]:
+          - img [ref=e102]
+          - text: Salir
+    - main [ref=e103]:
+      - generic [ref=e104]:
+        - heading "Inicio" [level=3] [ref=e105]:
+          - img [ref=e106]
+          - text: Inicio
+        - generic [ref=e107]:
+          - button "Buscar" [ref=e108] [cursor=pointer]:
+            - img
+            - generic [ref=e109]: Buscar
+          - button [ref=e110] [cursor=pointer]:
+            - button [ref=e111]:
+              - img
+      - generic [ref=e113]:
+        - generic [ref=e115]:
+          - textbox "Job PO" [ref=e116]
+          - textbox "Packing List" [ref=e117]
+        - button "Registrar" [ref=e119] [cursor=pointer]:
+          - img
+          - text: Registrar
+      - table [ref=e121]:
+        - rowgroup [ref=e122]:
+          - columnheader [ref=e123]
+          - columnheader "SO" [ref=e124]
+          - columnheader "Packing List" [ref=e125]
+        - rowgroup [ref=e126]:
+          - row "170016" [ref=e127]:
+            - cell [ref=e128]:
+              - button [ref=e129] [cursor=pointer]:
+                - img [ref=e130]
+            - cell "170016" [ref=e131]
+            - cell [ref=e132]
+          - row "169071" [ref=e133]:
+            - cell [ref=e134]:
+              - button [ref=e135] [cursor=pointer]:
+                - img [ref=e136]
+            - cell "169071" [ref=e137]
+            - cell [ref=e138]
+          - row "168687" [ref=e139]:
+            - cell [ref=e140]:
+              - button [ref=e141] [cursor=pointer]:
+                - img [ref=e142]
+            - cell "168687" [ref=e143]
+            - cell [ref=e144]
+          - row "170015" [ref=e145]:
+            - cell [ref=e146]:
+              - button [ref=e147] [cursor=pointer]:
+                - img [ref=e148]
+            - cell "170015" [ref=e149]
+            - cell [ref=e150]
+          - row "169378" [ref=e151]:
+            - cell [ref=e152]:
+              - button [ref=e153] [cursor=pointer]:
+                - img [ref=e154]
+            - cell "169378" [ref=e155]
+            - cell [ref=e156]
+          - row "168021" [ref=e157]:
+            - cell [ref=e158]:
+              - button [ref=e159] [cursor=pointer]:
+                - img [ref=e160]
+            - cell "168021" [ref=e161]
+            - cell [ref=e162]
+          - row "167468" [ref=e163]:
+            - cell [ref=e164]:
+              - button [ref=e165] [cursor=pointer]:
+                - img [ref=e166]
+            - cell "167468" [ref=e167]
+            - cell [ref=e168]
+          - row "170011" [ref=e169]:
+            - cell [ref=e170]:
+              - button [ref=e171] [cursor=pointer]:
+                - img [ref=e172]
+            - cell "170011" [ref=e173]
+            - cell [ref=e174]
+          - row "171659" [ref=e175]:
+            - cell [ref=e176]:
+              - button [ref=e177] [cursor=pointer]:
+                - img [ref=e178]
+            - cell "171659" [ref=e179]
+            - cell [ref=e180]
+          - row "167172" [ref=e181]:
+            - cell [ref=e182]:
+              - button [ref=e183] [cursor=pointer]:
+                - img [ref=e184]
+            - cell "167172" [ref=e185]
+            - cell [ref=e186]
+          - row "168168" [ref=e187]:
+            - cell [ref=e188]:
+              - button [ref=e189] [cursor=pointer]:
+                - img [ref=e190]
+            - cell "168168" [ref=e191]
+            - cell [ref=e192]
+          - row "169472" [ref=e193]:
+            - cell [ref=e194]:
+              - button [ref=e195] [cursor=pointer]:
+                - img [ref=e196]
+            - cell "169472" [ref=e197]
+            - cell [ref=e198]
+          - row "169471" [ref=e199]:
+            - cell [ref=e200]:
+              - button [ref=e201] [cursor=pointer]:
+                - img [ref=e202]
+            - cell "169471" [ref=e203]
+            - cell [ref=e204]
+          - row "171402" [ref=e205]:
+            - cell [ref=e206]:
+              - button [ref=e207] [cursor=pointer]:
+                - img [ref=e208]
+            - cell "171402" [ref=e209]
+            - cell [ref=e210]
+          - row "169370" [ref=e211]:
+            - cell [ref=e212]:
+              - button [ref=e213] [cursor=pointer]:
+                - img [ref=e214]
+            - cell "169370" [ref=e215]
+            - cell [ref=e216]
+          - row "168988" [ref=e217]:
+            - cell [ref=e218]:
+              - button [ref=e219] [cursor=pointer]:
+                - img [ref=e220]
+            - cell "168988" [ref=e221]
+            - cell [ref=e222]
+          - row "167428" [ref=e223]:
+            - cell [ref=e224]:
+              - button [ref=e225] [cursor=pointer]:
+                - img [ref=e226]
+            - cell "167428" [ref=e227]
+            - cell [ref=e228]
+          - row "171119" [ref=e229]:
+            - cell [ref=e230]:
+              - button [ref=e231] [cursor=pointer]:
+                - img [ref=e232]
+            - cell "171119" [ref=e233]
+            - cell [ref=e234]
+          - row "168541" [ref=e235]:
+            - cell [ref=e236]:
+              - button [ref=e237] [cursor=pointer]:
+                - img [ref=e238]
+            - cell "168541" [ref=e239]
+            - cell [ref=e240]
+          - row "169954" [ref=e241]:
+            - cell [ref=e242]:
+              - button [ref=e243] [cursor=pointer]:
+                - img [ref=e244]
+            - cell "169954" [ref=e245]
+            - cell [ref=e246]
+          - row "171117" [ref=e247]:
+            - cell [ref=e248]:
+              - button [ref=e249] [cursor=pointer]:
+                - img [ref=e250]
+            - cell "171117" [ref=e251]
+            - cell [ref=e252]
+          - row "168022" [ref=e253]:
+            - cell [ref=e254]:
+              - button [ref=e255] [cursor=pointer]:
+                - img [ref=e256]
+            - cell "168022" [ref=e257]
+            - cell [ref=e258]
+          - row "170745" [ref=e259]:
+            - cell [ref=e260]:
+              - button [ref=e261] [cursor=pointer]:
+                - img [ref=e262]
+            - cell "170745" [ref=e263]
+            - cell [ref=e264]
+          - row "167029" [ref=e265]:
+            - cell [ref=e266]:
+              - button [ref=e267] [cursor=pointer]:
+                - img [ref=e268]
+            - cell "167029" [ref=e269]
+            - cell [ref=e270]
+          - row "168198" [ref=e271]:
+            - cell [ref=e272]:
+              - button [ref=e273] [cursor=pointer]:
+                - img [ref=e274]
+            - cell "168198" [ref=e275]
+            - cell [ref=e276]
+          - row "169372" [ref=e277]:
+            - cell [ref=e278]:
+              - button [ref=e279] [cursor=pointer]:
+                - img [ref=e280]
+            - cell "169372" [ref=e281]
+            - cell [ref=e282]
+          - row "168113" [ref=e283]:
+            - cell [ref=e284]:
+              - button [ref=e285] [cursor=pointer]:
+                - img [ref=e286]
+            - cell "168113" [ref=e287]
+            - cell [ref=e288]
+          - row "170504" [ref=e289]:
+            - cell [ref=e290]:
+              - button [ref=e291] [cursor=pointer]:
+                - img [ref=e292]
+            - cell "170504" [ref=e293]
+            - cell [ref=e294]
+          - row "169729" [ref=e295]:
+            - cell [ref=e296]:
+              - button [ref=e297] [cursor=pointer]:
+                - img [ref=e298]
+            - cell "169729" [ref=e299]
+            - cell [ref=e300]
+          - row "167592" [ref=e301]:
+            - cell [ref=e302]:
+              - button [ref=e303] [cursor=pointer]:
+                - img [ref=e304]
+            - cell "167592" [ref=e305]
+            - cell [ref=e306]
+          - row "168686" [ref=e307]:
+            - cell [ref=e308]:
+              - button [ref=e309] [cursor=pointer]:
+                - img [ref=e310]
+            - cell "168686" [ref=e311]
+            - cell [ref=e312]
+          - row "168985" [ref=e313]:
+            - cell [ref=e314]:
+              - button [ref=e315] [cursor=pointer]:
+                - img [ref=e316]
+            - cell "168985" [ref=e317]
+            - cell [ref=e318]
+          - row "168693" [ref=e319]:
+            - cell [ref=e320]:
+              - button [ref=e321] [cursor=pointer]:
+                - img [ref=e322]
+            - cell "168693" [ref=e323]
+            - cell [ref=e324]
+          - row "170069" [ref=e325]:
+            - cell [ref=e326]:
+              - button [ref=e327] [cursor=pointer]:
+                - img [ref=e328]
+            - cell "170069" [ref=e329]
+            - cell [ref=e330]
+          - row "169953" [ref=e331]:
+            - cell [ref=e332]:
+              - button [ref=e333] [cursor=pointer]:
+                - img [ref=e334]
+            - cell "169953" [ref=e335]
+            - cell [ref=e336]
+          - row "168986" [ref=e337]:
+            - cell [ref=e338]:
+              - button [ref=e339] [cursor=pointer]:
+                - img [ref=e340]
+            - cell "168986" [ref=e341]
+            - cell [ref=e342]
+          - row "170494" [ref=e343]:
+            - cell [ref=e344]:
+              - button [ref=e345] [cursor=pointer]:
+                - img [ref=e346]
+            - cell "170494" [ref=e347]
+            - cell [ref=e348]
+          - row "167591" [ref=e349]:
+            - cell [ref=e350]:
+              - button [ref=e351] [cursor=pointer]:
+                - img [ref=e352]
+            - cell "167591" [ref=e353]
+            - cell [ref=e354]
+          - row "171217" [ref=e355]:
+            - cell [ref=e356]:
+              - button [ref=e357] [cursor=pointer]:
+                - img [ref=e358]
+            - cell "171217" [ref=e359]
+            - cell [ref=e360]
+          - row "168955" [ref=e361]:
+            - cell [ref=e362]:
+              - button [ref=e363] [cursor=pointer]:
+                - img [ref=e364]
+            - cell "168955" [ref=e365]
+            - cell [ref=e366]
+          - row "168956 2790" [ref=e367]:
+            - cell [ref=e368]:
+              - button [ref=e369] [cursor=pointer]:
+                - img [ref=e370]
+            - cell "168956" [ref=e371]
+            - cell "2790" [ref=e372]
+          - row "169383" [ref=e373]:
+            - cell [ref=e374]:
+              - button [ref=e375] [cursor=pointer]:
+                - img [ref=e376]
+            - cell "169383" [ref=e377]
+            - cell [ref=e378]
+          - row "168682" [ref=e379]:
+            - cell [ref=e380]:
+              - button [ref=e381] [cursor=pointer]:
+                - img [ref=e382]
+            - cell "168682" [ref=e383]
+            - cell [ref=e384]
+          - row "170071" [ref=e385]:
+            - cell [ref=e386]:
+              - button [ref=e387] [cursor=pointer]:
+                - img [ref=e388]
+            - cell "170071" [ref=e389]
+            - cell [ref=e390]
+          - row "171215" [ref=e391]:
+            - cell [ref=e392]:
+              - button [ref=e393] [cursor=pointer]:
+                - img [ref=e394]
+            - cell "171215" [ref=e395]
+            - cell [ref=e396]
+          - row "168157" [ref=e397]:
+            - cell [ref=e398]:
+              - button [ref=e399] [cursor=pointer]:
+                - img [ref=e400]
+            - cell "168157" [ref=e401]
+            - cell [ref=e402]
+          - row "168683" [ref=e403]:
+            - cell [ref=e404]:
+              - button [ref=e405] [cursor=pointer]:
+                - img [ref=e406]
+            - cell "168683" [ref=e407]
+            - cell [ref=e408]
+          - row "169373" [ref=e409]:
+            - cell [ref=e410]:
+              - button [ref=e411] [cursor=pointer]:
+                - img [ref=e412]
+            - cell "169373" [ref=e413]
+            - cell [ref=e414]
+          - row "170747" [ref=e415]:
+            - cell [ref=e416]:
+              - button [ref=e417] [cursor=pointer]:
+                - img [ref=e418]
+            - cell "170747" [ref=e419]
+            - cell [ref=e420]
+          - row "169371" [ref=e421]:
+            - cell [ref=e422]:
+              - button [ref=e423] [cursor=pointer]:
+                - img [ref=e424]
+            - cell "169371" [ref=e425]
+            - cell [ref=e426]
+          - row "CLTEST-SO-1 CLTEST-PL-1" [ref=e707]:
+            - cell [ref=e428]:
+              - button [ref=e429] [cursor=pointer]:
+                - img [ref=e430]
+            - cell "CLTEST-SO-1" [ref=e431]
+            - cell "CLTEST-PL-1" [ref=e708]
+          - row "168597" [ref=e433]:
+            - cell [ref=e434]:
+              - button [ref=e435] [cursor=pointer]:
+                - img [ref=e436]
+            - cell "168597" [ref=e437]
+            - cell [ref=e438]
+          - row "171183" [ref=e439]:
+            - cell [ref=e440]:
+              - button [ref=e441] [cursor=pointer]:
+                - img [ref=e442]
+            - cell "171183" [ref=e443]
+            - cell [ref=e444]
+          - row "168856" [ref=e445]:
+            - cell [ref=e446]:
+              - button [ref=e447] [cursor=pointer]:
+                - img [ref=e448]
+            - cell "168856" [ref=e449]
+            - cell [ref=e450]
+          - row "168957" [ref=e451]:
+            - cell [ref=e452]:
+              - button [ref=e453] [cursor=pointer]:
+                - img [ref=e454]
+            - cell "168957" [ref=e455]
+            - cell [ref=e456]
+          - row "170488" [ref=e457]:
+            - cell [ref=e458]:
+              - button [ref=e459] [cursor=pointer]:
+                - img [ref=e460]
+            - cell "170488" [ref=e461]
+            - cell [ref=e462]
+          - row "168163" [ref=e463]:
+            - cell [ref=e464]:
+              - button [ref=e465] [cursor=pointer]:
+                - img [ref=e466]
+            - cell "168163" [ref=e467]
+            - cell [ref=e468]
+          - row "167035" [ref=e469]:
+            - cell [ref=e470]:
+              - button [ref=e471] [cursor=pointer]:
+                - img [ref=e472]
+            - cell "167035" [ref=e473]
+            - cell [ref=e474]
+          - row "166980" [ref=e475]:
+            - cell [ref=e476]:
+              - button [ref=e477] [cursor=pointer]:
+                - img [ref=e478]
+            - cell "166980" [ref=e479]
+            - cell [ref=e480]
+          - row "167115 181420" [ref=e481]:
+            - cell [ref=e482]:
+              - button [ref=e483] [cursor=pointer]:
+                - img [ref=e484]
+            - cell "167115" [ref=e485]
+            - cell "181420" [ref=e486]
+          - row "171547" [ref=e487]:
+            - cell [ref=e488]:
+              - button [ref=e489] [cursor=pointer]:
+                - img [ref=e490]
+            - cell "171547" [ref=e491]
+            - cell [ref=e492]
+          - row "169482" [ref=e493]:
+            - cell [ref=e494]:
+              - button [ref=e495] [cursor=pointer]:
+                - img [ref=e496]
+            - cell "169482" [ref=e497]
+            - cell [ref=e498]
+          - row "168542" [ref=e499]:
+            - cell [ref=e500]:
+              - button [ref=e501] [cursor=pointer]:
+                - img [ref=e502]
+            - cell "168542" [ref=e503]
+            - cell [ref=e504]
+          - row "170743" [ref=e505]:
+            - cell [ref=e506]:
+              - button [ref=e507] [cursor=pointer]:
+                - img [ref=e508]
+            - cell "170743" [ref=e509]
+            - cell [ref=e510]
+          - row "170487" [ref=e511]:
+            - cell [ref=e512]:
+              - button [ref=e513] [cursor=pointer]:
+                - img [ref=e514]
+            - cell "170487" [ref=e515]
+            - cell [ref=e516]
+          - row "170070" [ref=e517]:
+            - cell [ref=e518]:
+              - button [ref=e519] [cursor=pointer]:
+                - img [ref=e520]
+            - cell "170070" [ref=e521]
+            - cell [ref=e522]
+          - row "168171" [ref=e523]:
+            - cell [ref=e524]:
+              - button [ref=e525] [cursor=pointer]:
+                - img [ref=e526]
+            - cell "168171" [ref=e527]
+            - cell [ref=e528]
+          - row "168301" [ref=e529]:
+            - cell [ref=e530]:
+              - button [ref=e531] [cursor=pointer]:
+                - img [ref=e532]
+            - cell "168301" [ref=e533]
+            - cell [ref=e534]
+          - row "167815" [ref=e535]:
+            - cell [ref=e536]:
+              - button [ref=e537] [cursor=pointer]:
+                - img [ref=e538]
+            - cell "167815" [ref=e539]
+            - cell [ref=e540]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e709]:
+        - img [ref=e711]
+        - generic [ref=e714]: Packing list actualizado

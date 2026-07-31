@@ -1,56 +1,55 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ContextProvider } from 'src/interceptors/context.provider';
 import { z } from 'zod/v4';
 import { getExportSchema } from './export.schema';
 import sql from 'src/utils/db';
-import { idObjectSchema } from 'src/utils/schemas';
 
 @Injectable()
 export class ExportService {
   constructor(private readonly context: ContextProvider) {}
 
+  // Jobs liberados por Calidad, con sus pallets disponibles (sin exportar).
+  // Base del nuevo flujo de generación de packing lists.
   async findAll(filter: z.infer<typeof getExportSchema>) {
-    return sql`select destinys.so, destinys.id, destinys."packSlip", (destinys.exported IS NOT NULL) as exported,
-    string_agg(DISTINCT jobs.ref, ', ') as jobs,
-    string_agg(DISTINCT jobs.part, ', ') as parts,
-    string_agg(DISTINCT clients.name, ', ') as client
-    from destinys
-    left join order_destiny on order_destiny."destinyId" = destinys.id
-    left join jobs on jobs.id = order_destiny."orderId"
-    left join clients on clients.id = jobs."clientId"
-    WHERE
-    ${filter.jobpo ? sql`jobs.ref ILIKE ${'%' + filter.jobpo + '%'}` : sql`TRUE`}
-    ${filter.pl ? sql`AND destinys."packSlip" ILIKE ${'%' + filter.pl + '%'}` : sql``}
-    group by destinys.id
-    order by destinys.id desc`;
-  }
+    return sql`select
+    jobs.id, jobs.ref, jobs.programation,
+    COALESCE(materials.code, jobs.part) as part,
+    jobs.description,
+    clients.name as client, clients.id as "clientId",
+    jobs.amount, jobs.calidad as liberated,
+    (select string_agg(distinct d.so, ', ')
+      from order_destiny od join destinys d on d.id = od."destinyId"
+      where od."orderId" = jobs.id and od."exportOrderId" is null
+        and d.exported is null) as so,
+    (select string_agg(p.folio, ', ' order by p.folio)
+      from pallets p
+      where p."destinyId" is null and p."exportOrderId" is null
+        and exists (select 1 from pallet_contents pc
+          where pc."palletId" = p.id and pc."jobId" = jobs.id)) as "palletFolios",
+    (select count(*)::int
+      from pallets p
+      where p."destinyId" is null and p."exportOrderId" is null
+        and exists (select 1 from pallet_contents pc
+          where pc."palletId" = p.id and pc."jobId" = jobs.id)) as "palletCount",
+    (select COALESCE(sum(pc.amount), 0)::int
+      from pallet_contents pc join pallets p on p.id = pc."palletId"
+      where pc."jobId" = jobs.id and p."destinyId" is null
+        and p."exportOrderId" is null) as "availableAmount"
 
-  async findOne(body: z.infer<typeof idObjectSchema>) {
-    return sql`select 
-    order_destiny.id,
-    jobs.ref,
-    jobs.part,
-    order_destiny.amount,
-    order_destiny.date,
-    order_destiny.pallets
+    from jobs
+    join clients on clients.id = jobs."clientId"
+    left join materialmovements on jobs."movementId" = materialmovements.id
+    left join materials on materialmovements."materialId" = materials.id
 
-    from order_destiny
-    left join jobs on jobs.id = order_destiny."orderId"
-    where order_destiny."destinyId" = ${body.id}`;
-  }
-
-  async delete(body: z.infer<typeof idObjectSchema>) {
-    try {
-      await sql.begin(async (sql) => {
-        const [deleted] =
-          await sql`delete from destinys where id = ${body.id} returning so`;
-        if (deleted)
-          await this.context.record(`Eliminó el destino ${deleted.so}`, sql);
-      });
-    } catch (error) {
-      if (error.constraint_name === 'order_destiny_relation_1')
-        throw new HttpException('El destino tiene ordenes asociadas', 400);
-      throw error;
-    }
+    where jobs.calidad > 0
+    and exists (select 1 from pallet_contents pc
+      join pallets p on p.id = pc."palletId"
+      where pc."jobId" = jobs.id and p."destinyId" is null
+        and p."exportOrderId" is null)
+    ${filter.job ? sql`AND jobs.ref ILIKE ${'%' + filter.job + '%'}` : sql``}
+    ${filter.part ? sql`AND COALESCE(materials.code, jobs.part) ILIKE ${'%' + filter.part + '%'}` : sql``}
+    ${filter.clientId ? sql`AND clients.id = ${filter.clientId}` : sql``}
+    order by jobs.ref desc
+    limit 300`;
   }
 }

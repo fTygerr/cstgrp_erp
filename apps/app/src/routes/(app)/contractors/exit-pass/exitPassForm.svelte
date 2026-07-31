@@ -45,6 +45,7 @@
 		amount: number | string;
 		contractorAmount?: number | string;
 		code: string;
+		description?: string;
 	}
 
 	interface JobRow {
@@ -228,7 +229,8 @@
 				<Table divClass="h-auto overflow-visible">
 					<TableHeader>
 						<TableHead class="w-1/3">Job</TableHead>
-						<TableHead class="w-full">Parte</TableHead>
+						<TableHead class="">Parte</TableHead>
+						<TableHead class="w-full">Descripción</TableHead>
 						<TableHead class="">Cantidad</TableHead>
 						<TableHead class="">Cant. contratista</TableHead>
 						<TableHead class="w-1 p-0"></TableHead>
@@ -281,6 +283,9 @@
 								</TableCell>
 								<TableCell class="border-l px-2 text-sm tabular-nums">
 									{jobById(jobRows[i].jobId)?.code ?? ''}
+								</TableCell>
+								<TableCell class="max-w-48 truncate border-l px-2 text-sm">
+									{jobById(jobRows[i].jobId)?.description ?? ''}
 								</TableCell>
 								<TableCell class="border-l px-2 text-sm tabular-nums">
 									{jobById(jobRows[i].jobId)?.amount ?? ''}

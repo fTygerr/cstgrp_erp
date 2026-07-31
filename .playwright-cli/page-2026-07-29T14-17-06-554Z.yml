@@ -1,0 +1,841 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - link "TEST":
+          - /url: /
+          - img
+          - text: TEST
+        - generic:
+          - generic:
+            - heading "Reportes" [level=3]:
+              - button "Reportes":
+                - generic:
+                  - img
+                  - text: Reportes
+                - img
+          - generic:
+            - heading "Producción" [level=3]:
+              - button "Producción":
+                - generic:
+                  - img
+                  - text: Producción
+                - img
+          - generic:
+            - heading "Progreso" [level=3]:
+              - button "Progreso":
+                - generic:
+                  - img
+                  - text: Progreso
+                - img
+          - generic:
+            - heading "Almacen" [level=3]:
+              - button "Almacen":
+                - generic:
+                  - img
+                  - text: Almacen
+                - img
+          - generic:
+            - heading "Calidad" [level=3]:
+              - button "Calidad":
+                - generic:
+                  - img
+                  - text: Calidad
+                - img
+          - generic:
+            - heading "Imp-Exp" [level=3]:
+              - button "Imp-Exp":
+                - generic:
+                  - img
+                  - text: Imp-Exp
+                - img
+          - generic:
+            - heading "Compras" [level=3]:
+              - button "Compras":
+                - generic:
+                  - img
+                  - text: Compras
+                - img
+          - generic:
+            - heading "Mantenimiento" [level=3]:
+              - button "Mantenimiento":
+                - generic:
+                  - img
+                  - text: Mantenimiento
+                - img
+          - generic:
+            - heading "RRHH" [level=3]:
+              - button "RRHH":
+                - generic:
+                  - img
+                  - text: RRHH
+                - img
+          - generic:
+            - heading "Sistemas" [level=3]:
+              - button "Sistemas":
+                - generic:
+                  - img
+                  - text: Sistemas
+                - img
+          - generic:
+            - heading "Contratistas" [level=3]:
+              - button "Contratistas":
+                - generic:
+                  - img
+                  - text: Contratistas
+                - img
+          - generic:
+            - heading "Estructura" [level=3]:
+              - button "Estructura":
+                - generic:
+                  - img
+                  - text: Estructura
+                - img
+          - generic:
+            - heading "Clients" [level=3]:
+              - button "Clients":
+                - generic:
+                  - img
+                  - text: Clients
+                - img
+          - generic:
+            - heading "Admin" [level=3]:
+              - button "Admin":
+                - generic:
+                  - img
+                  - text: Admin
+                - img
+          - generic:
+            - heading "Recursos" [level=3]:
+              - button "Recursos":
+                - generic:
+                  - img
+                  - text: Recursos
+                - img
+        - generic:
+          - paragraph:
+            - img
+            - text: test
+          - button "Salir":
+            - img
+            - text: Salir
+      - main:
+        - generic:
+          - heading "Inicio" [level=3]:
+            - img
+            - text: Inicio
+          - generic:
+            - button "Buscar":
+              - img
+              - generic: Buscar
+            - button:
+              - button:
+                - img
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - textbox "Job PO"
+                - textbox "Packing List"
+            - generic:
+              - button "Registrar":
+                - img
+                - text: Registrar
+        - generic:
+          - table:
+            - rowgroup:
+              - columnheader
+              - columnheader "Cliente"
+              - columnheader "Job(s)"
+              - columnheader "Parte(s)"
+              - columnheader "SO"
+              - columnheader "Packing List"
+            - rowgroup:
+              - row "ZENPET S-16674 ZEN-Z0-5914 E2E-PL-1":
+                - cell:
+                  - button:
+                    - img
+                - cell "ZENPET"
+                - cell "S-16674"
+                - cell "ZEN-Z0-5914"
+                - cell "E2E-PL-1"
+                - cell
+              - row "CSI 261382 2891948 169472":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "261382"
+                - cell "2891948"
+                - cell "169472"
+                - cell
+              - row "CSI 261382 2891948 169471":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "261382"
+                - cell "2891948"
+                - cell "169471"
+                - cell
+              - row "CSI 261253 2891949 169373":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "261253"
+                - cell "2891949"
+                - cell "169373"
+                - cell
+              - row "CSI 261253 2891949 169372":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "261253"
+                - cell "2891949"
+                - cell "169372"
+                - cell
+              - row "CSI 261253 2891949 169371":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "261253"
+                - cell "2891949"
+                - cell "169371"
+                - cell
+              - row "CSI R264839 R&DMISC 171659":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "R264839"
+                - cell "R&DMISC"
+                - cell "171659"
+                - cell
+              - row "CSI 264601, 264602, 264603, 264604, 264605, 264607, 264608, 264609, 264610, 264611 MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23, MWV-CVRVX-RD-21 171547":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "264601, 264602, 264603, 264604, 264605, 264607, 264608, 264609, 264610, 264611"
+                - cell "MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23, MWV-CVRVX-RD-21"
+                - cell "171547"
+                - cell
+              - row "CSI 264225, 264226, 264228, 264235 99994-1449B, 99994-1864, 99994-2391, 99994-2392 171217":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "264225, 264226, 264228, 264235"
+                - cell "99994-1449B, 99994-1864, 99994-2391, 99994-2392"
+                - cell "171217"
+                - cell
+              - row "CSI 264225, 264226, 264228, 264235 99994-1449B, 99994-1864, 99994-2391, 99994-2392 171215":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "264225, 264226, 264228, 264235"
+                - cell "99994-1449B, 99994-1864, 99994-2391, 99994-2392"
+                - cell "171215"
+                - cell
+              - row "CSI 264190, 264197, 264206, 264207, 264208 MWV-CVRFX-LT-20, MWV-CVRJB-LT-25, MWV-CVRVX-LT-23 171183":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "264190, 264197, 264206, 264207, 264208"
+                - cell "MWV-CVRFX-LT-20, MWV-CVRJB-LT-25, MWV-CVRVX-LT-23"
+                - cell "171183"
+                - cell
+              - row "CSI 264420, 264421, 264422, 264423, 264424, 264425 18.00061, 18.00324, 18.00638, 18.00654, 18.00673, 18.00674 171402":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "264420, 264421, 264422, 264423, 264424, 264425"
+                - cell "18.00061, 18.00324, 18.00638, 18.00654, 18.00673, 18.00674"
+                - cell "171402"
+                - cell
+              - row "CSI 264050, 264059, 264061, 264062, 264063, 264064, 264065, 264066 MAR-MTRCV-F4-20, MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-BC-19, MWV-CVRVX-MC-23 171119":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "264050, 264059, 264061, 264062, 264063, 264064, 264065, 264066"
+                - cell "MAR-MTRCV-F4-20, MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-BC-19, MWV-CVRVX-MC-23"
+                - cell "171119"
+                - cell
+              - row "CSI 264039, 264040, 264041, 264042, 264044, 264045, 264047, 264050, 264053, 264055, 264057, 264058, 264059, 264061, 264062, 264063, 264064, 264065, 264066 MAR-MTRCV-11-40, MAR-MTRCV-11-50, MAR-MTRCV-ER-40, MAR-MTRCV-ER-60, MAR-MTRCV-F2-01, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MAR-MTRCV-F9-0B, MAR-MTRCV-RX-T0, MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-MC-23, MWV-CVRVX-RD-21 171117":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "264039, 264040, 264041, 264042, 264044, 264045, 264047, 264050, 264053, 264055, 264057, 264058, 264059, 264061, 264062, 264063, 264064, 264065, 264066"
+                - cell "MAR-MTRCV-11-40, MAR-MTRCV-11-50, MAR-MTRCV-ER-40, MAR-MTRCV-ER-60, MAR-MTRCV-F2-01, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MAR-MTRCV-F9-0B, MAR-MTRCV-RX-T0, MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-MC-23, MWV-CVRVX-RD-21"
+                - cell "171117"
+                - cell
+              - row "CSI 260054 2891949 168687":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260054"
+                - cell "2891949"
+                - cell "168687"
+                - cell
+              - row "CSI 260054 2891949 168686":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260054"
+                - cell "2891949"
+                - cell "168686"
+                - cell
+              - row "CSI 260053 2880515 168683":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260053"
+                - cell "2880515"
+                - cell "168683"
+                - cell
+              - row "CSI 260053 2880515 168682":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260053"
+                - cell "2880515"
+                - cell "168682"
+                - cell
+              - row "CSI 263421 99994-1864 170745":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "263421"
+                - cell "99994-1864"
+                - cell "170745"
+                - cell
+              - row "CSI 263420, 263421 99994-1698, 99994-1864 170747":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "263420, 263421"
+                - cell "99994-1698, 99994-1864"
+                - cell "170747"
+                - cell
+              - row "CSI 263420, 263421 99994-1698, 99994-1864 170743":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "263420, 263421"
+                - cell "99994-1698, 99994-1864"
+                - cell "170743"
+                - cell
+              - row "CSI 263091 MWV-CVRGP-00-19 170504":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "263091"
+                - cell "MWV-CVRGP-00-19"
+                - cell "170504"
+                - cell
+              - row "CSI 263090 F6V-U3280-V0-0B 170494":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "263090"
+                - cell "F6V-U3280-V0-0B"
+                - cell "170494"
+                - cell
+              - row "CSI 263073, 263075, 263079, 263082, 263083, 263084 MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MWV-CVRFX-CH-19, MWV-CVRJB-2U-25, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23 170488":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "263073, 263075, 263079, 263082, 263083, 263084"
+                - cell "MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MWV-CVRFX-CH-19, MWV-CVRJB-2U-25, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23"
+                - cell "170488"
+                - cell
+              - row "CSI 263073, 263074, 263075, 263076, 263077, 263078, 263079, 263080, 263081, 263082, 263083, 263084, 263085, 263086, 263087, 263089 MAR-MTRCV-11-00, MAR-MTRCV-ER-20, MAR-MTRCV-ER-60, MAR-MTRCV-F2-01, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23, MWV-CVRVX-RD-21 170487":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "263073, 263074, 263075, 263076, 263077, 263078, 263079, 263080, 263081, 263082, 263083, 263084, 263085, 263086, 263087, 263089"
+                - cell "MAR-MTRCV-11-00, MAR-MTRCV-ER-20, MAR-MTRCV-ER-60, MAR-MTRCV-F2-01, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23, MWV-CVRVX-RD-21"
+                - cell "170487"
+                - cell
+              - row "CSI 259125 2891948 168168":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "259125"
+                - cell "2891948"
+                - cell "168168"
+                - cell
+              - row "CSI 259093 2891948 168157":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "259093"
+                - cell "2891948"
+                - cell "168157"
+                - cell
+              - row "CSI 261251, 261252 MWV-CVRFX-LT-20, MWV-CVRVX-LT-23 169370":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "261251, 261252"
+                - cell "MWV-CVRFX-LT-20, MWV-CVRVX-LT-23"
+                - cell "169370"
+                - cell
+              - row "CSI 262384 99994-1449B 170071":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "262384"
+                - cell "99994-1449B"
+                - cell "170071"
+                - cell
+              - row "CSI 262384 99994-1449B 170070":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "262384"
+                - cell "99994-1449B"
+                - cell "170070"
+                - cell
+              - row "CSI 262384 99994-1449B 170069":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "262384"
+                - cell "99994-1449B"
+                - cell "170069"
+                - cell
+              - row "CSI 262300, 262301 99994-2391, W99995-463A 170016":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "262300, 262301"
+                - cell "99994-2391, W99995-463A"
+                - cell "170016"
+                - cell
+              - row "CSI 262300, 262301 99994-2391, W99995-463A 170015":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "262300, 262301"
+                - cell "99994-2391, W99995-463A"
+                - cell "170015"
+                - cell
+              - row "CSI 262300, 262301 99994-2391, W99995-463A 170011":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "262300, 262301"
+                - cell "99994-2391, W99995-463A"
+                - cell "170011"
+                - cell
+              - row "CSI 262086, 262096, 262102, 262106, 262111, 262113 MWV-CVRFX-CH-19, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23 169954":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "262086, 262096, 262102, 262106, 262111, 262113"
+                - cell "MWV-CVRFX-CH-19, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23"
+                - cell "169954"
+                - cell
+              - row "CSI 262086, 262089, 262096, 262102, 262106, 262108, 262110, 262111, 262113, 262114, 262116 MAR-MTRCV-11-40, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23 169953":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "262086, 262089, 262096, 262102, 262106, 262108, 262110, 262111, 262113, 262114, 262116"
+                - cell "MAR-MTRCV-11-40, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23"
+                - cell "169953"
+                - cell
+              - row "CSI 261795, 261796, 261797, 261798 18.00061, 18.00214, 18.00324, 18.00654 169729":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "261795, 261796, 261797, 261798"
+                - cell "18.00061, 18.00214, 18.00324, 18.00654"
+                - cell "169729"
+                - cell
+              - row "CSI 261218, 261220, 261222, 261384, 261385 MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-MC-23 169482":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "261218, 261220, 261222, 261384, 261385"
+                - cell "MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-MC-23"
+                - cell "169482"
+                - cell
+              - row "CSI 260309 F6V-U3280-V0-0B 168856":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260309"
+                - cell "F6V-U3280-V0-0B"
+                - cell "168856"
+                - cell
+              - row "CSI 261214, 261216, 261218, 261220, 261221, 261222, 261249 MAR-MTRCV-F4-20, MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23 169383":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "261214, 261216, 261218, 261220, 261221, 261222, 261249"
+                - cell "MAR-MTRCV-F4-20, MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23"
+                - cell "169383"
+                - cell
+              - row "CSI 261213, 261214, 261215, 261216, 261217, 261218, 261219, 261220, 261221, 261222, 261223, 261239, 261242, 261244, 261246, 261247, 261248, 261249, 261250 MAR-MTRCV-11-15, MAR-MTRCV-11-30, MAR-MTRCV-11-40, MAR-MTRCV-11-SS, MAR-MTRCV-11-V8, MAR-MTRCV-ER-SH, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MWV-CVRCR-CH-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23, MWV-CVRVX-RD-21 169378":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "261213, 261214, 261215, 261216, 261217, 261218, 261219, 261220, 261221, 261222, 261223, 261239, 261242, 261244, 261246, 261247, 261248, 261249, 261250"
+                - cell "MAR-MTRCV-11-15, MAR-MTRCV-11-30, MAR-MTRCV-11-40, MAR-MTRCV-11-SS, MAR-MTRCV-11-V8, MAR-MTRCV-ER-SH, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MWV-CVRCR-CH-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23, MWV-CVRVX-RD-21"
+                - cell "169378"
+                - cell
+              - row "CSI 260663 99994-2391 168988":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260663"
+                - cell "99994-2391"
+                - cell "168988"
+                - cell
+              - row "CSI 260663 99994-2391 168986":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260663"
+                - cell "99994-2391"
+                - cell "168986"
+                - cell
+              - row "CSI 260663 99994-2391 168985":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260663"
+                - cell "99994-2391"
+                - cell "168985"
+                - cell
+              - row "CSI 260763, 260764, 260765, 260766 18.00214, 18.00324, 18.00620, 18.00638 169071":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260763, 260764, 260765, 260766"
+                - cell "18.00214, 18.00324, 18.00620, 18.00638"
+                - cell "169071"
+                - cell
+              - row "CSI 260525, 260527, 260533 MWV-CVREX-DL-19, MWV-CVRFX-RD-21, MWV-CVRVX-CR-19 168956 2790":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260525, 260527, 260533"
+                - cell "MWV-CVREX-DL-19, MWV-CVRFX-RD-21, MWV-CVRVX-CR-19"
+                - cell "168956"
+                - cell "2790"
+              - row "CSI 260524, 260525, 260526, 260528, 260529, 260530 MWV-CVRCR-CH-19, MWV-CVREX-DL-19, MWV-CVRFX-CH-19, MWV-CVRGP-MC-24, MWV-CVRVX-BC-19, MWV-CVRVX-MC-23 168957":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260524, 260525, 260526, 260528, 260529, 260530"
+                - cell "MWV-CVRCR-CH-19, MWV-CVREX-DL-19, MWV-CVRFX-CH-19, MWV-CVRGP-MC-24, MWV-CVRVX-BC-19, MWV-CVRVX-MC-23"
+                - cell "168957"
+                - cell
+              - row "CSI 260521, 260522, 260523, 260524, 260525, 260526, 260527, 260528, 260529, 260530, 260531, 260532 MAR-MTRCV-11-V6, MAR-MTRCV-ER-40, MAR-MTRCV-ER-60, MAR-MTRCV-F2-01, MAR-MTRCV-F2-5C, MWV-CVRCR-CH-19, MWV-CVREX-DL-19, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRVX-BC-19, MWV-CVRVX-MC-23 168955":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "260521, 260522, 260523, 260524, 260525, 260526, 260527, 260528, 260529, 260530, 260531, 260532"
+                - cell "MAR-MTRCV-11-V6, MAR-MTRCV-ER-40, MAR-MTRCV-ER-60, MAR-MTRCV-F2-01, MAR-MTRCV-F2-5C, MWV-CVRCR-CH-19, MWV-CVREX-DL-19, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRVX-BC-19, MWV-CVRVX-MC-23"
+                - cell "168955"
+                - cell
+              - row "CSI R260254 R&DMISC 168693":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "R260254"
+                - cell "R&DMISC"
+                - cell "168693"
+                - cell
+              - row "CSI 259734, 260052 MWV-CVRVX-CR-19, MWV-CVRVX-RD-21 168597":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "259734, 260052"
+                - cell "MWV-CVRVX-CR-19, MWV-CVRVX-RD-21"
+                - cell "168597"
+                - cell
+              - row "CSI 259068, 259699, 259703, 259717, 259734, 259740, 259741 MAR-MTRCV-11-V8, MAR-MTRCV-ER-SH, MAR-MTRCV-F4-2L, MAR-MTRCV-SH-00, MWV-CVRCR-CH-19, MWV-CVRJB-3U-25, MWV-CVRVX-CR-19 168542":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "259068, 259699, 259703, 259717, 259734, 259740, 259741"
+                - cell "MAR-MTRCV-11-V8, MAR-MTRCV-ER-SH, MAR-MTRCV-F4-2L, MAR-MTRCV-SH-00, MWV-CVRCR-CH-19, MWV-CVRJB-3U-25, MWV-CVRVX-CR-19"
+                - cell "168542"
+                - cell
+              - row "CSI 259063, 259068, 259693, 259694, 259695, 259696, 259699, 259703, 259709, 259717, 259732, 259733, 259734, 259735, 259736, 259737, 259738, 259739, 259740, 259741 MAR-MTRCV-11-00, MAR-MTRCV-11-15, MAR-MTRCV-11-25, MAR-MTRCV-11-30, MAR-MTRCV-11-V8, MAR-MTRCV-ER-SH, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MAR-MTRCV-SH-00, MWV-CVRCR-CH-18, MWV-CVRCR-CH-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23 168541":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "259063, 259068, 259693, 259694, 259695, 259696, 259699, 259703, 259709, 259717, 259732, 259733, 259734, 259735, 259736, 259737, 259738, 259739, 259740, 259741"
+                - cell "MAR-MTRCV-11-00, MAR-MTRCV-11-15, MAR-MTRCV-11-25, MAR-MTRCV-11-30, MAR-MTRCV-11-V8, MAR-MTRCV-ER-SH, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MAR-MTRCV-SH-00, MWV-CVRCR-CH-18, MWV-CVRCR-CH-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23"
+                - cell "168541"
+                - cell
+              - row "CSI 259276 F6V-U3280-00 168301":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "259276"
+                - cell "F6V-U3280-00"
+                - cell "168301"
+                - cell
+              - row "CSI 259181, 259182, 259183, 259184, 259185, 259186 18.00061, 18.00214, 18.00654, 18.00673 168163":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "259181, 259182, 259183, 259184, 259185, 259186"
+                - cell "18.00061, 18.00214, 18.00654, 18.00673"
+                - cell "168163"
+                - cell
+              - row "CSI R259134 R&DMISC 168171":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "R259134"
+                - cell "R&DMISC"
+                - cell "168171"
+                - cell
+              - row "CSI R259170 R&DMISC 168198":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "R259170"
+                - cell "R&DMISC"
+                - cell "168198"
+                - cell
+              - row "CSI 258799, 258801, 258804, 259063, 259065, 259067, 259068 MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-MC-23 168113":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "258799, 258801, 258804, 259063, 259065, 259067, 259068"
+                - cell "MWV-CVRCR-CH-19, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-MC-23"
+                - cell "168113"
+                - cell
+              - row "CSI 258745, 258746, 258754, 258756, 258794, 258797, 258799, 258801, 258803, 258804, 258807, 258810, 258812, 258813, 258814, 258815, 258816, 258817, 258818, 258819, 258820 MAR-MTRCV-11-40, MAR-MTRCV-11-50, MAR-MTRCV-11-5S, MAR-MTRCV-15-S1, MAR-MTRCV-ER-SH, MAR-MTRCV-F2-01, MAR-MTRCV-F4-2L, MAR-MTRCV-F9-0B, MAR-MTRCV-FS-70, MAR-MTRCV-R0-23, MWV-CVRCR-CH-18, MWV-CVRCR-CH-19, MWV-CVREX-DL-19, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23 168022":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "258745, 258746, 258754, 258756, 258794, 258797, 258799, 258801, 258803, 258804, 258807, 258810, 258812, 258813, 258814, 258815, 258816, 258817, 258818, 258819, 258820"
+                - cell "MAR-MTRCV-11-40, MAR-MTRCV-11-50, MAR-MTRCV-11-5S, MAR-MTRCV-15-S1, MAR-MTRCV-ER-SH, MAR-MTRCV-F2-01, MAR-MTRCV-F4-2L, MAR-MTRCV-F9-0B, MAR-MTRCV-FS-70, MAR-MTRCV-R0-23, MWV-CVRCR-CH-18, MWV-CVRCR-CH-19, MWV-CVREX-DL-19, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23"
+                - cell "168022"
+                - cell
+              - row "CSI 258745, 258746, 258754, 258756, 258795, 258797, 258799, 258801, 258802, 258803, 258804, 258806, 258807, 258808, 258810, 258811, 258812, 258813, 258814, 258815, 258816, 258817, 258818, 258819, 258820 MAR-MTRCV-11-40, MAR-MTRCV-11-50, MAR-MTRCV-11-5S, MAR-MTRCV-15-S1, MAR-MTRCV-ER-SH, MAR-MTRCV-F2-01, MAR-MTRCV-F4-2L, MAR-MTRCV-F9-0B, MAR-MTRCV-FS-70, MAR-MTRCV-R0-23, MAR-MTRCV-SH-00, MWV-CVRCR-CH-18, MWV-CVRCR-CH-19, MWV-CVREX-DL-19, MWV-CVRFX-CH-19, MWV-CVRFX-LT-20, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-LT-23, MWV-CVRVX-MC-23 168021":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "258745, 258746, 258754, 258756, 258795, 258797, 258799, 258801, 258802, 258803, 258804, 258806, 258807, 258808, 258810, 258811, 258812, 258813, 258814, 258815, 258816, 258817, 258818, 258819, 258820"
+                - cell "MAR-MTRCV-11-40, MAR-MTRCV-11-50, MAR-MTRCV-11-5S, MAR-MTRCV-15-S1, MAR-MTRCV-ER-SH, MAR-MTRCV-F2-01, MAR-MTRCV-F4-2L, MAR-MTRCV-F9-0B, MAR-MTRCV-FS-70, MAR-MTRCV-R0-23, MAR-MTRCV-SH-00, MWV-CVRCR-CH-18, MWV-CVRCR-CH-19, MWV-CVREX-DL-19, MWV-CVRFX-CH-19, MWV-CVRFX-LT-20, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-2U-25, MWV-CVRJB-3U-25, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-LT-23, MWV-CVRVX-MC-23"
+                - cell "168021"
+                - cell
+              - row "CSI R258390 R&DMISC 167815":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "R258390"
+                - cell "R&DMISC"
+                - cell "167815"
+                - cell
+              - row "CSI 257729 F6V-U3280-00 167468":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "257729"
+                - cell "F6V-U3280-00"
+                - cell "167468"
+                - cell
+              - row "CSI 257770, 258013, 258023, 258024, 258025, 258026, 258027, 258028, 258029, 258030, 258032, 258033, 258034, 258035, 258038, 258042, 258043, 258044, 258046, 258047, 258178, 258179, 258180, 258181 MAR-MTRCV-11-15, MAR-MTRCV-11-30, MAR-MTRCV-11-40, MAR-MTRCV-11-50, MAR-MTRCV-11-V6, MAR-MTRCV-ER-10, MAR-MTRCV-ER-70, MAR-MTRCV-ER-SH, MAR-MTRCV-F2-5C, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MAR-MTRCV-R0-23, MAR-MTRCV-SH-00, MAR-MTRCV-VF-90, MWV-CVRCR-CH-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23 167592":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "257770, 258013, 258023, 258024, 258025, 258026, 258027, 258028, 258029, 258030, 258032, 258033, 258034, 258035, 258038, 258042, 258043, 258044, 258046, 258047, 258178, 258179, 258180, 258181"
+                - cell "MAR-MTRCV-11-15, MAR-MTRCV-11-30, MAR-MTRCV-11-40, MAR-MTRCV-11-50, MAR-MTRCV-11-V6, MAR-MTRCV-ER-10, MAR-MTRCV-ER-70, MAR-MTRCV-ER-SH, MAR-MTRCV-F2-5C, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MAR-MTRCV-R0-23, MAR-MTRCV-SH-00, MAR-MTRCV-VF-90, MWV-CVRCR-CH-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19, MWV-CVRVX-CR-19, MWV-CVRVX-MC-23"
+                - cell "167592"
+                - cell
+              - row "CSI 257770, 258013, 258023, 258024, 258025, 258026, 258027, 258029, 258032, 258033, 258034, 258035, 258038, 258042, 258043, 258044, 258046, 258047, 258178, 258179, 258180, 258181 MAR-MTRCV-11-15, MAR-MTRCV-11-30, MAR-MTRCV-11-40, MAR-MTRCV-11-50, MAR-MTRCV-11-V6, MAR-MTRCV-ER-10, MAR-MTRCV-ER-70, MAR-MTRCV-ER-SH, MAR-MTRCV-F2-5C, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MAR-MTRCV-R0-23, MAR-MTRCV-SH-00, MAR-MTRCV-VF-90, MWV-CVRCR-CH-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19 167591":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "257770, 258013, 258023, 258024, 258025, 258026, 258027, 258029, 258032, 258033, 258034, 258035, 258038, 258042, 258043, 258044, 258046, 258047, 258178, 258179, 258180, 258181"
+                - cell "MAR-MTRCV-11-15, MAR-MTRCV-11-30, MAR-MTRCV-11-40, MAR-MTRCV-11-50, MAR-MTRCV-11-V6, MAR-MTRCV-ER-10, MAR-MTRCV-ER-70, MAR-MTRCV-ER-SH, MAR-MTRCV-F2-5C, MAR-MTRCV-F4-20, MAR-MTRCV-F4-2L, MAR-MTRCV-R0-23, MAR-MTRCV-SH-00, MAR-MTRCV-VF-90, MWV-CVRCR-CH-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRGP-MC-24, MWV-CVRJB-3U-25, MWV-CVRVR-BC-19, MWV-CVRVX-BC-19"
+                - cell "167591"
+                - cell
+              - row "CSI 256936 18.00061 166980":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "256936"
+                - cell "18.00061"
+                - cell "166980"
+                - cell
+              - row "CSI 257577 F6V-U3280-00 167428":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "257577"
+                - cell "F6V-U3280-00"
+                - cell "167428"
+                - cell
+              - row "CSI 257445 F6V-U3280-00 167172":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "257445"
+                - cell "F6V-U3280-00"
+                - cell "167172"
+                - cell
+              - row "CSI 257044, 257056, 257057, 257058, 257059, 257060, 257061, 257062, 257063, 257064, 257066, 257067, 257068, 257069, 257070, 257071 MAR-MTRCV-11-40, MAR-MTRCV-11-5S, MAR-MTRCV-15-S1, MAR-MTRCV-ER-10, MAR-MTRCV-ER-20, MAR-MTRCV-ER-70, MAR-MTRCV-F2-5C, MAR-MTRCV-R0-23, MAR-MTRCV-SH-00, MAR-MTRCV-VF-90, MWV-CVREX-DL-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRVR-BC-19, MWV-CVRVX-MC-23 167035":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "257044, 257056, 257057, 257058, 257059, 257060, 257061, 257062, 257063, 257064, 257066, 257067, 257068, 257069, 257070, 257071"
+                - cell "MAR-MTRCV-11-40, MAR-MTRCV-11-5S, MAR-MTRCV-15-S1, MAR-MTRCV-ER-10, MAR-MTRCV-ER-20, MAR-MTRCV-ER-70, MAR-MTRCV-F2-5C, MAR-MTRCV-R0-23, MAR-MTRCV-SH-00, MAR-MTRCV-VF-90, MWV-CVREX-DL-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRVR-BC-19, MWV-CVRVX-MC-23"
+                - cell "167035"
+                - cell
+              - row "CSI 257044, 257056, 257057, 257058, 257059, 257060, 257061, 257062, 257063, 257064, 257065, 257066, 257067, 257068, 257069, 257070, 257071 MAR-MTRCV-11-40, MAR-MTRCV-11-5S, MAR-MTRCV-11-SS, MAR-MTRCV-15-S1, MAR-MTRCV-ER-10, MAR-MTRCV-ER-20, MAR-MTRCV-ER-70, MAR-MTRCV-F2-5C, MAR-MTRCV-R0-23, MAR-MTRCV-SH-00, MAR-MTRCV-VF-90, MWV-CVREX-DL-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRVR-BC-19, MWV-CVRVX-MC-23 167029":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "257044, 257056, 257057, 257058, 257059, 257060, 257061, 257062, 257063, 257064, 257065, 257066, 257067, 257068, 257069, 257070, 257071"
+                - cell "MAR-MTRCV-11-40, MAR-MTRCV-11-5S, MAR-MTRCV-11-SS, MAR-MTRCV-15-S1, MAR-MTRCV-ER-10, MAR-MTRCV-ER-20, MAR-MTRCV-ER-70, MAR-MTRCV-F2-5C, MAR-MTRCV-R0-23, MAR-MTRCV-SH-00, MAR-MTRCV-VF-90, MWV-CVREX-DL-19, MWV-CVRFX-CH-18, MWV-CVRFX-CH-19, MWV-CVRFX-RD-21, MWV-CVRVR-BC-19, MWV-CVRVX-MC-23"
+                - cell "167029"
+                - cell
+              - row "CSI R257140 R&DMISC 167115 181420":
+                - cell:
+                  - button:
+                    - img
+                - cell "CSI"
+                - cell "R257140"
+                - cell "R&DMISC"
+                - cell "167115"
+                - cell "181420"
+    - region "Notifications alt+T"
+  - dialog "E2E-PL-1" [ref=e778]:
+    - heading "E2E-PL-1" [level=2] [ref=e780]
+    - generic [ref=e781]:
+      - generic [ref=e782]:
+        - paragraph [ref=e783]: Órdenes de exportación (Calidad)
+        - generic [ref=e784]:
+          - button "Selecciona una orden" [ref=e855] [cursor=pointer]:
+            - generic [ref=e787]: Selecciona una orden
+            - img [ref=e788]
+          - button "Aplicar" [disabled]
+        - generic [ref=e857]:
+          - text: Exportación 2 (1 pallets, 78 pzs)
+          - button "Quitar del PL" [ref=e858] [cursor=pointer]:
+            - img [ref=e859]
+      - generic [ref=e789]:
+        - generic [ref=e790]: Pack Slip
+        - textbox [ref=e791]: E2E-PL-1
+      - generic [ref=e792]:
+        - generic [ref=e793]: Ship Via
+        - button "AG&M TRANSPORT" [ref=e871] [cursor=pointer]:
+          - generic [ref=e796]: AG&M TRANSPORT
+          - img [ref=e797]
+      - generic [ref=e798]:
+        - generic [ref=e799]: Consignee
+        - button "COMMERCIAL SEWING" [ref=e885] [cursor=pointer]:
+          - generic [ref=e802]: COMMERCIAL SEWING
+          - img [ref=e803]
+      - generic [ref=e804]:
+        - generic [ref=e805]: Ship Date
+        - textbox [ref=e806]: 2026-07-30
+      - generic [ref=e807]:
+        - generic [ref=e808]: B/L No
+        - textbox [ref=e809]: BL-E2E
+      - generic [ref=e810]:
+        - generic [ref=e811]: TRK#
+        - textbox [ref=e812]: TRK-E2E
+      - generic [ref=e813]:
+        - generic [ref=e814]: PO
+        - textbox [ref=e815]: PO-E2E
+      - generic [ref=e816]:
+        - generic [ref=e817]: Invoice
+        - textbox [ref=e818]: INV-E2E
+      - generic [ref=e819]:
+        - generic [ref=e820]: Weight
+        - textbox [ref=e821]: 80 KG
+      - generic [ref=e822]:
+        - generic [ref=e823]: Destination
+        - button "CHAPARRAL BOATS - WAREHOUSE" [ref=e921] [cursor=pointer]:
+          - generic [ref=e826]: CHAPARRAL BOATS - WAREHOUSE
+          - img [ref=e827]
+      - generic [ref=e828]:
+        - generic [ref=e829]: Carrier Exp
+        - button "ABF TRUCKING" [active] [ref=e933] [cursor=pointer]:
+          - generic [ref=e832]: ABF TRUCKING
+          - img [ref=e833]
+      - generic [ref=e834]:
+        - generic [ref=e835]: Ship To
+        - button "M&M APEX SERV/CST GROUP INC" [ref=e836] [cursor=pointer]:
+          - generic [ref=e838]: M&M APEX SERV/CST GROUP INC
+          - img [ref=e839]
+    - generic [ref=e840]:
+      - button "Guardar" [ref=e841] [cursor=pointer]
+      - button "Cancelar" [ref=e842] [cursor=pointer]
+    - button "Close" [ref=e843] [cursor=pointer]:
+      - img [ref=e844]
+      - generic [ref=e845]: Close

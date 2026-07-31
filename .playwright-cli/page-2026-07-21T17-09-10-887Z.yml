@@ -1,0 +1,138 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - link "logo CST Group" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img "logo" [ref=e6]
+        - text: CST Group
+      - generic [ref=e7]:
+        - heading "Reportes" [level=3] [ref=e9]:
+          - button "Reportes" [ref=e10] [cursor=pointer]:
+            - generic [ref=e11]:
+              - img [ref=e12]
+              - text: Reportes
+            - img [ref=e13]
+        - heading "Producción" [level=3] [ref=e15]:
+          - button "Producción" [ref=e16] [cursor=pointer]:
+            - generic [ref=e17]:
+              - img [ref=e18]
+              - text: Producción
+            - img [ref=e19]
+        - heading "Progreso" [level=3] [ref=e21]:
+          - button "Progreso" [ref=e22] [cursor=pointer]:
+            - generic [ref=e23]:
+              - img [ref=e24]
+              - text: Progreso
+            - img [ref=e25]
+        - heading "Almacen" [level=3] [ref=e27]:
+          - button "Almacen" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29]:
+              - img [ref=e30]
+              - text: Almacen
+            - img [ref=e31]
+        - heading "Calidad" [level=3] [ref=e33]:
+          - button "Calidad" [ref=e34] [cursor=pointer]:
+            - generic [ref=e35]:
+              - img [ref=e36]
+              - text: Calidad
+            - img [ref=e37]
+        - heading "Imp-Exp" [level=3] [ref=e39]:
+          - button "Imp-Exp" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41]:
+              - img [ref=e42]
+              - text: Imp-Exp
+            - img [ref=e43]
+        - heading "Compras" [level=3] [ref=e45]:
+          - button "Compras" [ref=e46] [cursor=pointer]:
+            - generic [ref=e47]:
+              - img [ref=e48]
+              - text: Compras
+            - img [ref=e49]
+        - heading "Mantenimiento" [level=3] [ref=e51]:
+          - button "Mantenimiento" [ref=e52] [cursor=pointer]:
+            - generic [ref=e53]:
+              - img [ref=e54]
+              - text: Mantenimiento
+            - img [ref=e55]
+        - heading "RRHH" [level=3] [ref=e57]:
+          - button "RRHH" [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]:
+              - img [ref=e60]
+              - text: RRHH
+            - img [ref=e61]
+        - heading "Sistemas" [level=3] [ref=e63]:
+          - button "Sistemas" [ref=e64] [cursor=pointer]:
+            - generic [ref=e65]:
+              - img [ref=e66]
+              - text: Sistemas
+            - img [ref=e67]
+        - heading "Contratistas" [level=3] [ref=e69]:
+          - button "Contratistas" [ref=e70] [cursor=pointer]:
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - text: Contratistas
+            - img [ref=e73]
+        - heading "Estructura" [level=3] [ref=e75]:
+          - button "Estructura" [ref=e76] [cursor=pointer]:
+            - generic [ref=e77]:
+              - img [ref=e78]
+              - text: Estructura
+            - img [ref=e79]
+        - heading "Clients" [level=3] [ref=e81]:
+          - button "Clients" [ref=e82] [cursor=pointer]:
+            - generic [ref=e83]:
+              - img [ref=e84]
+              - text: Clients
+            - img [ref=e85]
+        - heading "Admin" [level=3] [ref=e87]:
+          - button "Admin" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89]:
+              - img [ref=e90]
+              - text: Admin
+            - img [ref=e91]
+        - heading "Recursos" [level=3] [ref=e93]:
+          - button "Recursos" [ref=e94] [cursor=pointer]:
+            - generic [ref=e95]:
+              - img [ref=e96]
+              - text: Recursos
+            - img [ref=e97]
+      - generic [ref=e98]:
+        - paragraph [ref=e99]:
+          - img [ref=e100]
+          - text: test
+        - button "Salir" [ref=e101] [cursor=pointer]:
+          - img [ref=e102]
+          - text: Salir
+    - main [ref=e103]:
+      - generic [ref=e104]:
+        - heading "Inicio" [level=3] [ref=e105]:
+          - img [ref=e106]
+          - text: Inicio
+        - generic [ref=e107]:
+          - button "Buscar" [ref=e108] [cursor=pointer]:
+            - img
+            - generic [ref=e109]: Buscar
+          - button [ref=e110] [cursor=pointer]:
+            - button [ref=e111]:
+              - img
+      - generic [ref=e115]:
+        - textbox "Programación" [ref=e116]
+        - textbox "Job" [ref=e117]
+        - button "Pendiente" [ref=e118] [cursor=pointer]:
+          - generic [ref=e120]: Pendiente
+          - img [ref=e122]
+        - button "Selecciona una opción" [ref=e123] [cursor=pointer]:
+          - generic [ref=e125]: Selecciona una opción
+          - img [ref=e126]
+      - table [ref=e128]:
+        - rowgroup [ref=e129]:
+          - columnheader [ref=e130]
+          - columnheader "Job/PO" [ref=e131]
+          - columnheader "Programacion" [ref=e132]
+          - columnheader "Parte" [ref=e133]
+          - columnheader "Completado" [ref=e134]
+          - columnheader "Cantidad" [ref=e135]
+          - columnheader "Faltante" [ref=e136]
+          - columnheader "Due date" [ref=e137]
+        - rowgroup
+  - region "Notifications alt+T"

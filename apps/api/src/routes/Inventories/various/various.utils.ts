@@ -178,7 +178,7 @@ export async function processJob(text: string) {
         destinations.push({
           date: convertJobDateToISOString(destinationsLines[i]),
           so: destinationsLines[i + 1],
-          po: destinationsLines[i + 10].replace(/\D/g, ''),
+          po: destinationsLines[i + 10].replace(/[^A-Za-z0-9-]/g, ''),
           amount: Number(destinationsLines[i + 4].replace(',', '')).toFixed(0),
           transaction: 'insert',
         });

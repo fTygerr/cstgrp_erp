@@ -35,9 +35,10 @@
 	}
 
 	const permissions = [
-		{ value: 0, name: 'Ninguno', color: 'gray' },
-		{ value: 1, name: 'Leer', color: 'green' },
-		{ value: 2, name: 'Modificar', color: 'blue' }
+		{ value: 0, name: 'NINGUNO', color: 'gray' },
+		{ value: 1, name: 'LEER', color: 'green' },
+		{ value: 2, name: 'MODIFICAR', color: 'blue' },
+		{ value: 3, name: 'EDITAR Y ELIMINAR', color: 'purple' }
 	];
 
 	const areasQuery = createQuery({
@@ -114,7 +115,7 @@
 
 			<div class={cardClass}>
 				<h3 class="col-span-full w-full pl-0.5 font-semibold">Calidad</h3>
-				<Label name="P. Calidad">
+				<Label name="P. Calidad (todos los submódulos)">
 					<Select items={permissions} bind:value={formData.permissions.quality} />
 				</Label>
 			</div>
@@ -142,7 +143,7 @@
 				</Label>
 				<Label name="P. Asistencia">
 					<Select
-						items={[...permissions, { value: 3, name: 'Crear lista', color: 'purple' }]}
+						items={[...permissions, { value: 3, name: 'CREAR LISTA', color: 'purple' }]}
 						bind:value={formData.permissions.assistance}
 					/>
 				</Label>
@@ -173,10 +174,7 @@
 				</Label>
 
 				<Label name="P. Jobs">
-					<Select
-						items={[...permissions, { value: 3, name: 'Eliminar y editar', color: 'purple' }]}
-						bind:value={formData.permissions.jobs}
-					/>
+					<Select items={permissions} bind:value={formData.permissions.jobs} />
 				</Label>
 			</div>
 
@@ -186,10 +184,7 @@
 					<Select items={permissions} bind:value={formData.permissions.inventory} />
 				</Label>
 				<Label name="P. Movimientos">
-					<Select
-						items={[...permissions, { value: 3, name: 'Editar y eliminar', color: 'purple' }]}
-						bind:value={formData.permissions.materialmovements}
-					/>
+					<Select items={permissions} bind:value={formData.permissions.materialmovements} />
 				</Label>
 				<Label name="P. Dashboard">
 					<Select items={permissions} bind:value={formData.permissions.inventorystats} />
@@ -207,10 +202,10 @@
 
 			<div class={cardClass}>
 				<h3 class="col-span-full w-full pl-0.5 font-semibold">Contratistas</h3>
-				<Label name="P. Ordenes">
+				<Label name="P. Órdenes y entregas">
 					<Select items={permissions} bind:value={formData.permissions.contractors_orders} />
 				</Label>
-				<Label name="P. Entregas">
+				<Label name="P. Liberación">
 					<Select items={permissions} bind:value={formData.permissions.contractors_deliveries} />
 				</Label>
 				<Label name="P. Pases de salida">
@@ -224,13 +219,13 @@
 			<div class={cardClass}>
 				<h3 class="col-span-full w-full pl-0.5 font-semibold">Import-Export</h3>
 				<Label name="P. Importaciones">
-					<Select
-						items={[...permissions, { value: 3, name: 'Eliminar y editar', color: 'purple' }]}
-						bind:value={formData.permissions.imports}
-					/>
+					<Select items={permissions} bind:value={formData.permissions.imports} />
 				</Label>
 				<Label name="P. Exportaciones">
 					<Select items={permissions} bind:value={formData.permissions.exports} />
+				</Label>
+				<Label name="P. Packing List">
+					<Select items={permissions} bind:value={formData.permissions.ie_packing_list} />
 				</Label>
 				<Label name="P. Opciones">
 					<Select items={permissions} bind:value={formData.permissions.ie_options} />
@@ -256,7 +251,7 @@
 
 			<div class={cardClass}>
 				<h3 class="col-span-full w-full pl-0.5 font-semibold">Mantenimiento</h3>
-				<Label name="P. Compras">
+				<Label name="P. Mantenimiento">
 					<Select items={permissions} bind:value={formData.permissions.maintenance} />
 				</Label>
 			</div>
@@ -265,6 +260,13 @@
 				<h3 class="col-span-full w-full pl-0.5 font-semibold">Progreso</h3>
 				<Label name="P. Progreso">
 					<Select items={permissions} bind:value={formData.permissions.progress} />
+				</Label>
+			</div>
+
+			<div class={cardClass}>
+				<h3 class="col-span-full w-full pl-0.5 font-semibold">ZenPet</h3>
+				<Label name="P. ZenPet Datos">
+					<Select items={permissions} bind:value={formData.permissions.zenpet} />
 				</Label>
 			</div>
 

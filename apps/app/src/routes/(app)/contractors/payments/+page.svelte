@@ -69,7 +69,12 @@
 		<OptionsHead />
 		<TableHead class="">Folio</TableHead>
 		<TableHead class="">Inicio del periodo</TableHead>
-		<TableHead class="w-full">Fin del periodo</TableHead>
+		<TableHead class="">Fin del periodo</TableHead>
+		<TableHead class="">Contratista</TableHead>
+		<TableHead class="min-w-52">Órdenes</TableHead>
+		<TableHead class="">Aceptados</TableHead>
+		<TableHead class="">Rechazados</TableHead>
+		<TableHead class="w-full">Total a pagar</TableHead>
 	</TableHeader>
 	<TableBody>
 		{#each $payments?.data as payment}
@@ -96,6 +101,13 @@
 				<TableCell>{payment.folio}</TableCell>
 				<TableCell>{formatDate(payment.startDate)}</TableCell>
 				<TableCell>{formatDate(payment.endDate)}</TableCell>
+				<TableCell>{payment.contractors ?? ''}</TableCell>
+				<TableCell class="max-w-64 truncate" title={payment.orders ?? ''}
+					>{payment.orders ?? ''}</TableCell
+				>
+				<TableCell>{payment.accepted}</TableCell>
+				<TableCell>{payment.rejected}</TableCell>
+				<TableCell>${Number(payment.total ?? 0).toFixed(2)}</TableCell>
 			</TableRow>
 		{/each}
 	</TableBody>

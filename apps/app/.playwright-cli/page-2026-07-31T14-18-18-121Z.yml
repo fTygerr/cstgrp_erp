@@ -1,0 +1,330 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - link "TEST" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img [ref=e6]
+        - text: TEST
+      - generic [ref=e7]:
+        - heading "Reportes" [level=3] [ref=e9]:
+          - button "Reportes" [ref=e10] [cursor=pointer]:
+            - generic [ref=e11]:
+              - img [ref=e12]
+              - text: Reportes
+            - img [ref=e13]
+        - heading "Producción" [level=3] [ref=e15]:
+          - button "Producción" [ref=e16] [cursor=pointer]:
+            - generic [ref=e17]:
+              - img [ref=e18]
+              - text: Producción
+            - img [ref=e19]
+        - heading "Progreso" [level=3] [ref=e21]:
+          - button "Progreso" [ref=e22] [cursor=pointer]:
+            - generic [ref=e23]:
+              - img [ref=e24]
+              - text: Progreso
+            - img [ref=e25]
+        - heading "Almacen" [level=3] [ref=e27]:
+          - button "Almacen" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29]:
+              - img [ref=e30]
+              - text: Almacen
+            - img [ref=e31]
+        - heading "Calidad" [level=3] [ref=e33]:
+          - button "Calidad" [ref=e34] [cursor=pointer]:
+            - generic [ref=e35]:
+              - img [ref=e36]
+              - text: Calidad
+            - img [ref=e37]
+        - heading "ZenPet Datos" [level=3] [ref=e39]:
+          - button "ZenPet Datos" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41]:
+              - img [ref=e42]
+              - text: ZenPet Datos
+            - img [ref=e43]
+        - heading "Imp-Exp" [level=3] [ref=e45]:
+          - button "Imp-Exp" [ref=e46] [cursor=pointer]:
+            - generic [ref=e47]:
+              - img [ref=e48]
+              - text: Imp-Exp
+            - img [ref=e49]
+        - heading "Compras" [level=3] [ref=e51]:
+          - button "Compras" [ref=e52] [cursor=pointer]:
+            - generic [ref=e53]:
+              - img [ref=e54]
+              - text: Compras
+            - img [ref=e55]
+        - heading "Mantenimiento" [level=3] [ref=e57]:
+          - button "Mantenimiento" [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]:
+              - img [ref=e60]
+              - text: Mantenimiento
+            - img [ref=e61]
+        - heading "RRHH" [level=3] [ref=e63]:
+          - button "RRHH" [ref=e64] [cursor=pointer]:
+            - generic [ref=e65]:
+              - img [ref=e66]
+              - text: RRHH
+            - img [ref=e67]
+        - heading "Sistemas" [level=3] [ref=e69]:
+          - button "Sistemas" [ref=e70] [cursor=pointer]:
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - text: Sistemas
+            - img [ref=e73]
+        - heading "Contratistas" [level=3] [ref=e75]:
+          - button "Contratistas" [ref=e76] [cursor=pointer]:
+            - generic [ref=e77]:
+              - img [ref=e78]
+              - text: Contratistas
+            - img [ref=e79]
+        - heading "Estructura" [level=3] [ref=e81]:
+          - button "Estructura" [ref=e82] [cursor=pointer]:
+            - generic [ref=e83]:
+              - img [ref=e84]
+              - text: Estructura
+            - img [ref=e85]
+        - heading "Clients" [level=3] [ref=e87]:
+          - button "Clients" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89]:
+              - img [ref=e90]
+              - text: Clients
+            - img [ref=e91]
+        - heading "Admin" [level=3] [ref=e93]:
+          - button "Admin" [ref=e94] [cursor=pointer]:
+            - generic [ref=e95]:
+              - img [ref=e96]
+              - text: Admin
+            - img [ref=e97]
+        - heading "Recursos" [level=3] [ref=e99]:
+          - button "Recursos" [ref=e100] [cursor=pointer]:
+            - generic [ref=e101]:
+              - img [ref=e102]
+              - text: Recursos
+            - img [ref=e103]
+      - generic [ref=e104]:
+        - paragraph [ref=e105]:
+          - img [ref=e106]
+          - text: test
+        - button "Salir" [ref=e107] [cursor=pointer]:
+          - img [ref=e108]
+          - text: Salir
+    - main [ref=e109]:
+      - generic [ref=e110]:
+        - heading "Inicio" [level=3] [ref=e111]:
+          - img [ref=e112]
+          - text: Inicio
+        - generic [ref=e113]:
+          - button "Buscar" [ref=e114] [cursor=pointer]:
+            - img
+            - generic [ref=e115]: Buscar
+          - button [ref=e116] [cursor=pointer]:
+            - button [ref=e117]:
+              - img
+      - generic [ref=e118]:
+        - generic [ref=e119]:
+          - heading "ZenPet Datos" [level=1] [ref=e120]
+          - paragraph [ref=e121]: "Página de verificación: qué necesita ver ZenPet, qué tenemos hoy en el ERP, y de dónde sale cada número — para que Juan confirme las fuentes antes de conectar los sistemas."
+        - generic [ref=e122]:
+          - tablist [ref=e123]:
+            - tab "Las 13 etapas" [selected] [ref=e124] [cursor=pointer]
+            - tab "Fórmulas de kits" [ref=e125] [cursor=pointer]
+            - tab "Qué falta por definir" [ref=e126] [cursor=pointer]
+          - tabpanel "Las 13 etapas" [ref=e127]:
+            - generic [ref=e128]:
+              - generic [ref=e129]:
+                - paragraph [ref=e130]: "Cómo leer esta pestaña: ZenPet quiere ver su material en 13 etapas. Aquí están agrupadas por zona del piso, con las piezas de hoy (243 jobs activos de ZENPET, datos en vivo del ERP) y la fórmula de cada número."
+                - generic [ref=e131]:
+                  - generic [ref=e132]:
+                    - generic [ref=e133]: EN VIVO
+                    - generic [ref=e134]: el número sale del ERP ahora mismo
+                  - generic [ref=e135]:
+                    - generic [ref=e136]: VALIDAR REGLA
+                    - generic [ref=e137]: el dato existe; falta que Juan confirme cómo se clasifica
+                  - generic [ref=e138]:
+                    - generic [ref=e139]: APROXIMACIÓN
+                    - generic [ref=e140]: calculado indirectamente; validar contra el piso
+                  - generic [ref=e141]:
+                    - generic [ref=e142]: SIN DATO
+                    - generic [ref=e143]: nadie captura esto hoy — requiere decisión
+              - table [ref=e145]:
+                - rowgroup [ref=e146]:
+                  - row "# Etapa Piezas hoy Estado De dónde sale el número" [ref=e147]:
+                    - columnheader "#" [ref=e148]
+                    - columnheader "Etapa" [ref=e149]
+                    - columnheader "Piezas hoy" [ref=e150]
+                    - columnheader "Estado" [ref=e151]
+                    - columnheader "De dónde sale el número" [ref=e152]
+                - rowgroup [ref=e153]:
+                  - row "ALMACÉN Material comprado, todavía sin cortar" [ref=e154]:
+                    - cell "ALMACÉN Material comprado, todavía sin cortar" [ref=e155]
+                  - row "1 Materia prima recibida Raw material received 105 materiales distintos con existencia EN VIVO Inventario ZENPET del ERP, familias Z1–Z8. Desglose por familia en la tabla de abajo." [ref=e156]:
+                    - cell "1" [ref=e157]
+                    - cell "Materia prima recibida Raw material received" [ref=e158]:
+                      - paragraph [ref=e159]: Materia prima recibida
+                      - paragraph [ref=e160]: Raw material received
+                    - cell "105 materiales distintos con existencia" [ref=e161]:
+                      - paragraph [ref=e162]: "105"
+                      - paragraph [ref=e163]: materiales distintos con existencia
+                    - cell "EN VIVO" [ref=e164]:
+                      - generic [ref=e165]: EN VIVO
+                    - cell "Inventario ZENPET del ERP, familias Z1–Z8. Desglose por familia en la tabla de abajo." [ref=e166]
+                  - row "CORTE Piezas cortadas que aún no avanzan al siguiente proceso" [ref=e167]:
+                    - cell "CORTE Piezas cortadas que aún no avanzan al siguiente proceso" [ref=e168]
+                  - 'row "2–6 Cortes y serigrafía Fabric / screen print / PVC / components / PET 145,566 piezas en el pool de corte + serigrafía VALIDAR REGLA ERP: corte + cortes varios + serigrafía capturados − lo que ya avanzó a producción. ZenPet los quiere separados en 5 etapas: la separación se hace por la familia del material que consume cada job según su BOM (Z1 = tela, Z4 = películas, Z2/Z3 = componentes). Serigrafía sí es proceso propio del ERP: 70185 pzs. Regla de atribución pendiente de validar con Juan." [ref=e169]':
+                    - cell "2–6" [ref=e170]
+                    - cell "Cortes y serigrafía Fabric / screen print / PVC / components / PET" [ref=e171]:
+                      - paragraph [ref=e172]: Cortes y serigrafía
+                      - paragraph [ref=e173]: Fabric / screen print / PVC / components / PET
+                    - cell "145,566 piezas en el pool de corte + serigrafía" [ref=e174]:
+                      - paragraph [ref=e175]: 145,566
+                      - paragraph [ref=e176]: piezas en el pool de corte + serigrafía
+                    - cell "VALIDAR REGLA" [ref=e177]:
+                      - generic [ref=e178]: VALIDAR REGLA
+                    - 'cell "ERP: corte + cortes varios + serigrafía capturados − lo que ya avanzó a producción. ZenPet los quiere separados en 5 etapas: la separación se hace por la familia del material que consume cada job según su BOM (Z1 = tela, Z4 = películas, Z2/Z3 = componentes). Serigrafía sí es proceso propio del ERP: 70185 pzs. Regla de atribución pendiente de validar con Juan." [ref=e179]'
+                  - row "PRODUCCIÓN Del kit armado a la pieza producida" [ref=e180]:
+                    - cell "PRODUCCIÓN Del kit armado a la pieza producida" [ref=e181]
+                  - 'row "7 Kits de costura Full sewing kits 76,988 piezas en 108 jobs con material surtido, producción sin iniciar APROXIMACIÓN APROXIMACIÓN: jobs cuyo material ya fue surtido del almacén pero que no reportan producción. La receta de cada kit está en la pestaña Fórmulas. Validar con Juan si esto refleja los kits reales en piso." [ref=e182]':
+                    - cell "7" [ref=e183]
+                    - cell "Kits de costura Full sewing kits" [ref=e184]:
+                      - paragraph [ref=e185]: Kits de costura
+                      - paragraph [ref=e186]: Full sewing kits
+                    - cell "76,988 piezas en 108 jobs con material surtido, producción sin iniciar" [ref=e187]:
+                      - paragraph [ref=e188]: 76,988
+                      - paragraph [ref=e189]: piezas en 108 jobs con material surtido, producción sin iniciar
+                    - cell "APROXIMACIÓN" [ref=e190]:
+                      - generic [ref=e191]: APROXIMACIÓN
+                    - 'cell "APROXIMACIÓN: jobs cuyo material ya fue surtido del almacén pero que no reportan producción. La receta de cada kit está en la pestaña Fórmulas. Validar con Juan si esto refleja los kits reales en piso." [ref=e192]'
+                  - 'row "8 Bladder de producción Production bladder — nadie captura este conteo hoy SIN DATO Único dato que no existe en ningún sistema. Composición conocida (CST-Tracker): 1 bladder = película PVC (kg) + 1 válvula ZEN-Z5-2102. Juan decide: ¿se cuenta en piso, se estima por consumo de válvulas, o se agrupa en producción?" [ref=e193]':
+                    - cell "8" [ref=e194]
+                    - cell "Bladder de producción Production bladder" [ref=e195]:
+                      - paragraph [ref=e196]: Bladder de producción
+                      - paragraph [ref=e197]: Production bladder
+                    - cell "— nadie captura este conteo hoy" [ref=e198]:
+                      - paragraph [ref=e199]: —
+                      - paragraph [ref=e200]: nadie captura este conteo hoy
+                    - cell "SIN DATO" [ref=e201]:
+                      - generic [ref=e202]: SIN DATO
+                    - 'cell "Único dato que no existe en ningún sistema. Composición conocida (CST-Tracker): 1 bladder = película PVC (kg) + 1 válvula ZEN-Z5-2102. Juan decide: ¿se cuenta en piso, se estima por consumo de válvulas, o se agrupa en producción?" [ref=e203]'
+                  - 'row "9 Línea de producción — interna Production line — in-house 70,676 piezas producidas que Calidad aún no libera EN VIVO ERP: producción capturada − calidad liberada, por job (lado interno)." [ref=e204]':
+                    - cell "9" [ref=e205]
+                    - cell "Línea de producción — interna Production line — in-house" [ref=e206]:
+                      - paragraph [ref=e207]: Línea de producción — interna
+                      - paragraph [ref=e208]: Production line — in-house
+                    - cell "70,676 piezas producidas que Calidad aún no libera" [ref=e209]:
+                      - paragraph [ref=e210]: 70,676
+                      - paragraph [ref=e211]: piezas producidas que Calidad aún no libera
+                    - cell "EN VIVO" [ref=e212]:
+                      - generic [ref=e213]: EN VIVO
+                    - 'cell "ERP: producción capturada − calidad liberada, por job (lado interno)." [ref=e214]'
+                  - 'row "10 Línea de producción — contratistas Production line — contractors 505 piezas asignadas a contratistas, sin entregar EN VIVO ERP: cantidad asignada a contratistas − entregada por contratistas, por job." [ref=e215]':
+                    - cell "10" [ref=e216]
+                    - cell "Línea de producción — contratistas Production line — contractors" [ref=e217]:
+                      - paragraph [ref=e218]: Línea de producción — contratistas
+                      - paragraph [ref=e219]: Production line — contractors
+                    - cell "505 piezas asignadas a contratistas, sin entregar" [ref=e220]:
+                      - paragraph [ref=e221]: "505"
+                      - paragraph [ref=e222]: piezas asignadas a contratistas, sin entregar
+                    - cell "EN VIVO" [ref=e223]:
+                      - generic [ref=e224]: EN VIVO
+                    - 'cell "ERP: cantidad asignada a contratistas − entregada por contratistas, por job." [ref=e225]'
+                  - row "CALIDAD Y EMPAQUE De la liberación al pallet" [ref=e226]:
+                    - cell "CALIDAD Y EMPAQUE De la liberación al pallet" [ref=e227]
+                  - 'row "11 Acabado y Calidad Finishing & QC 12,078 piezas liberadas por Calidad, sin paletizar EN VIVO ERP: liberado por Calidad − paletizado, por job. Ojo: hoy incluye liberaciones históricas de antes del módulo de pallets; se normaliza cuando el piso paletice todo." [ref=e228]':
+                    - cell "11" [ref=e229]
+                    - cell "Acabado y Calidad Finishing & QC" [ref=e230]:
+                      - paragraph [ref=e231]: Acabado y Calidad
+                      - paragraph [ref=e232]: Finishing & QC
+                    - cell "12,078 piezas liberadas por Calidad, sin paletizar" [ref=e233]:
+                      - paragraph [ref=e234]: 12,078
+                      - paragraph [ref=e235]: piezas liberadas por Calidad, sin paletizar
+                    - cell "EN VIVO" [ref=e236]:
+                      - generic [ref=e237]: EN VIVO
+                    - 'cell "ERP: liberado por Calidad − paletizado, por job. Ojo: hoy incluye liberaciones históricas de antes del módulo de pallets; se normaliza cuando el piso paletice todo." [ref=e238]'
+                  - 'row "12 Empaque Packaging 393 piezas en 2 pallets sin exportación EN VIVO ERP: pallets registrados (Calidad → Pallets) que aún no entran a una orden de exportación." [ref=e239]':
+                    - cell "12" [ref=e240]
+                    - cell "Empaque Packaging" [ref=e241]:
+                      - paragraph [ref=e242]: Empaque
+                      - paragraph [ref=e243]: Packaging
+                    - cell "393 piezas en 2 pallets sin exportación" [ref=e244]:
+                      - paragraph [ref=e245]: "393"
+                      - paragraph [ref=e246]: piezas en 2 pallets sin exportación
+                    - cell "EN VIVO" [ref=e247]:
+                      - generic [ref=e248]: EN VIVO
+                    - 'cell "ERP: pallets registrados (Calidad → Pallets) que aún no entran a una orden de exportación." [ref=e249]'
+                  - 'row "13 Producto terminado listo Finished goods ready to ship 13,380 12633 pzs en stock Z0 + 747 pzs en órdenes de exportación EN VIVO ERP: existencia de producto terminado (códigos ZEN-Z0) + piezas de pallets ya asignados a una orden de exportación." [ref=e250]':
+                    - cell "13" [ref=e251]
+                    - cell "Producto terminado listo Finished goods ready to ship" [ref=e252]:
+                      - paragraph [ref=e253]: Producto terminado listo
+                      - paragraph [ref=e254]: Finished goods ready to ship
+                    - cell "13,380 12633 pzs en stock Z0 + 747 pzs en órdenes de exportación" [ref=e255]:
+                      - paragraph [ref=e256]: 13,380
+                      - paragraph [ref=e257]: 12633 pzs en stock Z0 + 747 pzs en órdenes de exportación
+                    - cell "EN VIVO" [ref=e258]:
+                      - generic [ref=e259]: EN VIVO
+                    - 'cell "ERP: existencia de producto terminado (códigos ZEN-Z0) + piezas de pallets ya asignados a una orden de exportación." [ref=e260]'
+                  - row "EMBARQUE Lo que ya salió de CST" [ref=e261]:
+                    - cell "EMBARQUE Lo que ya salió de CST" [ref=e262]
+                  - 'row "→ En ruta a Carlsbad En route 0 piezas en 0 packing lists de los últimos 60 días EN VIVO ERP: Packing Lists guardados (exportados). La llegada a Carlsbad la confirma ZenPet de su lado." [ref=e263]':
+                    - cell "→" [ref=e264]
+                    - cell "En ruta a Carlsbad En route" [ref=e265]:
+                      - paragraph [ref=e266]: En ruta a Carlsbad
+                      - paragraph [ref=e267]: En route
+                    - cell "0 piezas en 0 packing lists de los últimos 60 días" [ref=e268]:
+                      - paragraph [ref=e269]: "0"
+                      - paragraph [ref=e270]: piezas en 0 packing lists de los últimos 60 días
+                    - cell "EN VIVO" [ref=e271]:
+                      - generic [ref=e272]: EN VIVO
+                    - 'cell "ERP: Packing Lists guardados (exportados). La llegada a Carlsbad la confirma ZenPet de su lado." [ref=e273]'
+              - generic [ref=e274]:
+                - generic [ref=e275]:
+                  - paragraph [ref=e276]: Materia prima por familia de código
+                  - paragraph [ref=e277]: Los códigos ZEN-Z# ya dicen qué tipo de material es — esta clasificación es la base para separar las etapas de corte.
+                - table [ref=e279]:
+                  - rowgroup [ref=e280]:
+                    - columnheader "Familia" [ref=e281]
+                    - columnheader "Tipo de material" [ref=e282]
+                    - columnheader "Materiales distintos" [ref=e283]
+                    - columnheader "Existencia total" [ref=e284]
+                  - rowgroup [ref=e285]:
+                    - row "ZEN-Z1 Telas 6 15,969 YDS" [ref=e286]:
+                      - cell "ZEN-Z1" [ref=e287]
+                      - cell "Telas" [ref=e288]
+                      - cell "6" [ref=e289]
+                      - cell "15,969 YDS" [ref=e290]
+                    - row "ZEN-Z2 EVA / Foam 5 5,401 EA" [ref=e291]:
+                      - cell "ZEN-Z2" [ref=e292]
+                      - cell "EVA / Foam" [ref=e293]
+                      - cell "5" [ref=e294]
+                      - cell "5,401 EA" [ref=e295]
+                    - row "ZEN-Z3 Componentes (velcro, cintas, zippers) 9 528,479 YDS" [ref=e296]:
+                      - cell "ZEN-Z3" [ref=e297]
+                      - cell "Componentes (velcro, cintas, zippers)" [ref=e298]
+                      - cell "9" [ref=e299]
+                      - cell "528,479 YDS" [ref=e300]
+                    - row "ZEN-Z4 Películas (PVC y PET) 29 126,718 EA" [ref=e301]:
+                      - cell "ZEN-Z4" [ref=e302]
+                      - cell "Películas (PVC y PET)" [ref=e303]
+                      - cell "29" [ref=e304]
+                      - cell "126,718 EA" [ref=e305]
+                    - row "ZEN-Z5 Piezas menores (válvulas, cabos) 5 46,360 EA" [ref=e306]:
+                      - cell "ZEN-Z5" [ref=e307]
+                      - cell "Piezas menores (válvulas, cabos)" [ref=e308]
+                      - cell "5" [ref=e309]
+                      - cell "46,360 EA" [ref=e310]
+                    - row "ZEN-Z6 Cajas corrugadas 20 5,838 EA" [ref=e311]:
+                      - cell "ZEN-Z6" [ref=e312]
+                      - cell "Cajas corrugadas" [ref=e313]
+                      - cell "20" [ref=e314]
+                      - cell "5,838 EA" [ref=e315]
+                    - row "ZEN-Z7 Cajas impresas 28 55,183 EA" [ref=e316]:
+                      - cell "ZEN-Z7" [ref=e317]
+                      - cell "Cajas impresas" [ref=e318]
+                      - cell "28" [ref=e319]
+                      - cell "55,183 EA" [ref=e320]
+                    - row "ZEN-Z8 Etiquetas / ribbons 3 451 EA" [ref=e321]:
+                      - cell "ZEN-Z8" [ref=e322]
+                      - cell "Etiquetas / ribbons" [ref=e323]
+                      - cell "3" [ref=e324]
+                      - cell "451 EA" [ref=e325]
+  - region "Notifications alt+T"

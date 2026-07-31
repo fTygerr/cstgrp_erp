@@ -1,0 +1,1505 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - link "logo CST Group":
+          - /url: /
+          - img "logo"
+          - text: CST Group
+        - generic:
+          - generic:
+            - heading "Reportes" [level=3]:
+              - button "Reportes":
+                - generic:
+                  - img
+                  - text: Reportes
+                - img
+          - generic:
+            - heading "Producción" [level=3]:
+              - button "Producción":
+                - generic:
+                  - img
+                  - text: Producción
+                - img
+          - generic:
+            - heading "Progreso" [level=3]:
+              - button "Progreso":
+                - generic:
+                  - img
+                  - text: Progreso
+                - img
+          - generic:
+            - heading "Almacen" [level=3]:
+              - button "Almacen":
+                - generic:
+                  - img
+                  - text: Almacen
+                - img
+          - generic:
+            - heading "Calidad" [level=3]:
+              - button "Calidad":
+                - generic:
+                  - img
+                  - text: Calidad
+                - img
+          - generic:
+            - heading "Imp-Exp" [level=3]:
+              - button "Imp-Exp":
+                - generic:
+                  - img
+                  - text: Imp-Exp
+                - img
+          - generic:
+            - heading "Compras" [level=3]:
+              - button "Compras":
+                - generic:
+                  - img
+                  - text: Compras
+                - img
+          - generic:
+            - heading "Mantenimiento" [level=3]:
+              - button "Mantenimiento":
+                - generic:
+                  - img
+                  - text: Mantenimiento
+                - img
+          - generic:
+            - heading "RRHH" [level=3]:
+              - button "RRHH":
+                - generic:
+                  - img
+                  - text: RRHH
+                - img
+          - generic:
+            - heading "Sistemas" [level=3]:
+              - button "Sistemas":
+                - generic:
+                  - img
+                  - text: Sistemas
+                - img
+          - generic:
+            - heading "Contratistas" [level=3]:
+              - button "Contratistas":
+                - generic:
+                  - img
+                  - text: Contratistas
+                - img
+          - generic:
+            - heading "Estructura" [level=3]:
+              - button "Estructura":
+                - generic:
+                  - img
+                  - text: Estructura
+                - img
+          - generic:
+            - heading "Clients" [level=3]:
+              - button "Clients":
+                - generic:
+                  - img
+                  - text: Clients
+                - img
+          - generic:
+            - heading "Admin" [level=3]:
+              - button "Admin":
+                - generic:
+                  - img
+                  - text: Admin
+                - img
+          - generic:
+            - heading "Recursos" [level=3]:
+              - button "Recursos":
+                - generic:
+                  - img
+                  - text: Recursos
+                - img
+        - generic:
+          - paragraph:
+            - img
+            - text: test
+          - button "Salir":
+            - img
+            - text: Salir
+      - main:
+        - generic:
+          - heading "Inicio" [level=3]:
+            - img
+            - text: Inicio
+          - generic:
+            - button "Buscar":
+              - img
+              - generic: Buscar
+            - button:
+              - button:
+                - img
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - textbox "Job PO": CLTEST-1
+                - textbox "Programación"
+                - textbox "Parte"
+        - generic:
+          - table:
+            - rowgroup:
+              - columnheader
+              - columnheader "Job PO"
+              - columnheader "Programación"
+              - columnheader "Parte"
+              - columnheader "Cantidad"
+              - columnheader "Due Date"
+            - rowgroup:
+              - row "264208 185 MWV-CVRVX-LT-23 563 07/08/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264208"
+                - cell "185"
+                - cell "MWV-CVRVX-LT-23"
+                - cell "563"
+                - cell "07/08/2026"
+              - row "264206 185 MWV-CVRFX-LT-20 635 07/08/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264206"
+                - cell "185"
+                - cell "MWV-CVRFX-LT-20"
+                - cell "635"
+                - cell "07/08/2026"
+              - row "261253 185 2891949 500 31/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "261253"
+                - cell "185"
+                - cell "2891949"
+                - cell "500"
+                - cell "31/07/2026"
+              - row "S-16794 JULIO ZEN-Z9-5905 500 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16794"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5905"
+                - cell "500"
+                - cell "30/07/2026"
+              - row "S-16754 1465 ZEN-Z0-5930 396 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16754"
+                - cell "1465"
+                - cell "ZEN-Z0-5930"
+                - cell "396"
+                - cell "30/07/2026"
+              - row "S-16753 1465 ZEN-Z0-5929 396 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16753"
+                - cell "1465"
+                - cell "ZEN-Z0-5929"
+                - cell "396"
+                - cell "30/07/2026"
+              - row "S-16725 JULIO ZEN-Z9-5924 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16725"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5924"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16724 JULIO ZEN-Z9-5924 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16724"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5924"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16723 JULIO ZEN-Z9-5924 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16723"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5924"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16722 JULIO ZEN-Z9-5922 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16722"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5922"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16721 JULIO ZEN-Z9-5922 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16721"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5922"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16720 JULIO ZEN-Z9-5922 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16720"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5922"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16719 JULIO ZEN-Z9-5919 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16719"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5919"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16718 JULIO ZEN-Z9-5919 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16718"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5919"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16717 JULIO ZEN-Z9-5919 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16717"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5919"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16716 JULIO ZEN-Z9-5916 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16716"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5916"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16715 JULIO ZEN-Z9-5916 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16715"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5916"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16714 JULIO ZEN-Z9-5916 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16714"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5916"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "S-16713 JULIO ZEN-Z9-5916 1000 30/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16713"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5916"
+                - cell "1000"
+                - cell "30/07/2026"
+              - row "261382 185 2891948 300 29/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "261382"
+                - cell "185"
+                - cell "2891948"
+                - cell "300"
+                - cell "29/07/2026"
+              - row "CLTEST-1 CLTEST-PROG CLAUDE-TEST-001 10 25/07/2026":
+                - cell:
+                  - button [expanded]:
+                    - img
+                - cell "CLTEST-1"
+                - cell "CLTEST-PROG"
+                - cell "CLAUDE-TEST-001"
+                - cell "10"
+                - cell "25/07/2026"
+              - row "264611 184 MWV-CVRVR-BC-19 3 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264611"
+                - cell "184"
+                - cell "MWV-CVRVR-BC-19"
+                - cell "3"
+                - cell "24/07/2026"
+              - row "264610 184 MWV-CVRVX-RD-21 5 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264610"
+                - cell "184"
+                - cell "MWV-CVRVX-RD-21"
+                - cell "5"
+                - cell "24/07/2026"
+              - row "264609 184 MWV-CVRVX-CR-19 18 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264609"
+                - cell "184"
+                - cell "MWV-CVRVX-CR-19"
+                - cell "18"
+                - cell "24/07/2026"
+              - row "264608 184 MWV-CVRVX-BC-19 4 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264608"
+                - cell "184"
+                - cell "MWV-CVRVX-BC-19"
+                - cell "4"
+                - cell "24/07/2026"
+              - row "264607 184 MWV-CVRVX-MC-23 135 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264607"
+                - cell "184"
+                - cell "MWV-CVRVX-MC-23"
+                - cell "135"
+                - cell "24/07/2026"
+              - row "264605 184 MWV-CVRJB-3U-25 86 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264605"
+                - cell "184"
+                - cell "MWV-CVRJB-3U-25"
+                - cell "86"
+                - cell "24/07/2026"
+              - row "264604 184 MWV-CVRJB-2U-25 46 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264604"
+                - cell "184"
+                - cell "MWV-CVRJB-2U-25"
+                - cell "46"
+                - cell "24/07/2026"
+              - row "264603 184 MWV-CVRGP-MC-24 57 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264603"
+                - cell "184"
+                - cell "MWV-CVRGP-MC-24"
+                - cell "57"
+                - cell "24/07/2026"
+              - row "264602 184 MWV-CVRFX-CH-19 68 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264602"
+                - cell "184"
+                - cell "MWV-CVRFX-CH-19"
+                - cell "68"
+                - cell "24/07/2026"
+              - row "264601 184 MWV-CVRCR-CH-19 93 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264601"
+                - cell "184"
+                - cell "MWV-CVRCR-CH-19"
+                - cell "93"
+                - cell "24/07/2026"
+              - row "264226 184 99994-2392 100 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264226"
+                - cell "184"
+                - cell "99994-2392"
+                - cell "100"
+                - cell "24/07/2026"
+              - row "264235 184 99994-2391 100 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264235"
+                - cell "184"
+                - cell "99994-2391"
+                - cell "100"
+                - cell "24/07/2026"
+              - row "264225 184 99994-1864 100 24/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264225"
+                - cell "184"
+                - cell "99994-1864"
+                - cell "100"
+                - cell "24/07/2026"
+              - row "264207 184 MWV-CVRVX-LT-23 550 17/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264207"
+                - cell "184"
+                - cell "MWV-CVRVX-LT-23"
+                - cell "550"
+                - cell "17/07/2026"
+              - row "264190 184 MWV-CVRFX-LT-20 600 17/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264190"
+                - cell "184"
+                - cell "MWV-CVRFX-LT-20"
+                - cell "600"
+                - cell "17/07/2026"
+              - row "S-16752 1466 ZEN-Z0-5930 396 16/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16752"
+                - cell "1466"
+                - cell "ZEN-Z0-5930"
+                - cell "396"
+                - cell "16/07/2026"
+              - row "S-16751 1466 ZEN-Z0-5929 396 16/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16751"
+                - cell "1466"
+                - cell "ZEN-Z0-5929"
+                - cell "396"
+                - cell "16/07/2026"
+              - row "R264839 183 R&DMISC 1 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "R264839"
+                - cell "183"
+                - cell "R&DMISC"
+                - cell "1"
+                - cell "15/07/2026"
+              - row "S-16712 JULIO ZEN-Z0-5914 240 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16712"
+                - cell "JULIO"
+                - cell "ZEN-Z0-5914"
+                - cell "240"
+                - cell "15/07/2026"
+              - row "S-16711 JULIO ZEN-Z0-5914 240 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16711"
+                - cell "JULIO"
+                - cell "ZEN-Z0-5914"
+                - cell "240"
+                - cell "15/07/2026"
+              - row "S-16710 JULIO ZEN-Z0-5912 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16710"
+                - cell "JULIO"
+                - cell "ZEN-Z0-5912"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "S-16709 JULIO ZEN-Z0-5912 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16709"
+                - cell "JULIO"
+                - cell "ZEN-Z0-5912"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "S-16708 JULIO ZEN-Z0-5910 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16708"
+                - cell "JULIO"
+                - cell "ZEN-Z0-5910"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "S-16707 JULIO ZEN-Z0-5910 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16707"
+                - cell "JULIO"
+                - cell "ZEN-Z0-5910"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "S-16706 JULIO ZEN-Z0-5910 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16706"
+                - cell "JULIO"
+                - cell "ZEN-Z0-5910"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "S-16704 JULIO ZEN-Z9-5908 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16704"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5908"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "S-16703 JULIO ZEN-Z9-5908 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16703"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5908"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "S-16702 JULIO ZEN-Z9-5905 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16702"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5905"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "S-16701 JULIO ZEN-Z9-5905 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16701"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5905"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "S-16700 JULIO ZEN-Z9-5902 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16700"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5902"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "S-16699 JULIO ZEN-Z9-5902 500 15/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16699"
+                - cell "JULIO"
+                - cell "ZEN-Z9-5902"
+                - cell "500"
+                - cell "15/07/2026"
+              - row "263528 220 F6V-U3280-00 36 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263528"
+                - cell "220"
+                - cell "F6V-U3280-00"
+                - cell "36"
+                - cell "10/07/2026"
+              - row "263527 220 F6V-U3280-00 36 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263527"
+                - cell "220"
+                - cell "F6V-U3280-00"
+                - cell "36"
+                - cell "10/07/2026"
+              - row "263526 220 F6V-U3280-00 36 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263526"
+                - cell "220"
+                - cell "F6V-U3280-00"
+                - cell "36"
+                - cell "10/07/2026"
+              - row "262853 220 F6V-U3280-00 36 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "262853"
+                - cell "220"
+                - cell "F6V-U3280-00"
+                - cell "36"
+                - cell "10/07/2026"
+              - row "264228 183 99994-1449B 100 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264228"
+                - cell "183"
+                - cell "99994-1449B"
+                - cell "100"
+                - cell "10/07/2026"
+              - row "264197 183 MWV-CVRJB-LT-25 230 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264197"
+                - cell "183"
+                - cell "MWV-CVRJB-LT-25"
+                - cell "230"
+                - cell "10/07/2026"
+              - row "264065 183 MWV-CVRGP-MC-24 384 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264065"
+                - cell "183"
+                - cell "MWV-CVRGP-MC-24"
+                - cell "384"
+                - cell "10/07/2026"
+              - row "264058 183 MAR-MTRCV-RX-T0 100 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264058"
+                - cell "183"
+                - cell "MAR-MTRCV-RX-T0"
+                - cell "100"
+                - cell "10/07/2026"
+              - row "264055 183 MAR-MTRCV-F2-01 100 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264055"
+                - cell "183"
+                - cell "MAR-MTRCV-F2-01"
+                - cell "100"
+                - cell "10/07/2026"
+              - row "264050 183 MAR-MTRCV-F4-20 96 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264050"
+                - cell "183"
+                - cell "MAR-MTRCV-F4-20"
+                - cell "96"
+                - cell "10/07/2026"
+              - row "264045 183 MAR-MTRCV-ER-40 50 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264045"
+                - cell "183"
+                - cell "MAR-MTRCV-ER-40"
+                - cell "50"
+                - cell "10/07/2026"
+              - row "264044 183 MAR-MTRCV-ER-60 50 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264044"
+                - cell "183"
+                - cell "MAR-MTRCV-ER-60"
+                - cell "50"
+                - cell "10/07/2026"
+              - row "264042 183 MAR-MTRCV-11-50 24 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264042"
+                - cell "183"
+                - cell "MAR-MTRCV-11-50"
+                - cell "24"
+                - cell "10/07/2026"
+              - row "264041 183 MAR-MTRCV-F9-0B 24 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264041"
+                - cell "183"
+                - cell "MAR-MTRCV-F9-0B"
+                - cell "24"
+                - cell "10/07/2026"
+              - row "264040 183 MAR-MTRCV-F4-2L 24 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264040"
+                - cell "183"
+                - cell "MAR-MTRCV-F4-2L"
+                - cell "24"
+                - cell "10/07/2026"
+              - row "264039 183 MAR-MTRCV-11-40 79 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264039"
+                - cell "183"
+                - cell "MAR-MTRCV-11-40"
+                - cell "79"
+                - cell "10/07/2026"
+              - row "264422 220 18.00638 25 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264422"
+                - cell "220"
+                - cell "18.00638"
+                - cell "25"
+                - cell "10/07/2026"
+              - row "264420 220 18.00061 200 10/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264420"
+                - cell "220"
+                - cell "18.00061"
+                - cell "200"
+                - cell "10/07/2026"
+              - row "264425 220 18.00674 24 09/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264425"
+                - cell "220"
+                - cell "18.00674"
+                - cell "24"
+                - cell "09/07/2026"
+              - row "264424 220 18.00673 48 09/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264424"
+                - cell "220"
+                - cell "18.00673"
+                - cell "48"
+                - cell "09/07/2026"
+              - row "264423 220 18.00654 200 09/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264423"
+                - cell "220"
+                - cell "18.00654"
+                - cell "200"
+                - cell "09/07/2026"
+              - row "264421 220 18.00324 50 09/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264421"
+                - cell "220"
+                - cell "18.00324"
+                - cell "50"
+                - cell "09/07/2026"
+              - row "264053 182 MWV-CVRVR-BC-19 37 06/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264053"
+                - cell "182"
+                - cell "MWV-CVRVR-BC-19"
+                - cell "37"
+                - cell "06/07/2026"
+              - row "264047 182 MWV-CVRVX-RD-21 25 06/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264047"
+                - cell "182"
+                - cell "MWV-CVRVX-RD-21"
+                - cell "25"
+                - cell "06/07/2026"
+              - row "264066 182 MWV-CVRFX-CH-19 336 03/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264066"
+                - cell "182"
+                - cell "MWV-CVRFX-CH-19"
+                - cell "336"
+                - cell "03/07/2026"
+              - row "264064 182 MWV-CVRVX-MC-23 432 03/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264064"
+                - cell "182"
+                - cell "MWV-CVRVX-MC-23"
+                - cell "432"
+                - cell "03/07/2026"
+              - row "264063 182 MWV-CVRCR-CH-19 192 03/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264063"
+                - cell "182"
+                - cell "MWV-CVRCR-CH-19"
+                - cell "192"
+                - cell "03/07/2026"
+              - row "264061 182 MWV-CVRVX-BC-19 130 03/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264061"
+                - cell "182"
+                - cell "MWV-CVRVX-BC-19"
+                - cell "130"
+                - cell "03/07/2026"
+              - row "264057 182 MWV-CVRFX-RD-21 32 03/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264057"
+                - cell "182"
+                - cell "MWV-CVRFX-RD-21"
+                - cell "32"
+                - cell "03/07/2026"
+              - row "S-16735 1462 ZEN-Z0-5963 1400 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16735"
+                - cell "1462"
+                - cell "ZEN-Z0-5963"
+                - cell "1400"
+                - cell "30/06/2026"
+              - row "S-16730 1461 ZEN-Z0-5963 1680 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16730"
+                - cell "1461"
+                - cell "ZEN-Z0-5963"
+                - cell "1680"
+                - cell "30/06/2026"
+              - row "S-16734 1462 ZEN-Z0-5962 2496 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16734"
+                - cell "1462"
+                - cell "ZEN-Z0-5962"
+                - cell "2496"
+                - cell "30/06/2026"
+              - row "S-16729 1461 ZEN-Z0-5962 1400 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16729"
+                - cell "1461"
+                - cell "ZEN-Z0-5962"
+                - cell "1400"
+                - cell "30/06/2026"
+              - row "S-16733 1462 ZEN-Z0-5951 1752 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16733"
+                - cell "1462"
+                - cell "ZEN-Z0-5951"
+                - cell "1752"
+                - cell "30/06/2026"
+              - row "S-16728 1461 ZEN-Z0-5951 1752 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16728"
+                - cell "1461"
+                - cell "ZEN-Z0-5951"
+                - cell "1752"
+                - cell "30/06/2026"
+              - row "S-16732 1462 ZEN-Z0-5960 984 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16732"
+                - cell "1462"
+                - cell "ZEN-Z0-5960"
+                - cell "984"
+                - cell "30/06/2026"
+              - row "S-16727 1461 ZEN-Z0-5960 1344 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16727"
+                - cell "1461"
+                - cell "ZEN-Z0-5960"
+                - cell "1344"
+                - cell "30/06/2026"
+              - row "S-16731 1462 ZEN-Z0-5959 984 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16731"
+                - cell "1462"
+                - cell "ZEN-Z0-5959"
+                - cell "984"
+                - cell "30/06/2026"
+              - row "S-16726 1461 ZEN-Z0-5959 1296 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16726"
+                - cell "1461"
+                - cell "ZEN-Z0-5959"
+                - cell "1296"
+                - cell "30/06/2026"
+              - row "S-16608 JUNIO ZEN-Z9-5924 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16608"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5924"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16607 JUNIO ZEN-Z9-5924 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16607"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5924"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16606 JUNIO ZEN-Z9-5924 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16606"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5924"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16605 JUNIO ZEN-Z9-5924 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16605"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5924"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16604 JUNIO ZEN-Z9-5924 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16604"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5924"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16603 JUNIO ZEN-Z9-5924 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16603"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5924"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16602 JUNIO ZEN-Z9-5924 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16602"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5924"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16601 JUNIO ZEN-Z9-5922 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16601"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5922"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16600 JUNIO ZEN-Z9-5922 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16600"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5922"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16599 JUNIO ZEN-Z9-5922 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16599"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5922"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16598 JUNIO ZEN-Z9-5922 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16598"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5922"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16597 JUNIO ZEN-Z9-5922 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16597"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5922"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16596 JUNIO ZEN-Z9-5922 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16596"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5922"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16595 JUNIO ZEN-Z9-5919 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16595"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5919"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16594 JUNIO ZEN-Z9-5919 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16594"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5919"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16593 JUNIO ZEN-Z9-5919 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16593"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5919"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16592 JUNIO ZEN-Z9-5919 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16592"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5919"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16591 JUNIO ZEN-Z9-5916 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16591"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5916"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16590 JUNIO ZEN-Z9-5916 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16590"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5916"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16589 JUNIO ZEN-Z9-5916 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16589"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5916"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "S-16588 JUNIO ZEN-Z9-5916 1000 30/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16588"
+                - cell "JUNIO"
+                - cell "ZEN-Z9-5916"
+                - cell "1000"
+                - cell "30/06/2026"
+              - row "264062 182 MWV-CVRJB-3U-25 168 26/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264062"
+                - cell "182"
+                - cell "MWV-CVRJB-3U-25"
+                - cell "168"
+                - cell "26/06/2026"
+              - row "264059 182 MWV-CVRJB-2U-25 96 26/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264059"
+                - cell "182"
+                - cell "MWV-CVRJB-2U-25"
+                - cell "96"
+                - cell "26/06/2026"
+              - row "260054 182 2891949 600 26/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "260054"
+                - cell "182"
+                - cell "2891949"
+                - cell "600"
+                - cell "26/06/2026"
+              - row "R264261 220 R&DMISC 1 25/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "R264261"
+                - cell "220"
+                - cell "R&DMISC"
+                - cell "1"
+                - cell "25/06/2026"
+              - row "S-16744 301 OV-MALLA-920 408 24/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16744"
+                - cell "301"
+                - cell "OV-MALLA-920"
+                - cell "408"
+                - cell "24/06/2026"
+              - row "260053 182 2880515 288 19/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "260053"
+                - cell "182"
+                - cell "2880515"
+                - cell "288"
+                - cell "19/06/2026"
+              - row "S-16669 1462 ZEN-Z0-6004 240 18/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16669"
+                - cell "1462"
+                - cell "ZEN-Z0-6004"
+                - cell "240"
+                - cell "18/06/2026"
+              - row "S-16668 1462 ZEN-Z0-6003 156 18/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16668"
+                - cell "1462"
+                - cell "ZEN-Z0-6003"
+                - cell "156"
+                - cell "18/06/2026"
+              - row "S-16660 1462 ZEN-Z0-5933 300 18/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16660"
+                - cell "1462"
+                - cell "ZEN-Z0-5933"
+                - cell "300"
+                - cell "18/06/2026"
+              - row "S-16658 1462 ZEN-Z0-5931 432 18/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16658"
+                - cell "1462"
+                - cell "ZEN-Z0-5931"
+                - cell "432"
+                - cell "18/06/2026"
+              - row "S-16657 1462 ZEN-Z0-5930 372 18/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16657"
+                - cell "1462"
+                - cell "ZEN-Z0-5930"
+                - cell "372"
+                - cell "18/06/2026"
+              - row "S-16656 1462 ZEN-Z0-5929 372 18/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16656"
+                - cell "1462"
+                - cell "ZEN-Z0-5929"
+                - cell "372"
+                - cell "18/06/2026"
+              - row "S-16655 1462 ZEN-Z0-5928 300 18/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16655"
+                - cell "1462"
+                - cell "ZEN-Z0-5928"
+                - cell "300"
+                - cell "18/06/2026"
+              - row "264009 181 99994-2653 1 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "264009"
+                - cell "181"
+                - cell "99994-2653"
+                - cell "1"
+                - cell "12/06/2026"
+              - row "263421 181 99994-1864 350 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263421"
+                - cell "181"
+                - cell "99994-1864"
+                - cell "350"
+                - cell "12/06/2026"
+              - row "263420 181 99994-1698 100 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263420"
+                - cell "181"
+                - cell "99994-1698"
+                - cell "100"
+                - cell "12/06/2026"
+              - row "261528 220 F6V-U3280-00 36 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "261528"
+                - cell "220"
+                - cell "F6V-U3280-00"
+                - cell "36"
+                - cell "12/06/2026"
+              - row "263588 220 F4Y-U3280-21 4 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263588"
+                - cell "220"
+                - cell "F4Y-U3280-21"
+                - cell "4"
+                - cell "12/06/2026"
+              - row "263586 220 F4T-U3280-02 1 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263586"
+                - cell "220"
+                - cell "F4T-U3280-02"
+                - cell "1"
+                - cell "12/06/2026"
+              - row "263525 220 F6V-U3280-00 36 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263525"
+                - cell "220"
+                - cell "F6V-U3280-00"
+                - cell "36"
+                - cell "12/06/2026"
+              - row "261527 220 F6V-U3280-00 36 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "261527"
+                - cell "220"
+                - cell "F6V-U3280-00"
+                - cell "36"
+                - cell "12/06/2026"
+              - row "263587 220 F4Y-U3280-01 5 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263587"
+                - cell "220"
+                - cell "F4Y-U3280-01"
+                - cell "5"
+                - cell "12/06/2026"
+              - row "262144 220 P0633-02 480 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "262144"
+                - cell "220"
+                - cell "P0633-02"
+                - cell "480"
+                - cell "12/06/2026"
+              - row "261150 220 P0632-02 480 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "261150"
+                - cell "220"
+                - cell "P0632-02"
+                - cell "480"
+                - cell "12/06/2026"
+              - row "261149 220 P0632-02 480 12/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "261149"
+                - cell "220"
+                - cell "P0632-02"
+                - cell "480"
+                - cell "12/06/2026"
+              - row "262974 181 99994-2652 1 11/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "262974"
+                - cell "181"
+                - cell "99994-2652"
+                - cell "1"
+                - cell "11/06/2026"
+              - row "263083 181 MAR-MTRCV-F4-2L 192 08/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263083"
+                - cell "181"
+                - cell "MAR-MTRCV-F4-2L"
+                - cell "192"
+                - cell "08/06/2026"
+              - row "263089 181 MAR-MTRCV-11-00 55 05/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263089"
+                - cell "181"
+                - cell "MAR-MTRCV-11-00"
+                - cell "55"
+                - cell "05/06/2026"
+              - row "263087 181 MAR-MTRCV-ER-20 26 05/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263087"
+                - cell "181"
+                - cell "MAR-MTRCV-ER-20"
+                - cell "26"
+                - cell "05/06/2026"
+              - row "263086 181 MAR-MTRCV-ER-60 74 05/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263086"
+                - cell "181"
+                - cell "MAR-MTRCV-ER-60"
+                - cell "74"
+                - cell "05/06/2026"
+              - row "263085 181 MAR-MTRCV-F2-01 100 05/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263085"
+                - cell "181"
+                - cell "MAR-MTRCV-F2-01"
+                - cell "100"
+                - cell "05/06/2026"
+              - row "263084 181 MAR-MTRCV-F4-20 456 05/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "263084"
+                - cell "181"
+                - cell "MAR-MTRCV-F4-20"
+                - cell "456"
+                - cell "05/06/2026"
+              - row "261251 181 MWV-CVRFX-LT-20 700 05/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "261251"
+                - cell "181"
+                - cell "MWV-CVRFX-LT-20"
+                - cell "700"
+                - cell "05/06/2026"
+              - row "S-16667 1461 ZEN-Z0-6004 240 04/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16667"
+                - cell "1461"
+                - cell "ZEN-Z0-6004"
+                - cell "240"
+                - cell "04/06/2026"
+              - row "S-16666 1461 ZEN-Z0-6003 156 04/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16666"
+                - cell "1461"
+                - cell "ZEN-Z0-6003"
+                - cell "156"
+                - cell "04/06/2026"
+              - row "S-16654 1461 ZEN-Z0-5933 300 04/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16654"
+                - cell "1461"
+                - cell "ZEN-Z0-5933"
+                - cell "300"
+                - cell "04/06/2026"
+              - row "S-16652 1461 ZEN-Z0-5931 432 04/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16652"
+                - cell "1461"
+                - cell "ZEN-Z0-5931"
+                - cell "432"
+                - cell "04/06/2026"
+              - row "S-16651 1461 ZEN-Z0-5930 372 04/06/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16651"
+                - cell "1461"
+                - cell "ZEN-Z0-5930"
+                - cell "372"
+                - cell "04/06/2026"
+    - region "Notifications alt+T"
+  - menu [active] [ref=e1481]:
+    - menuitem "Editar" [ref=e1482]:
+      - img
+      - text: Editar

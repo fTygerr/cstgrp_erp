@@ -85,6 +85,7 @@ export const traductions: Record<string, Traduction> = {
 	jobs: { text: 'Jobs', icon: FileText },
 	labels: { text: 'Etiquetas', icon: FileText },
 	exports: { text: 'Exportaciones', icon: FileText },
+	'packing-list': { text: 'Packing List', icon: Clipboard },
 	ie_options: { text: 'Opciones', icon: FileText },
 	carriers: { text: 'Metodo de envio', icon: FileText },
 	'destination-directions': { text: 'Destinos', icon: FileText },

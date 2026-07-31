@@ -16,8 +16,13 @@
 	import MovementCard from './MovementCard.svelte';
 	import { Badge } from '$lib/components/ui/badge';
 	import { getContractors, getOptions } from '$lib/utils/queries';
+	import { userData } from '$lib/utils/store';
+	import { Pen } from 'lucide-svelte';
+
+	const canManage = $derived(($userData?.permissions?.['contractors_orders'] || 0) >= 3);
 
 	const completed = [
+		{ name: 'TODO', value: 'all', color: 'gray' },
 		{ name: 'Completado', value: 'true', color: 'green' },
 		{ name: 'Pendiente', value: 'false', color: 'yellow' }
 	];
@@ -26,11 +31,12 @@
 		contractorId: '',
 		job: '',
 		programation: '',
-		completed: 'false'
+		completed: 'all'
 	});
 
 	let show: boolean = $state(false);
 	let show2: boolean = $state(false);
+	let manage: boolean = $state(false);
 	let selectedOrder: any = $state(null);
 
 	const orders = createQuery({
@@ -89,6 +95,7 @@
 				<OptionsCell
 					viewFunc={() => {
 						selectedOrder = device;
+						manage = false;
 						show = true;
 					}}
 					extraButtons={[
@@ -99,7 +106,20 @@
 								selectedOrder = device;
 								show2 = true;
 							}
-						}
+						},
+						...(canManage
+							? [
+									{
+										name: 'Editar y eliminar',
+										icon: Pen,
+										fn: () => {
+											selectedOrder = device;
+											manage = true;
+											show = true;
+										}
+									}
+								]
+							: [])
 					]}
 				/>
 				<TableCell>{device.ref}</TableCell>
@@ -119,5 +139,5 @@
 	</TableBody>
 </CusTable>
 
-<MovementCard bind:show bind:selectedOrder />
+<MovementCard bind:show bind:selectedOrder {manage} />
 <ProgressForm bind:show={show2} bind:selectedOrder />

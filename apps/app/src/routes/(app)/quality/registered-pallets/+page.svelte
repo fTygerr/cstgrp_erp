@@ -17,6 +17,7 @@
 	import { downloadFile } from '$lib/utils/files';
 	import { showSuccess, showError } from '$lib/utils/showToast';
 	import { getClients, getOptions } from '$lib/utils/queries';
+	import { userData } from '$lib/utils/store';
 	import { FileDown } from 'lucide-svelte';
 
 	const pendingOptions = [
@@ -31,6 +32,7 @@
 	let filters = $state({ folio: '', clientId: '', pending: 'true' });
 	let selected: Record<number, any> = $state({});
 	let showDelete = $state(false);
+	const canDelete = $derived(($userData?.permissions?.['quality'] || 0) >= 3);
 	let toDelete: any = $state(null);
 
 	const pallets = createQuery({
@@ -124,7 +126,7 @@
 								})
 						}
 					]}
-					deleteFunc={pallet.exportOrderId
+					deleteFunc={pallet.exportOrderId || !canDelete
 						? undefined
 						: () => {
 								toDelete = pallet;

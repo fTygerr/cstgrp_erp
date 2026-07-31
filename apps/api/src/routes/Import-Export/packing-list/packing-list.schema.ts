@@ -1,4 +1,4 @@
-import { idSchema } from 'src/utils/schemas';
+import { idSchema, intSchema } from 'src/utils/schemas';
 import { z } from 'zod/v4';
 
 export const editPackingListSchema = z.object({
@@ -24,4 +24,27 @@ export const applyExportOrderSchema = z.object({
 
 export const downloadPackingListSchema = z.object({
   id: idSchema,
+});
+
+export const previewPackingListSchema = z.object({
+  jobIds: z.array(intSchema).min(1, 'Selecciona al menos un job'),
+});
+
+export const createPackingListSchema = z.object({
+  jobIds: z.array(intSchema).min(1, 'Selecciona al menos un job'),
+  shipDate: z.string(),
+  shipVia: intSchema.nullish(),
+  consignee: intSchema.nullish(),
+  blNo: z.string().nullish(),
+  trk: z.string().nullish(),
+  invoice: z.string().nullish(),
+  weight: z.string().nullish(),
+  destination: intSchema.nullish(),
+  carrierExp: intSchema.nullish(),
+  shipTo: intSchema.nullish(),
+});
+
+export const getPackingListsSchema = z.object({
+  packSlip: z.string().nullish(),
+  clientId: z.string().nullish(),
 });

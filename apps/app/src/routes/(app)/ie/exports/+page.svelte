@@ -1,137 +1,115 @@
 <script lang="ts">
 	import CusTable from '$lib/components/basic/CusTable.svelte';
-	import { Input } from '$lib/components/ui/input';
-	import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '$lib/components/ui/table';
+	import { TableBody, TableCell, TableHeader, TableRow } from '$lib/components/ui/table';
+	import TableHead from '$lib/components/ui/table/table-head.svelte';
 	import api from '$lib/utils/server';
 	import MenuBar from '$lib/components/basic/MenuBar.svelte';
-	import OptionsCell from '$lib/components/basic/OptionsCell.svelte';
-	import OptionsHead from '$lib/components/basic/OptionsHead.svelte';
-	import { FileDown, Pen } from 'lucide-svelte';
-	import DeletePopUp from '$lib/components/complex/DeletePopUp.svelte';
-	import { showSuccess } from '$lib/utils/showToast';
-	import { Button } from '$lib/components/ui/button';
-	import { preventDefault } from 'svelte/legacy';
 	import { createQuery } from '@tanstack/svelte-query';
 	import { refetch } from '$lib/utils/query';
-	import ExportsCard from './ExportsCard.svelte';
-	import PackingListForm from './PackingListForm.svelte';
+	import Select from '$lib/components/basic/Select.svelte';
+	import Input from '$lib/components/ui/input/input.svelte';
+	import { Checkbox } from '$lib/components/ui/checkbox';
+	import { Badge } from '$lib/components/ui/badge';
+	import { Button } from '$lib/components/ui/button';
+	import { showError } from '$lib/utils/showToast';
+	import { getClients, getOptions } from '$lib/utils/queries';
+	import GeneratePLDialog from './GeneratePLDialog.svelte';
 
-	let show3 = $state(false);
-	let show4 = $state(false);
-	let showForm = $state(false);
+	const clientsQuery = createQuery({ queryKey: ['inventory-clients'], queryFn: getClients });
+	const clients = $derived(getOptions($clientsQuery?.data));
 
-	let filters = $state({
-		jobpo: '',
-		pl: ''
-	});
+	let filters = $state({ job: '', part: '', clientId: '' });
+	let selected: Record<number, any> = $state({});
+	let showGenerate = $state(false);
 
-	let selectedRow: any = $state({});
-
-	const movementsQuery = createQuery({
-		queryKey: ['exports', { ...filters }],
+	const jobs = createQuery({
+		queryKey: ['ie-export-jobs', { ...filters }],
 		queryFn: async () => (await api.get('/ie/exports', { params: filters })).data
 	});
-	let movements = $derived($movementsQuery?.data || []);
 
-	function viewExport(i: number) {
-		selectedRow = movements[i];
-		show4 = true;
+	const selectedList = $derived(Object.values(selected).filter(Boolean));
+
+	function toggle(job: any) {
+		if (selected[job.id]) {
+			delete selected[job.id];
+			selected = { ...selected };
+			return;
+		}
+		const current: any[] = Object.values(selected).filter(Boolean);
+		if (current.length && current[0].clientId !== job.clientId)
+			return showError(null, 'Todos los jobs deben ser del mismo cliente');
+		selected = { ...selected, [job.id]: job };
 	}
 
-	async function handleDelete() {
-		await api.delete('/ie/exports/' + selectedRow.id);
-		selectedRow = {};
-		showSuccess('Destino eliminado');
-		refetch(['exports']);
-		show3 = false;
-	}
-
-	function deleteIE(i: number) {
-		selectedRow = movements[i];
-		show3 = true;
-	}
-
-	function downloadPackingList(i: number) {
-		window.open(
-			import.meta.env.VITE_BASEURL + '/ie/packing-list/download?id=' + movements[i]?.id,
-			'_blank'
-		);
-	}
-
-	function downloadDesglose(i: number) {
-		window.open(
-			import.meta.env.VITE_BASEURL + '/ie/packing-list/desglose?id=' + movements[i]?.id,
-			'_blank'
-		);
-	}
+	$effect(() => {
+		({ ...filters });
+		refetch(['ie-export-jobs']);
+	});
 </script>
 
 <MenuBar>
-	<form class="flex flex-col gap-2 lg:flex-row">
-		<Input
+	<div class="flex w-full flex-col gap-1.5 lg:flex-row">
+		<Input menu bind:value={filters.job} placeholder="Job" class="max-w-32" />
+		<Input menu bind:value={filters.part} placeholder="Parte" class="max-w-36" />
+		<Select
 			menu
-			bind:value={filters.jobpo}
-			placeholder="Job PO"
-			onkeydown={(e) => (e.key === 'Enter' ? refetch(['exports']) : null)}
+			items={clients}
+			bind:value={filters.clientId}
+			allowDeselect
+			placeholder="Cliente"
+			class="min-w-36 max-w-44"
 		/>
-		<Input
-			menu
-			bind:value={filters.pl}
-			placeholder="Packing List"
-			onkeydown={(e) => (e.key === 'Enter' ? refetch(['exports']) : null)}
-		/>
-	</form>
-	{#snippet right()}
 		<Button
-			size="action"
-			onclick={() => {
-				selectedRow = {};
-				show4 = true;
-			}}><Pen class=" size-3.5" />Registrar</Button
+			class="ml-auto h-8"
+			onclick={() => (showGenerate = true)}
+			disabled={!selectedList.length}
 		>
-	{/snippet}
+			Generar Packing List {selectedList.length ? `(${selectedList.length})` : ''}
+		</Button>
+	</div>
 </MenuBar>
 
 <CusTable>
 	<TableHeader>
-		<OptionsHead />
+		<TableHead class="w-8"></TableHead>
+		<TableHead>Job/Orden</TableHead>
+		<TableHead>No. Parte</TableHead>
+		<TableHead class="min-w-52">Descripción</TableHead>
 		<TableHead>Cliente</TableHead>
-		<TableHead>Job(s)</TableHead>
-		<TableHead>Parte(s)</TableHead>
 		<TableHead>SO</TableHead>
-		<TableHead class="w-[100%]">Packing List</TableHead>
+		<TableHead>Cantidad</TableHead>
+		<TableHead>Liberado</TableHead>
+		<TableHead>Pallet(s)</TableHead>
+		<TableHead>No. Pallets</TableHead>
 	</TableHeader>
 	<TableBody>
-		{#each movements as movement, i}
+		{#each $jobs?.data || [] as job}
 			<TableRow>
-				<OptionsCell
-					viewFunc={() => viewExport(i)}
-					deleteFunc={() => deleteIE(i)}
-					extraButtons={movement.exported
-						? [
-								{
-									fn: () => downloadPackingList(i),
-									name: 'Descargar PL',
-									icon: FileDown
-								},
-								{
-									fn: () => downloadDesglose(i),
-									name: 'Desglose de pallets',
-									icon: FileDown
-								}
-							]
-						: undefined}
-				/>
-				<TableCell>{movement.client || ''}</TableCell>
-				<TableCell class="max-w-44 truncate">{movement.jobs || ''}</TableCell>
-				<TableCell class="max-w-44 truncate">{movement.parts || ''}</TableCell>
-				<TableCell>{movement.so}</TableCell>
-				<TableCell>{movement.packSlip}</TableCell>
+				<TableCell>
+					<Checkbox checked={!!selected[job.id]} onCheckedChange={() => toggle(job)} />
+				</TableCell>
+				<TableCell class="font-semibold">{job.ref}</TableCell>
+				<TableCell>{job.part}</TableCell>
+				<TableCell class="max-w-64 truncate" title={job.description}>{job.description}</TableCell>
+				<TableCell><Badge color="gray">{job.client}</Badge></TableCell>
+				<TableCell>{job.client === 'CSI' ? job.so || '' : ''}</TableCell>
+				<TableCell>{job.amount}</TableCell>
+				<TableCell>{job.liberated}</TableCell>
+				<TableCell class="max-w-52 truncate" title={job.palletFolios}>
+					{job.palletFolios || ''}
+				</TableCell>
+				<TableCell>{job.palletCount}</TableCell>
 			</TableRow>
 		{/each}
 	</TableBody>
 </CusTable>
 
-<DeletePopUp bind:show={show3} text="Eliminar destino" deleteFunc={handleDelete} />
-<ExportsCard bind:show={show4} {selectedRow} bind:showForm />
-<PackingListForm bind:show={showForm} bind:selectedRow />
+<GeneratePLDialog
+	bind:show={showGenerate}
+	jobs={selectedList}
+	onGenerated={() => {
+		selected = {};
+		refetch(['ie-export-jobs']);
+		refetch(['packing-lists']);
+	}}
+/>

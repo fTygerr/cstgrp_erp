@@ -1,0 +1,179 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - link "TEST" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img [ref=e6]
+        - text: TEST
+      - generic [ref=e7]:
+        - heading "Reportes" [level=3] [ref=e9]:
+          - button "Reportes" [ref=e10] [cursor=pointer]:
+            - generic [ref=e11]:
+              - img [ref=e12]
+              - text: Reportes
+            - img [ref=e13]
+        - heading "Producción" [level=3] [ref=e15]:
+          - button "Producción" [ref=e16] [cursor=pointer]:
+            - generic [ref=e17]:
+              - img [ref=e18]
+              - text: Producción
+            - img [ref=e19]
+        - heading "Progreso" [level=3] [ref=e21]:
+          - button "Progreso" [ref=e22] [cursor=pointer]:
+            - generic [ref=e23]:
+              - img [ref=e24]
+              - text: Progreso
+            - img [ref=e25]
+        - heading "Almacen" [level=3] [ref=e27]:
+          - button "Almacen" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29]:
+              - img [ref=e30]
+              - text: Almacen
+            - img [ref=e31]
+        - heading "Calidad" [level=3] [ref=e33]:
+          - button "Calidad" [ref=e34] [cursor=pointer]:
+            - generic [ref=e35]:
+              - img [ref=e36]
+              - text: Calidad
+            - img [ref=e37]
+        - heading "Imp-Exp" [level=3] [ref=e39]:
+          - button "Imp-Exp" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41]:
+              - img [ref=e42]
+              - text: Imp-Exp
+            - img [ref=e43]
+        - heading "Compras" [level=3] [ref=e45]:
+          - button "Compras" [ref=e46] [cursor=pointer]:
+            - generic [ref=e47]:
+              - img [ref=e48]
+              - text: Compras
+            - img [ref=e49]
+        - heading "Mantenimiento" [level=3] [ref=e51]:
+          - button "Mantenimiento" [ref=e52] [cursor=pointer]:
+            - generic [ref=e53]:
+              - img [ref=e54]
+              - text: Mantenimiento
+            - img [ref=e55]
+        - heading "RRHH" [level=3] [ref=e57]:
+          - button "RRHH" [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]:
+              - img [ref=e60]
+              - text: RRHH
+            - img [ref=e61]
+        - heading "Sistemas" [level=3] [ref=e63]:
+          - button "Sistemas" [ref=e64] [cursor=pointer]:
+            - generic [ref=e65]:
+              - img [ref=e66]
+              - text: Sistemas
+            - img [ref=e67]
+        - heading "Contratistas" [level=3] [ref=e69]:
+          - button "Contratistas" [ref=e70] [cursor=pointer]:
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - text: Contratistas
+            - img [ref=e73]
+        - heading "Estructura" [level=3] [ref=e75]:
+          - button "Estructura" [ref=e76] [cursor=pointer]:
+            - generic [ref=e77]:
+              - img [ref=e78]
+              - text: Estructura
+            - img [ref=e79]
+        - heading "Clients" [level=3] [ref=e81]:
+          - button "Clients" [ref=e82] [cursor=pointer]:
+            - generic [ref=e83]:
+              - img [ref=e84]
+              - text: Clients
+            - img [ref=e85]
+        - heading "Admin" [level=3] [ref=e87]:
+          - button "Admin" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89]:
+              - img [ref=e90]
+              - text: Admin
+            - img [ref=e91]
+        - heading "Recursos" [level=3] [ref=e93]:
+          - button "Recursos" [ref=e94] [cursor=pointer]:
+            - generic [ref=e95]:
+              - img [ref=e96]
+              - text: Recursos
+            - img [ref=e97]
+      - generic [ref=e98]:
+        - paragraph [ref=e99]:
+          - img [ref=e100]
+          - text: test
+        - button "Salir" [ref=e101] [cursor=pointer]:
+          - img [ref=e102]
+          - text: Salir
+    - main [ref=e103]:
+      - generic [ref=e104]:
+        - heading "Inicio" [level=3] [ref=e105]:
+          - img [ref=e106]
+          - text: Inicio
+        - generic [ref=e107]:
+          - button "Buscar" [ref=e108] [cursor=pointer]:
+            - img
+            - generic [ref=e109]: Buscar
+          - button [ref=e110] [cursor=pointer]:
+            - button [ref=e111]:
+              - img
+      - generic [ref=e115]:
+        - textbox "No. Pallet" [ref=e116]
+        - button "Cliente" [ref=e117] [cursor=pointer]:
+          - generic [ref=e119]: Cliente
+          - img [ref=e120]
+        - button "Sin exportar" [ref=e121] [cursor=pointer]:
+          - generic [ref=e123]: Sin exportar
+          - img [ref=e125]
+        - button "Crear Exportación" [disabled]
+      - table [ref=e127]:
+        - rowgroup [ref=e128]:
+          - columnheader [ref=e129]
+          - columnheader [ref=e130]
+          - columnheader "No. Pallet" [ref=e131]
+          - columnheader "Job(s)" [ref=e132]
+          - columnheader "Programación" [ref=e133]
+          - columnheader "Parte" [ref=e134]
+          - columnheader "Descripción" [ref=e135]
+          - columnheader "Cliente" [ref=e136]
+          - columnheader "Piezas" [ref=e137]
+          - columnheader "Cajas" [ref=e138]
+          - columnheader "Estado" [ref=e139]
+        - rowgroup [ref=e140]:
+          - row "ZENPET-4 S-16841 AGOSTO ZEN-Z0-5929 ZENDOG CALMING SHIRT - SMALL ZENPET 136 12 Pendiente" [ref=e141]:
+            - cell [ref=e142]:
+              - button [ref=e143] [cursor=pointer]:
+                - img [ref=e144]
+            - cell [ref=e145]:
+              - checkbox [ref=e146] [cursor=pointer]:
+                - img [ref=e148]
+            - cell "ZENPET-4" [ref=e149]
+            - cell "S-16841" [ref=e150]
+            - cell "AGOSTO" [ref=e151]
+            - cell "ZEN-Z0-5929" [ref=e152]
+            - cell "ZENDOG CALMING SHIRT - SMALL" [ref=e153]
+            - cell "ZENPET" [ref=e154]
+            - cell "136" [ref=e155]
+            - cell "12" [ref=e156]
+            - cell "Pendiente" [ref=e157]:
+              - generic [ref=e158]: Pendiente
+          - row "ZENPET-3 S-16842, S-16841 AGOSTO ZEN-Z0-5930, ZEN-Z0-5929 ZENDOG CALMING SHIRT - MEDIUM ZENPET 110 10 Pendiente" [ref=e159]:
+            - cell [ref=e160]:
+              - button [ref=e161] [cursor=pointer]:
+                - img [ref=e162]
+            - cell [ref=e163]:
+              - checkbox [ref=e164] [cursor=pointer]:
+                - img [ref=e166]
+            - cell "ZENPET-3" [ref=e167]
+            - cell "S-16842, S-16841" [ref=e168]
+            - cell "AGOSTO" [ref=e169]
+            - cell "ZEN-Z0-5930, ZEN-Z0-5929" [ref=e170]
+            - cell "ZENDOG CALMING SHIRT - MEDIUM" [ref=e171]
+            - cell "ZENPET" [ref=e172]
+            - cell "110" [ref=e173]
+            - cell "10" [ref=e174]
+            - cell "Pendiente" [ref=e175]:
+              - generic [ref=e176]: Pendiente
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e216]:
+        - img [ref=e218]
+        - generic [ref=e221]: Orden de exportación 1 creada

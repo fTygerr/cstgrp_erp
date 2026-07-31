@@ -24,7 +24,7 @@ import {
 } from './pallets.schema';
 
 @Controller('quality/pallets')
-@UseGuards(new AuthGuard('quality'))
+@UseGuards(new AuthGuard('quality', { DELETE: 3 }))
 export class PalletsController {
   constructor(private readonly palletsService: PalletsService) {}
 
@@ -62,7 +62,7 @@ export class PalletsController {
 }
 
 @Controller('quality/exportorders')
-@UseGuards(new AuthGuard('quality'))
+@UseGuards(new AuthGuard('quality', { DELETE: 3 }))
 export class ExportOrdersController {
   constructor(private readonly palletsService: PalletsService) {}
 

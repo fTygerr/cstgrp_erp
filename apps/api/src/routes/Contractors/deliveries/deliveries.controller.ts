@@ -1,14 +1,23 @@
-import { Body, Controller, Get, Put, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ZodPiPe } from 'src/interceptors/validation/validation.pipe';
 import { AuthGuard } from 'src/interceptors/auth/authorization.guard';
 import {
   approveDeliveriesSchema,
+  deleteDeliverySchema,
   getDeliveriesSchema,
 } from './deliveries.schema';
 import { DeliveriesService } from './deliveries.service';
 
 @Controller('contractors/deliveries')
-@UseGuards(new AuthGuard('contractors_deliveries'))
+@UseGuards(new AuthGuard('contractors_deliveries', { DELETE: 3 }))
 export class DeliveriesController {
   constructor(private readonly deliveriesService: DeliveriesService) {}
 
@@ -20,5 +29,10 @@ export class DeliveriesController {
   @Put('approve')
   approveDeliveries(@Body(new ZodPiPe(approveDeliveriesSchema)) body) {
     return this.deliveriesService.approveDeliveries(body);
+  }
+
+  @Delete('')
+  delete(@Body(new ZodPiPe(deleteDeliverySchema)) body) {
+    return this.deliveriesService.delete(body);
   }
 }

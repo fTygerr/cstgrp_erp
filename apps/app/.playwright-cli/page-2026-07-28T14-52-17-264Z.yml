@@ -1,0 +1,227 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - link "TEST":
+          - /url: /
+          - img
+          - text: TEST
+        - generic:
+          - generic:
+            - heading "Reportes" [level=3]:
+              - button "Reportes":
+                - generic:
+                  - img
+                  - text: Reportes
+                - img
+          - generic:
+            - heading "Producción" [level=3]:
+              - button "Producción":
+                - generic:
+                  - img
+                  - text: Producción
+                - img
+          - generic:
+            - heading "Progreso" [level=3]:
+              - button "Progreso":
+                - generic:
+                  - img
+                  - text: Progreso
+                - img
+          - generic:
+            - heading "Almacen" [level=3]:
+              - button "Almacen":
+                - generic:
+                  - img
+                  - text: Almacen
+                - img
+          - generic:
+            - heading "Calidad" [level=3]:
+              - button "Calidad":
+                - generic:
+                  - img
+                  - text: Calidad
+                - img
+          - generic:
+            - heading "Imp-Exp" [level=3]:
+              - button "Imp-Exp":
+                - generic:
+                  - img
+                  - text: Imp-Exp
+                - img
+          - generic:
+            - heading "Compras" [level=3]:
+              - button "Compras":
+                - generic:
+                  - img
+                  - text: Compras
+                - img
+          - generic:
+            - heading "Mantenimiento" [level=3]:
+              - button "Mantenimiento":
+                - generic:
+                  - img
+                  - text: Mantenimiento
+                - img
+          - generic:
+            - heading "RRHH" [level=3]:
+              - button "RRHH":
+                - generic:
+                  - img
+                  - text: RRHH
+                - img
+          - generic:
+            - heading "Sistemas" [level=3]:
+              - button "Sistemas":
+                - generic:
+                  - img
+                  - text: Sistemas
+                - img
+          - generic:
+            - heading "Contratistas" [level=3]:
+              - button "Contratistas":
+                - generic:
+                  - img
+                  - text: Contratistas
+                - img
+          - generic:
+            - heading "Estructura" [level=3]:
+              - button "Estructura":
+                - generic:
+                  - img
+                  - text: Estructura
+                - img
+          - generic:
+            - heading "Clients" [level=3]:
+              - button "Clients":
+                - generic:
+                  - img
+                  - text: Clients
+                - img
+          - generic:
+            - heading "Admin" [level=3]:
+              - button "Admin":
+                - generic:
+                  - img
+                  - text: Admin
+                - img
+          - generic:
+            - heading "Recursos" [level=3]:
+              - button "Recursos":
+                - generic:
+                  - img
+                  - text: Recursos
+                - img
+        - generic:
+          - paragraph:
+            - img
+            - text: test
+          - button "Salir":
+            - img
+            - text: Salir
+      - main:
+        - generic:
+          - heading "Inicio" [level=3]:
+            - img
+            - text: Inicio
+          - generic:
+            - button "Buscar":
+              - img
+              - generic: Buscar
+            - button:
+              - button:
+                - img
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - textbox "Job": S-16841
+                - textbox "Programación"
+                - button "Pendientes":
+                  - generic:
+                    - generic: Pendientes
+                  - img
+        - generic:
+          - table:
+            - rowgroup:
+              - columnheader
+              - columnheader "Job/PO"
+              - columnheader "Programación"
+              - columnheader "Parte"
+              - columnheader "Cliente"
+              - columnheader "Cantidad"
+              - columnheader "Paletizado"
+              - columnheader "Pendiente"
+              - columnheader "Due date"
+            - rowgroup:
+              - row "S-16841 AGOSTO ZEN-Z0-5929 ZENPET 204 0 204 12/08/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "S-16841"
+                - cell "AGOSTO"
+                - cell "ZEN-Z0-5929"
+                - cell "ZENPET"
+                - cell "204"
+                - cell "0"
+                - cell "204"
+                - cell "12/08/2026"
+    - region "Notifications alt+T"
+  - dialog [ref=e2042]:
+    - generic [ref=e2043]: Capturar pallets — S-16841
+    - generic [ref=e2044]:
+      - generic [ref=e2045]:
+        - generic [ref=e2046]:
+          - generic [ref=e2047]: Parte
+          - textbox [disabled] [ref=e2048]: ZEN-Z0-5929
+        - generic [ref=e2049]:
+          - generic [ref=e2050]: Pz/Caja
+          - textbox [disabled] [ref=e2051]: "12"
+        - generic [ref=e2052]:
+          - generic [ref=e2053]: Pendiente por paletizar
+          - textbox [disabled] [ref=e2054]: "204"
+      - generic [ref=e2055]:
+        - generic [ref=e2056]:
+          - generic [ref=e2057]: Cantidad de pallets
+          - textbox "Ej. 2.5" [ref=e2058]: "1.5"
+        - button "Generar" [ref=e2059] [cursor=pointer]
+      - table [ref=e2067]:
+        - rowgroup [ref=e2068]:
+          - columnheader "Pallet" [ref=e2069]
+          - columnheader "Piezas" [ref=e2070]
+          - columnheader "Cajas" [ref=e2071]
+          - columnheader "Combinar" [ref=e2072]
+          - columnheader "No. pallet existente" [ref=e2073]
+        - rowgroup [ref=e2074]:
+          - 'row "Nuevo #1 136 12" [ref=e2075]':
+            - 'cell "Nuevo #1" [ref=e2076]'
+            - cell "136" [ref=e2077]:
+              - textbox [ref=e2078]: "136"
+            - cell "12" [ref=e2079]:
+              - textbox [ref=e2080]: "12"
+            - cell [ref=e2081]:
+              - checkbox [ref=e2082] [cursor=pointer]:
+                - img [ref=e2084]
+            - cell [ref=e2085]:
+              - textbox "Folio" [disabled] [ref=e2086]
+          - row "Combinado 68 6 3" [ref=e2105]:
+            - cell "Combinado" [ref=e2104]
+            - cell "68" [ref=e2089]:
+              - textbox [ref=e2090]: "68"
+            - cell "6" [ref=e2091]:
+              - textbox [ref=e2092]: "6"
+            - cell [ref=e2093]:
+              - checkbox [checked] [ref=e2094] [cursor=pointer]:
+                - img [ref=e2096]
+            - cell "3" [ref=e2106]:
+              - textbox "Folio" [active] [ref=e2098]: "3"
+          - row "Total 204 / 204" [ref=e2099]:
+            - cell "Total" [ref=e2100]
+            - cell "204 / 204" [ref=e2101]
+            - cell [ref=e2102]
+    - generic [ref=e2060]:
+      - button "Guardar" [ref=e2061] [cursor=pointer]
+      - button "Cancelar" [ref=e2062] [cursor=pointer]
+    - button "Close" [ref=e2063] [cursor=pointer]:
+      - img [ref=e2064]
+      - generic [ref=e2065]: Close

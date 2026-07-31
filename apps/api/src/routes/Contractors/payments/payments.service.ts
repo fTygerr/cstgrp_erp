@@ -19,8 +19,29 @@ export class PaymentsService {
   constructor(private readonly req: ContextProvider) {}
 
   async getAll(body: z.infer<typeof getAllPaymentsSchema>) {
-    const rows = await sql`select * from "contractorPayments"
-    WHERE 
+    const rows = await sql`select p.*,
+    (select string_agg(distinct c.name, ', ')
+      from contractormovements cm
+      join jobs j on j.id = cm."orderId"
+      join "exitPass" e on e.id = j."exitId"
+      join contractors c on c.id = e."contractorId"
+      where cm."paymentId" = p.id) as contractors,
+    (select string_agg(distinct j.ref, ', ')
+      from contractormovements cm
+      join jobs j on j.id = cm."orderId"
+      where cm."paymentId" = p.id) as orders,
+    (select COALESCE(SUM(cm.accepted), 0)::int
+      from contractormovements cm
+      where cm."paymentId" = p.id) as accepted,
+    (select COALESCE(SUM(cm.rejected), 0)::int
+      from contractormovements cm
+      where cm."paymentId" = p.id) as rejected,
+    (select COALESCE(SUM(cm.accepted * j."contractorPrice"), 0)::numeric(12,2)
+      from contractormovements cm
+      join jobs j on j.id = cm."orderId"
+      where cm."paymentId" = p.id) as total
+    from "contractorPayments" p
+    WHERE
     ${body.date ? sql`"startDate" <= ${body.date} AND "endDate" >= ${body.date}` : sql`TRUE`} AND
     ${body.folio ? sql`folio = ${body.folio}` : sql`TRUE`}
     ORDER BY folio DESC`;

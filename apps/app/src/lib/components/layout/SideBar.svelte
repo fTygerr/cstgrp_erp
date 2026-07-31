@@ -178,7 +178,6 @@
 				</Accordion.Trigger>
 				<Accordion.Content>
 					<Accordion.Option href="/quality/liberation" />
-					<Accordion.Option href="/quality/export" />
 					<Accordion.Option href="/quality/pallets" />
 					<Accordion.Option href="/quality/registered-pallets" />
 					<Accordion.Option href="/quality/registered-exports" />
@@ -217,6 +216,9 @@
 					{/if}
 					{#if hasAccess('exports')}
 						<Accordion.Option href="/ie/exports" />
+					{/if}
+					{#if hasAccess('ie_packing_list')}
+						<Accordion.Option href="/ie/packing-list" />
 					{/if}
 					{#if hasAccess('ie_options')}
 						<Accordion.Option href="/ie/carriers" />

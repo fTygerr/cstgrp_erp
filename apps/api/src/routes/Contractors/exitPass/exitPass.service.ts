@@ -126,7 +126,7 @@ export class ExitPassService {
 
     const jobs = await sql`
     SELECT * FROM (
-      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.amount
+      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description, jobs.amount
       from jobs
       left join materialmovements on jobs."movementId" = materialmovements.id
       left join materials on materialmovements."materialId" = materials.id
@@ -143,7 +143,7 @@ export class ExitPassService {
 
   async getJobsForExitPass(exitId: number) {
     return sql`
-      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.amount, jobs."contractorAmount"
+      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description, jobs.amount, jobs."contractorAmount"
       from jobs
       left join materialmovements on jobs."movementId" = materialmovements.id
       left join materials on materialmovements."materialId" = materials.id

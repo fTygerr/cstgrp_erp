@@ -16,3 +16,7 @@ export const approveDeliveriesSchema = z.object({
   id: idSchema,
   rejected: intSchema,
 });
+
+export const deleteDeliverySchema = z.object({
+  id: idSchema,
+});

@@ -5,8 +5,11 @@ import { ContextProvider } from 'src/interceptors/context.provider';
 import sql from 'src/utils/db';
 import { z } from 'zod/v4';
 import {
+  createPackingListSchema,
   downloadPackingListSchema,
   editPackingListSchema,
+  getPackingListsSchema,
+  previewPackingListSchema,
 } from './packing-list.schema';
 import path from 'path';
 import { promises as fs } from 'fs';
@@ -155,11 +158,6 @@ export class PackingListService {
       SELECT eo.id, eo.date, clients.name AS client
       FROM exportorders eo JOIN clients ON clients.id = eo."clientId"
       WHERE eo."destinyId" = ${body.id} ORDER BY eo.id`;
-    if (!orders.length)
-      throw new HttpException(
-        'El packing list no tiene ordenes de exportación aplicadas',
-        400,
-      );
 
     const pallets = await sql`
       SELECT pallets.folio,
@@ -169,11 +167,26 @@ export class PackingListService {
           FROM pallet_contents pc JOIN jobs j ON j.id = pc."jobId"
           WHERE pc."palletId" = pallets.id) AS contents
       FROM pallets
-      WHERE "exportOrderId" IN ${sql(orders.map((o) => o.id))}
+      WHERE pallets."destinyId" = ${body.id}
+      ${orders.length ? sql`OR pallets."exportOrderId" IN ${sql(orders.map((o) => o.id))}` : sql``}
       ORDER BY pallets.folio ASC`;
+    if (!pallets.length)
+      throw new HttpException('El packing list no tiene pallets ligados', 400);
+
+    const [meta] = await sql`
+      SELECT COALESCE(d."shipDate", d.created_at::date) AS date,
+        (SELECT string_agg(DISTINCT c.name, ', ')
+          FROM order_destiny od JOIN jobs j ON j.id = od."orderId"
+          JOIN clients c ON c.id = j."clientId"
+          WHERE od."destinyId" = d.id) AS client
+      FROM destinys d WHERE d.id = ${body.id}`;
 
     return generateExportOrderPdf(
-      { id: destiny.id, date: orders[0].date, client: orders[0].client } as any,
+      {
+        id: destiny.id,
+        date: orders[0]?.date || meta.date,
+        client: orders[0]?.client || meta.client || '',
+      } as any,
       pallets as any,
       { title: 'DESGLOCE DE PALLETS', packSlip: destiny.packSlip || destiny.so },
     );
@@ -253,6 +266,270 @@ export class PackingListService {
 
       await this.req.record(
         `Actualizo la informacion del packing list ${previousData.so}`,
+        sql,
+      );
+    });
+    return;
+  }
+
+  // Folio proyectado para el Pack Slip (el definitivo se asigna al guardar)
+  async getNextFolio() {
+    const [row] = await sql`
+      SELECT CASE WHEN is_called THEN last_value + 1 ELSE last_value END AS folio
+      FROM packslip_seq`;
+    return { folio: Number(row.folio) };
+  }
+
+  // Vista previa del PL: jobs seleccionados -> pallets disponibles -> líneas
+  async preview(body: z.infer<typeof previewPackingListSchema>) {
+    const jobs = await sql`
+      SELECT jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) AS part,
+        jobs.description, clients.name AS client
+      FROM jobs
+      JOIN clients ON clients.id = jobs."clientId"
+      LEFT JOIN materialmovements ON jobs."movementId" = materialmovements.id
+      LEFT JOIN materials ON materialmovements."materialId" = materials.id
+      WHERE jobs.id IN ${sql(body.jobIds)}`;
+
+    const pallets = await sql`
+      SELECT DISTINCT p.id, p.folio,
+        (SELECT json_agg(json_build_object(
+            'jobId', pc2."jobId", 'ref', j.ref, 'part', j.part,
+            'description', j.description, 'amount', pc2.amount, 'boxes', pc2.boxes)
+          ORDER BY pc2.id)
+          FROM pallet_contents pc2 JOIN jobs j ON j.id = pc2."jobId"
+          WHERE pc2."palletId" = p.id) AS contents
+      FROM pallets p
+      JOIN pallet_contents pc ON pc."palletId" = p.id
+      WHERE pc."jobId" IN ${sql(body.jobIds)}
+        AND p."destinyId" IS NULL AND p."exportOrderId" IS NULL
+      ORDER BY p.folio`;
+
+    const palletIds = pallets.map((p) => p.id);
+
+    const lines = palletIds.length
+      ? await sql`
+        SELECT pc."jobId", j.ref, COALESCE(m.code, j.part) AS part,
+          j.description, c.name AS client,
+          SUM(pc.amount)::int AS amount,
+          ROUND(SUM(pc.amount::numeric / pt.total), 4) AS pallets
+        FROM pallet_contents pc
+        JOIN pallets p ON p.id = pc."palletId"
+        JOIN jobs j ON j.id = pc."jobId"
+        JOIN clients c ON c.id = j."clientId"
+        LEFT JOIN materialmovements mm ON j."movementId" = mm.id
+        LEFT JOIN materials m ON mm."materialId" = m.id
+        JOIN LATERAL (
+          SELECT SUM(amount)::numeric AS total FROM pallet_contents WHERE "palletId" = p.id
+        ) pt ON true
+        WHERE pc."palletId" IN ${sql(palletIds)}
+        GROUP BY pc."jobId", j.ref, m.code, j.part, j.description, c.name
+        ORDER BY j.ref`
+      : [];
+
+    const withPallets = new Set(
+      pallets.flatMap((p) => (p.contents || []).map((c) => c.jobId)),
+    );
+    const missing = jobs.filter((j) => !withPallets.has(j.id));
+
+    const { folio } = await this.getNextFolio();
+
+    return {
+      folio,
+      lines: lines.map((l) => ({
+        ...l,
+        implicit: !body.jobIds.includes(l.jobId),
+      })),
+      pallets,
+      missing,
+    };
+  }
+
+  // Generar el PL: crea destiny con folio automático, liga pallets, inserta
+  // líneas y descuenta el producto terminado del inventario (acto de exportar)
+  async create(body: z.infer<typeof createPackingListSchema>) {
+    let result: { id: number; folio: number };
+    await sql.begin(async (sql) => {
+      const pallets = await sql`
+        SELECT DISTINCT p.id FROM pallets p
+        JOIN pallet_contents pc ON pc."palletId" = p.id
+        WHERE pc."jobId" IN ${sql(body.jobIds)}
+          AND p."destinyId" IS NULL AND p."exportOrderId" IS NULL`;
+      if (!pallets.length)
+        throw new HttpException(
+          'Los jobs seleccionados no tienen pallets disponibles para exportar',
+          400,
+        );
+      const palletIds = pallets.map((p) => p.id);
+
+      const lines = await sql`
+        SELECT pc."jobId",
+          SUM(pc.amount)::int AS amount,
+          ROUND(SUM(pc.amount::numeric / pt.total), 4) AS pallets
+        FROM pallet_contents pc
+        JOIN pallets p ON p.id = pc."palletId"
+        JOIN LATERAL (
+          SELECT SUM(amount)::numeric AS total FROM pallet_contents WHERE "palletId" = p.id
+        ) pt ON true
+        WHERE pc."palletId" IN ${sql(palletIds)}
+        GROUP BY pc."jobId"`;
+
+      const [{ folio }] =
+        await sql`SELECT nextval('packslip_seq')::int AS folio`;
+
+      const [destiny] = await sql`
+        INSERT INTO destinys (so, "packSlip", "shipDate")
+        VALUES (${'PS-' + folio}, ${String(folio)}, ${body.shipDate})
+        RETURNING id`;
+
+      await sql`UPDATE pallets SET "destinyId" = ${destiny.id}
+        WHERE id IN ${sql(palletIds)}`;
+
+      for (const line of lines) {
+        const [stub] = await sql`
+          SELECT od.po FROM order_destiny od
+          JOIN destinys d ON d.id = od."destinyId"
+          WHERE od."orderId" = ${line.jobId} AND d.exported IS NULL
+            AND COALESCE(od.po, '') != '' LIMIT 1`;
+        await sql`INSERT INTO order_destiny ${sql({
+          orderId: line.jobId,
+          destinyId: destiny.id,
+          amount: line.amount,
+          date: body.shipDate,
+          po: stub?.po || '',
+          pallets: line.pallets,
+        })}`;
+      }
+
+      const headerData = await sql`select key, data from docs_data`;
+
+      const orders = await sql`select
+        COALESCE(jobs.ref, '') as ref,
+        COALESCE(jobs.part, '') as part,
+        COALESCE(order_destiny.amount, 0) as amount,
+        COALESCE(order_destiny.po, '') as po,
+        COALESCE(order_destiny.pallets, 0) as pallets,
+        COALESCE(jobs.description, '') as description,
+        jobs."perBox",
+        'EA' as umc
+        from order_destiny
+        left join jobs on jobs.id = order_destiny."orderId"
+        where order_destiny."destinyId" = ${destiny.id}`;
+
+      const [shipper] = body.shipVia
+        ? await sql`select name from shippers where id = ${body.shipVia}`
+        : [null];
+      const [consignee] = body.consignee
+        ? await sql`select "legalName" from clients where id = ${body.consignee}`
+        : [null];
+      const [destination] = body.destination
+        ? await sql`select name, direction from "destinationDirections" where id = ${body.destination}`
+        : [null];
+      const [carrier] = body.carrierExp
+        ? await sql`select name from carriers where id = ${body.carrierExp}`
+        : [null];
+      const [shipTo] = body.shipTo
+        ? await sql`select name, direction from "shipTo" where id = ${body.shipTo}`
+        : [null];
+
+      const packingData = {
+        packSlip: String(folio),
+        shipDate: body.shipDate,
+        blNo: body.blNo || '',
+        trk: body.trk || '',
+        invoice: body.invoice || '',
+        weight: body.weight || '',
+        po: [...new Set(orders.map((o) => o.po).filter(Boolean))].join(', '),
+        exported: headerData.find((item) => item.key === 'ie_exported')?.data,
+        soldTo: headerData.find((item) => item.key === 'ie_sold_to')?.data,
+        orders: orders,
+        shipVia: shipper?.name || '',
+        consignee: consignee?.legalName || '',
+        destination: destination || null,
+        carrierExp: carrier?.name || '',
+        shipTo: shipTo || null,
+      };
+
+      await sql`update destinys set ${sql(packingData)} where id = ${destiny.id}`;
+
+      const insertedMovements = await sql`
+        insert into materialmovements
+          ("materialId", "orderDestinyId", amount, "realAmount", active, "activeDate")
+        select mm."materialId", od.id, -od.amount, -od.amount, true, now()
+        from order_destiny od
+        join jobs j on j.id = od."orderId"
+        join materialmovements mm on mm.id = j."movementId"
+        where od."destinyId" = ${destiny.id}
+        returning "materialId"`;
+
+      const affectedMaterials = new Set(
+        insertedMovements.map((m) => m.materialId),
+      );
+      for (const materialId of affectedMaterials)
+        await updateMaterialAmount(materialId, sql);
+
+      await this.req.record(`Generó el packing list ${folio}`, sql);
+
+      result = { id: destiny.id, folio };
+    });
+    return result;
+  }
+
+  // Listado del submódulo Packing List
+  async getPackingLists(body: z.infer<typeof getPackingListsSchema>) {
+    return sql`select destinys.id,
+      COALESCE(NULLIF(destinys."packSlip", ''), destinys.so) as "packSlip",
+      destinys."shipDate",
+      string_agg(distinct clients.name, ', ') as client,
+      string_agg(distinct jobs.ref, ', ') as jobs,
+      string_agg(distinct COALESCE(materials.code, jobs.part), ', ') as parts,
+      string_agg(distinct jobs.description, ', ') as description,
+      string_agg(distinct nullif(order_destiny.po, ''), ', ') as po,
+      COALESCE(sum(order_destiny.amount), 0)::int as amount,
+      ((select count(*) from pallets p where p."destinyId" = destinys.id)
+        + (select count(*) from pallets p where p."exportOrderId" in
+            (select id from exportorders where "destinyId" = destinys.id)))::int as pallets
+      from destinys
+      left join order_destiny on order_destiny."destinyId" = destinys.id
+      left join jobs on jobs.id = order_destiny."orderId"
+      left join clients on clients.id = jobs."clientId"
+      left join materialmovements on jobs."movementId" = materialmovements.id
+      left join materials on materialmovements."materialId" = materials.id
+      where (destinys.so LIKE 'PS-%' OR destinys.exported IS NOT NULL)
+      ${body.packSlip ? sql`AND COALESCE(NULLIF(destinys."packSlip", ''), destinys.so) ILIKE ${'%' + body.packSlip + '%'}` : sql``}
+      ${body.clientId ? sql`AND destinys.id in (
+        select od2."destinyId" from order_destiny od2
+        join jobs j2 on j2.id = od2."orderId"
+        where j2."clientId" = ${body.clientId})` : sql``}
+      group by destinys.id
+      order by destinys.id desc
+      limit 200`;
+  }
+
+  // Eliminar PL (solo privilegio EDITAR Y ELIMINAR): revierte inventario y
+  // libera los pallets para poder volver a exportarlos
+  async deletePl(body: z.infer<typeof idObjectSchema>) {
+    await sql.begin(async (sql) => {
+      const [destiny] = await sql`
+        select id, so, "packSlip" from destinys where id = ${body.id}
+        and (so LIKE 'PS-%' OR exported IS NOT NULL)`;
+      if (!destiny) throw new HttpException('Packing list no existente', 400);
+
+      const movements = await sql`
+        select "materialId" from materialmovements
+        where "orderDestinyId" in
+          (select id from order_destiny where "destinyId" = ${body.id})`;
+
+      await sql`update pallets set "destinyId" = null where "destinyId" = ${body.id}`;
+      await sql`update exportorders set "destinyId" = null where "destinyId" = ${body.id}`;
+      await sql`delete from order_destiny where "destinyId" = ${body.id}`;
+      await sql`delete from destinys where id = ${body.id}`;
+
+      for (const movement of movements)
+        await updateMaterialAmount(movement.materialId, sql);
+
+      await this.req.record(
+        `Eliminó el packing list ${destiny.packSlip || destiny.so}`,
         sql,
       );
     });

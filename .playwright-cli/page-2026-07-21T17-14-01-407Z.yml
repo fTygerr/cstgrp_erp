@@ -1,0 +1,226 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - link "logo CST Group":
+          - /url: /
+          - img "logo"
+          - text: CST Group
+        - generic:
+          - generic:
+            - heading "Reportes" [level=3]:
+              - button "Reportes":
+                - generic:
+                  - img
+                  - text: Reportes
+                - img
+          - generic:
+            - heading "Producción" [level=3]:
+              - button "Producción":
+                - generic:
+                  - img
+                  - text: Producción
+                - img
+          - generic:
+            - heading "Progreso" [level=3]:
+              - button "Progreso":
+                - generic:
+                  - img
+                  - text: Progreso
+                - img
+          - generic:
+            - heading "Almacen" [level=3]:
+              - button "Almacen":
+                - generic:
+                  - img
+                  - text: Almacen
+                - img
+          - generic:
+            - heading "Calidad" [level=3]:
+              - button "Calidad":
+                - generic:
+                  - img
+                  - text: Calidad
+                - img
+          - generic:
+            - heading "Imp-Exp" [level=3]:
+              - button "Imp-Exp":
+                - generic:
+                  - img
+                  - text: Imp-Exp
+                - img
+          - generic:
+            - heading "Compras" [level=3]:
+              - button "Compras":
+                - generic:
+                  - img
+                  - text: Compras
+                - img
+          - generic:
+            - heading "Mantenimiento" [level=3]:
+              - button "Mantenimiento":
+                - generic:
+                  - img
+                  - text: Mantenimiento
+                - img
+          - generic:
+            - heading "RRHH" [level=3]:
+              - button "RRHH":
+                - generic:
+                  - img
+                  - text: RRHH
+                - img
+          - generic:
+            - heading "Sistemas" [level=3]:
+              - button "Sistemas":
+                - generic:
+                  - img
+                  - text: Sistemas
+                - img
+          - generic:
+            - heading "Contratistas" [level=3]:
+              - button "Contratistas":
+                - generic:
+                  - img
+                  - text: Contratistas
+                - img
+          - generic:
+            - heading "Estructura" [level=3]:
+              - button "Estructura":
+                - generic:
+                  - img
+                  - text: Estructura
+                - img
+          - generic:
+            - heading "Clients" [level=3]:
+              - button "Clients":
+                - generic:
+                  - img
+                  - text: Clients
+                - img
+          - generic:
+            - heading "Admin" [level=3]:
+              - button "Admin":
+                - generic:
+                  - img
+                  - text: Admin
+                - img
+          - generic:
+            - heading "Recursos" [level=3]:
+              - button "Recursos":
+                - generic:
+                  - img
+                  - text: Recursos
+                - img
+        - generic:
+          - paragraph:
+            - img
+            - text: test
+          - button "Salir":
+            - img
+            - text: Salir
+      - main:
+        - generic:
+          - heading "Inicio" [level=3]:
+            - img
+            - text: Inicio
+          - generic:
+            - button "Buscar":
+              - img
+              - generic: Buscar
+            - button:
+              - button:
+                - img
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - textbox "Job PO": CLTEST-1
+                - textbox "Programación"
+                - textbox "Parte"
+        - generic:
+          - table:
+            - rowgroup:
+              - columnheader
+              - columnheader "Job PO"
+              - columnheader "Programación"
+              - columnheader "Parte"
+              - columnheader "Cantidad"
+              - columnheader "Due Date"
+            - rowgroup:
+              - row "CLTEST-1 CLTEST-PROG CLAUDE-TEST-001 10 25/07/2026":
+                - cell:
+                  - button:
+                    - img
+                - cell "CLTEST-1"
+                - cell "CLTEST-PROG"
+                - cell "CLAUDE-TEST-001"
+                - cell "10"
+                - cell "25/07/2026"
+    - region "Notifications alt+T"
+  - dialog "CLTEST-1" [ref=e1484]:
+    - heading "CLTEST-1" [level=2] [ref=e1486]
+    - generic [ref=e1487]:
+      - generic [ref=e1488]:
+        - generic [ref=e1489]:
+          - generic [ref=e1490]: Programación
+          - textbox [ref=e1491]: CLTEST-PROG
+        - generic [ref=e1492]:
+          - generic [ref=e1493]: Job PO
+          - textbox [ref=e1494]: CLTEST-1
+        - generic [ref=e1495]:
+          - generic [ref=e1496]: Parte
+          - textbox [ref=e1497]: CLAUDE-TEST-001
+        - generic [ref=e1498]:
+          - generic [ref=e1499]: Cantidad
+          - textbox [ref=e1500]: "10"
+        - generic [ref=e1501]:
+          - generic [ref=e1502]: Pz/Caja
+          - textbox [ref=e1503]: "1"
+        - generic [ref=e1504]:
+          - generic [ref=e1505]: Due Date
+          - textbox [ref=e1506]: 25/07/2026
+      - table [ref=e1508]:
+        - rowgroup [ref=e1509]:
+          - columnheader "SO" [ref=e1510]
+          - columnheader "Cantidad" [ref=e1511]
+          - columnheader "Fecha" [ref=e1512]
+          - columnheader "Pallets" [ref=e1513]
+        - rowgroup [ref=e1514]:
+          - row "CLTEST-SO-1 5 28/07/2026" [ref=e1515]:
+            - cell "CLTEST-SO-1" [ref=e1516]
+            - cell "5" [ref=e1517]
+            - cell "28/07/2026" [ref=e1518]
+            - cell [ref=e1519]:
+              - generic [ref=e1520]:
+                - button [ref=e1521] [cursor=pointer]
+                - button [ref=e1522] [cursor=pointer]:
+                  - img
+          - 'row "Total: 0" [ref=e1523]':
+            - cell [ref=e1524]
+            - 'cell "Total: 0" [ref=e1525]'
+    - button "Close" [ref=e1526] [cursor=pointer]:
+      - img [ref=e1527]
+      - generic [ref=e1528]: Close
+  - dialog "Capturar pallets" [ref=e1530]:
+    - heading "Capturar pallets" [level=2] [ref=e1532]
+    - generic [ref=e1533]:
+      - generic [ref=e1534]:
+        - generic [ref=e1535]: Pallets completos
+        - textbox [active] [ref=e1536]: "1"
+      - generic [ref=e1537]:
+        - generic [ref=e1538]: Parcial 1 compartido en
+        - textbox [ref=e1539]
+        - generic [ref=e1540]: Jobs
+      - generic [ref=e1541]:
+        - generic [ref=e1542]: Parcial 2 compartido en
+        - textbox [ref=e1543]
+        - generic [ref=e1544]: Jobs
+      - generic [ref=e1545]:
+        - generic [ref=e1546]: Parcial 3 compartido en
+        - textbox [ref=e1547]
+        - generic [ref=e1548]: Jobs
+      - button "Calcular" [ref=e1549] [cursor=pointer]
+    - button "Close" [ref=e1550] [cursor=pointer]:
+      - img [ref=e1551]
+      - generic [ref=e1552]: Close

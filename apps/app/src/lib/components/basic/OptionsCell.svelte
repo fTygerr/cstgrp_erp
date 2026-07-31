@@ -13,6 +13,7 @@
 		viewFunc?: (() => void) | undefined;
 		deleteFunc?: (() => void) | undefined;
 		editFunc?: (() => void) | undefined;
+		editName?: string;
 		extraButtons?: { fn: () => void; name: string; icon: any }[];
 		children?: import('svelte').Snippet;
 	}
@@ -21,6 +22,7 @@
 		viewFunc = undefined,
 		deleteFunc = undefined,
 		editFunc = undefined,
+		editName = 'Editar',
 		extraButtons = [],
 		children
 	}: Props = $props();
@@ -42,7 +44,7 @@
 			{/if}
 			{#if editFunc}
 				<DropdownMenuItem onclick={editFunc}>
-					<Pen class="size-3.5" /> Editar
+					<Pen class="size-3.5" /> {editName}
 				</DropdownMenuItem>
 			{/if}
 			{#each extraButtons as button}
