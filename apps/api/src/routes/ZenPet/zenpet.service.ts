@@ -19,7 +19,8 @@ export class ZenPetService {
     // Stage 1 — raw material on hand, grouped by code family (units are mixed per family)
     const rawByFamily = await sql`
       SELECT substring(code from 5 for 2) AS family,
-        COUNT(*)::int AS materials, ROUND(SUM(amount)::numeric, 2) AS units
+        COUNT(*)::int AS materials, ROUND(SUM(amount)::numeric, 0) AS units,
+        mode() WITHIN GROUP (ORDER BY measurement) AS unit
       FROM materials
       WHERE "clientId" = ${zp} AND product = false AND code LIKE 'ZEN-Z%'
       GROUP BY 1 ORDER BY 1`;
