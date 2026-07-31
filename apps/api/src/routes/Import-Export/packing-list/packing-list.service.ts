@@ -292,7 +292,7 @@ export class PackingListService {
       WHERE jobs.id IN ${sql(body.jobIds)}`;
 
     const pallets = await sql`
-      SELECT DISTINCT p.id, p.folio,
+      SELECT p.id, p.folio,
         (SELECT json_agg(json_build_object(
             'jobId', pc2."jobId", 'ref', j.ref, 'part', j.part,
             'description', j.description, 'amount', pc2.amount, 'boxes', pc2.boxes)
@@ -300,9 +300,9 @@ export class PackingListService {
           FROM pallet_contents pc2 JOIN jobs j ON j.id = pc2."jobId"
           WHERE pc2."palletId" = p.id) AS contents
       FROM pallets p
-      JOIN pallet_contents pc ON pc."palletId" = p.id
-      WHERE pc."jobId" IN ${sql(body.jobIds)}
-        AND p."destinyId" IS NULL AND p."exportOrderId" IS NULL
+      WHERE p."destinyId" IS NULL AND p."exportOrderId" IS NULL
+        AND EXISTS (SELECT 1 FROM pallet_contents pc
+          WHERE pc."palletId" = p.id AND pc."jobId" IN ${sql(body.jobIds)})
       ORDER BY p.folio`;
 
     const palletIds = pallets.map((p) => p.id);
@@ -338,7 +338,7 @@ export class PackingListService {
       folio,
       lines: lines.map((l) => ({
         ...l,
-        implicit: !body.jobIds.includes(l.jobId),
+        implicit: !body.jobIds.includes(Number(l.jobId)),
       })),
       pallets,
       missing,

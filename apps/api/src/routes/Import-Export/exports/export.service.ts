@@ -21,7 +21,7 @@ export class ExportService {
       from order_destiny od join destinys d on d.id = od."destinyId"
       where od."orderId" = jobs.id and od."exportOrderId" is null
         and d.exported is null) as so,
-    (select string_agg(p.folio, ', ' order by p.folio)
+    (select string_agg(p.folio::text, ', ' order by p.folio)
       from pallets p
       where p."destinyId" is null and p."exportOrderId" is null
         and exists (select 1 from pallet_contents pc

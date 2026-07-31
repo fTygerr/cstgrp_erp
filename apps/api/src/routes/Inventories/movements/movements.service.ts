@@ -32,7 +32,7 @@ export class MovementsService {
         COALESCE(
           CASE
             WHEN destinys.id IS NULL THEN NULL
-            ELSE CONCAT('PL-', COALESCE(NULLIF(destinys."packSlip", ''), destinys.so))
+            ELSE CONCAT('PL-', COALESCE(NULLIF(NULLIF(destinys."packSlip", ''), '-'), destinys.so))
           END,
           jobs.ref, 
           imports.ref, 

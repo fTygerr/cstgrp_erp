@@ -71,8 +71,8 @@
 		}
 	}
 
-	function quitJob(jobId: number) {
-		jobIds = jobIds.filter((id) => id !== jobId);
+	function quitJob(jobId: number | string) {
+		jobIds = jobIds.filter((id) => id !== Number(jobId));
 		if (!jobIds.length) {
 			show = false;
 			return;

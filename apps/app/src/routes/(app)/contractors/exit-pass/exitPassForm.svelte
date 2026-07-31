@@ -128,7 +128,12 @@
 	}
 
 	async function setFormData() {
-		formData = { ...selectedExitPass, date: selectedExitPass.date.split('T')[0] };
+		formData = {
+			...selectedExitPass,
+			date: selectedExitPass.date
+				? selectedExitPass.date.split('T')[0]
+				: new Date().toISOString().split('T')[0]
+		};
 		if (selectedExitPass?.id) {
 			try {
 				const data = (await api.get(`/contractors/exit-pass/${selectedExitPass.id}/jobs`))
