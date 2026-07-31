@@ -43,6 +43,7 @@ export const permissionsList = {
   contractors_deliveries: permType,
   contractors_exitPass: permType,
   contractors_payments: permType,
+  zenpet: permType,
 };
 
 export const registerSchema = z.object({

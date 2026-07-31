@@ -186,6 +186,20 @@
 			</Accordion.Item>
 		{/if}
 
+		{#if hasAccess('zenpet')}
+			<Accordion.Item value="zenpet" class="border-none">
+				<Accordion.Trigger
+					class="mb-[1px]  h-8 rounded-md p-2 text-sm hover:bg-muted hover:no-underline"
+				>
+					<Factory class="size-4 text-[#5c5e63]" />
+					ZenPet Datos
+				</Accordion.Trigger>
+				<Accordion.Content>
+					<Accordion.Option href="/zenpet/datos" />
+				</Accordion.Content>
+			</Accordion.Item>
+		{/if}
+
 		{#if hasAccess('imports') || hasAccess('exports') || hasAccess('ie_options')}
 			<Accordion.Item value="ie" class="border-none">
 				<Accordion.Trigger

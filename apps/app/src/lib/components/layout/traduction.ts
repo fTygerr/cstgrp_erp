@@ -95,6 +95,7 @@ export const traductions: Record<string, Traduction> = {
 	pallets: { text: 'Pallets', icon: Package },
 	'registered-pallets': { text: 'Pallets Registrados', icon: Clipboard },
 	'registered-exports': { text: 'Exportaciones Registradas', icon: FileDown },
+	datos: { text: 'Datos', icon: FileSpreadsheet },
 	preforms: { text: 'Proformas', icon: FileText },
 	machines: { text: 'Maquinas', icon: FileText },
 	contractors: { text: 'Contratistas', icon: FileText },
