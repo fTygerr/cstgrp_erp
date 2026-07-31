@@ -19,6 +19,7 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ### 1. Migrations to run on prod, in order (already applied to testing)
 - [ ] `2026-07-28_phase2_pallets.sql` — pallets/exportorders/pallet_contents tables + clients.palletSeq
 - [ ] `2026-07-30_phase2b_pl_exportorders.sql` — exportorders.destinyId + order_destiny.exportOrderId
+- [ ] `2026-07-31_obs_packing_list.sql` — pallets.destinyId + packslip_seq (Pack Slip folio)
 
 (`2026-07-21_phase1_export_movements.sql` was already applied to prod on 2026-07-23 — do NOT re-run.)
 
@@ -40,7 +41,28 @@ WHERE username IN ('JUAN MUÑOZ');  -- add others if Juan wants
 ```
 (Existing users without the key simply don't see the section — no backfill needed.)
 
-### 4. Explicitly NOT replicated to prod (testing-only changes)
+### 4. Seed the Pack Slip folio (BLOCKER — needs Juan's number)
+The new PL generator assigns consecutive Pack Slip #s from `packslip_seq`
+(created at 1000 in testing). Ask Juan for the NEXT real pack slip number and:
+```sql
+SELECT setval('packslip_seq', <next número de pack slip>, false);
+```
+
+### 5. Grant the new `ie_packing_list` permission (Packing List submodule)
+```sql
+UPDATE users SET permissions = permissions || '{"ie_packing_list": 3}'::jsonb
+WHERE username IN ('JUAN MUÑOZ');  -- LEER/MODIFICAR (1/2) for other Imp-Exp users
+```
+
+### 6. Level-3 ("EDITAR Y ELIMINAR") grants per Juan's Observaciones 31/07
+Juan said only he should hold the delete privilege:
+```sql
+UPDATE users SET permissions = permissions ||
+  '{"quality": 3, "exports": 3, "contractors_orders": 3, "contractors_deliveries": 3}'::jsonb
+WHERE username IN ('JUAN MUÑOZ');
+```
+
+### 7. Explicitly NOT replicated to prod (testing-only changes)
 - `test` user elevated permissions / all prod_areas — testing convenience only.
 - Any pallets/export orders created during testing — demo data, stays in testing.
 
