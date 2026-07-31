@@ -401,13 +401,13 @@
 			</div>
 
 			<div class="rounded-md border border-blue-300 p-3">
-				<div class="flex items-center justify-between"><p class="font-semibold">3 · Vigencia de costos y fórmulas</p><Badge color="blue">RESPONDE: PAPÁ</Badge></div>
+				<div class="flex items-center justify-between"><p class="font-semibold">3 · Vigencia de costos y fórmulas</p><Badge color="blue">RESPONDE: HC</Badge></div>
 				<p class="mt-1 text-sm text-muted-foreground">Las fórmulas y costos vienen de CST-Tracker (extracto {f?.extracted_at ?? '…'}). ¿Siguen vigentes? ¿Los costos para ZenPet salen de aquí o los pone ZenPet de su lado?</p>
 				<p class="mt-1 text-xs text-muted-foreground">Desbloquea: la valuación en dólares por etapa (hoy solo mostramos unidades).</p>
 			</div>
 
 			<div class="rounded-md border p-3">
-				<div class="flex items-center justify-between"><p class="font-semibold">4 · Cadencia del envío a ZenPet</p><Badge color="cyan">RESPONDE: HÉCTOR + JUAN</Badge></div>
+				<div class="flex items-center justify-between"><p class="font-semibold">4 · Cadencia del envío a ZenPet</p><Badge color="cyan">RESPONDE: HA + JUAN</Badge></div>
 				<p class="mt-1 text-sm text-muted-foreground">Propuesta: lunes y miércoles, proceso de solo lectura (el ERP no se toca, nadie captura nada extra). Puede ser diario si se quiere.</p>
 				<p class="mt-1 text-xs text-muted-foreground">Desbloquea: el arranque del envío automático de datos.</p>
 			</div>
