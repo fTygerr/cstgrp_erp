@@ -23,18 +23,17 @@ export class ExportService {
         and d.exported is null) as so,
     (select string_agg(p.folio::text, ', ' order by p.folio)
       from pallets p
-      where p."destinyId" is null and p."exportOrderId" is null
+      where p."destinyId" is null
         and exists (select 1 from pallet_contents pc
           where pc."palletId" = p.id and pc."jobId" = jobs.id)) as "palletFolios",
     (select count(*)::int
       from pallets p
-      where p."destinyId" is null and p."exportOrderId" is null
+      where p."destinyId" is null
         and exists (select 1 from pallet_contents pc
           where pc."palletId" = p.id and pc."jobId" = jobs.id)) as "palletCount",
     (select COALESCE(sum(pc.amount), 0)::int
       from pallet_contents pc join pallets p on p.id = pc."palletId"
-      where pc."jobId" = jobs.id and p."destinyId" is null
-        and p."exportOrderId" is null) as "availableAmount"
+      where pc."jobId" = jobs.id and p."destinyId" is null) as "availableAmount"
 
     from jobs
     join clients on clients.id = jobs."clientId"
@@ -44,8 +43,7 @@ export class ExportService {
     where jobs.calidad > 0
     and exists (select 1 from pallet_contents pc
       join pallets p on p.id = pc."palletId"
-      where pc."jobId" = jobs.id and p."destinyId" is null
-        and p."exportOrderId" is null)
+      where pc."jobId" = jobs.id and p."destinyId" is null)
     ${filter.job ? sql`AND jobs.ref ILIKE ${'%' + filter.job + '%'}` : sql``}
     ${filter.part ? sql`AND COALESCE(materials.code, jobs.part) ILIKE ${'%' + filter.part + '%'}` : sql``}
     ${filter.clientId ? sql`AND clients.id = ${filter.clientId}` : sql``}

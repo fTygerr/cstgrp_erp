@@ -29,7 +29,7 @@
 	const clientsQuery = createQuery({ queryKey: ['inventory-clients'], queryFn: getClients });
 	const clients = $derived(getOptions($clientsQuery?.data));
 
-	let filters = $state({ folio: '', clientId: '', pending: 'true' });
+	let filters = $state({ folio: '', clientId: '', pending: 'true', job: '', programation: '' });
 	let selected: Record<number, any> = $state({});
 	let showDelete = $state(false);
 	const canDelete = $derived(($userData?.permissions?.['quality'] || 0) >= 3);
@@ -81,6 +81,8 @@
 <MenuBar>
 	<div class="flex w-full flex-col gap-1.5 lg:flex-row">
 		<Input menu bind:value={filters.folio} placeholder="No. Pallet" class="max-w-32" />
+		<Input menu bind:value={filters.job} placeholder="Job / Orden" class="max-w-32" />
+		<Input menu bind:value={filters.programation} placeholder="Programación" class="max-w-32" />
 		<Select
 			menu
 			items={clients}
@@ -91,7 +93,7 @@
 		/>
 		<Select menu items={pendingOptions} bind:value={filters.pending} class="min-w-36 max-w-36" />
 		<Button class="ml-auto h-8" onclick={createExport} disabled={!selectedList.length}>
-			Crear Exportación {selectedList.length ? `(${selectedList.length})` : ''}
+			Orden de Exportación {selectedList.length ? `(${selectedList.length})` : ''}
 		</Button>
 	</div>
 </MenuBar>

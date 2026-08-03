@@ -12,6 +12,8 @@ export const palletsFilterSchema = z.object({
   folio: z.string().nullable(),
   clientId: z.string().nullable(),
   pending: z.string().nullable(),
+  job: z.string().nullable(),
+  programation: z.string().nullable(),
 });
 
 export const createPalletsSchema = z.object({

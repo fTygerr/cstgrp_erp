@@ -99,9 +99,10 @@ export class PackingListService {
           SELECT SUM(amount)::numeric AS total FROM pallet_contents WHERE "palletId" = p.id
         ) pt ON true
         WHERE p."exportOrderId" = ${body.exportOrderId}
+          AND p."destinyId" IS NULL
         GROUP BY pc."jobId"`;
       if (!lines.length)
-        throw new HttpException('La orden no tiene pallets', 400);
+        throw new HttpException('La orden no tiene pallets disponibles', 400);
 
       for (const line of lines) {
         await sql`INSERT INTO order_destiny ${sql({
@@ -116,6 +117,9 @@ export class PackingListService {
       }
 
       await sql`UPDATE exportorders SET "destinyId" = ${body.id} WHERE id = ${body.exportOrderId}`;
+      // liga también los pallets al PL: dejan de estar disponibles en Imp-Exp
+      await sql`UPDATE pallets SET "destinyId" = ${body.id}
+        WHERE "exportOrderId" = ${body.exportOrderId} AND "destinyId" IS NULL`;
 
       await this.req.record(
         `Aplico la orden de exportación ${body.exportOrderId} al packing list`,
@@ -135,6 +139,8 @@ export class PackingListService {
 
       await sql`DELETE FROM order_destiny WHERE "exportOrderId" = ${body.exportOrderId} AND "destinyId" = ${body.id}`;
       await sql`UPDATE exportorders SET "destinyId" = NULL WHERE id = ${body.exportOrderId}`;
+      await sql`UPDATE pallets SET "destinyId" = NULL
+        WHERE "exportOrderId" = ${body.exportOrderId} AND "destinyId" = ${body.id}`;
 
       for (const movement of movements)
         await updateMaterialAmount(movement.materialId, sql);
@@ -300,7 +306,7 @@ export class PackingListService {
           FROM pallet_contents pc2 JOIN jobs j ON j.id = pc2."jobId"
           WHERE pc2."palletId" = p.id) AS contents
       FROM pallets p
-      WHERE p."destinyId" IS NULL AND p."exportOrderId" IS NULL
+      WHERE p."destinyId" IS NULL
         AND EXISTS (SELECT 1 FROM pallet_contents pc
           WHERE pc."palletId" = p.id AND pc."jobId" IN ${sql(body.jobIds)})
       ORDER BY p.folio`;
@@ -354,7 +360,7 @@ export class PackingListService {
         SELECT DISTINCT p.id FROM pallets p
         JOIN pallet_contents pc ON pc."palletId" = p.id
         WHERE pc."jobId" IN ${sql(body.jobIds)}
-          AND p."destinyId" IS NULL AND p."exportOrderId" IS NULL`;
+          AND p."destinyId" IS NULL`;
       if (!pallets.length)
         throw new HttpException(
           'Los jobs seleccionados no tienen pallets disponibles para exportar',

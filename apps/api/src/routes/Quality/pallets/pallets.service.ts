@@ -55,6 +55,18 @@ export class PalletsService {
       WHERE TRUE
       ${query.folio ? sql`AND pallets.folio = ${Number(query.folio) || 0}` : sql``}
       ${query.clientId ? sql`AND pallets."clientId" = ${query.clientId}` : sql``}
+      ${
+        query.job
+          ? sql`AND EXISTS (SELECT 1 FROM pallet_contents pc JOIN jobs j ON j.id = pc."jobId"
+              WHERE pc."palletId" = pallets.id AND j.ref ILIKE ${'%' + query.job + '%'})`
+          : sql``
+      }
+      ${
+        query.programation
+          ? sql`AND EXISTS (SELECT 1 FROM pallet_contents pc JOIN jobs j ON j.id = pc."jobId"
+              WHERE pc."palletId" = pallets.id AND j.programation ILIKE ${'%' + query.programation + '%'})`
+          : sql``
+      }
       ${query.pending === 'true' ? sql`AND pallets."exportOrderId" IS NULL` : sql``}
       ${query.pending === 'false' ? sql`AND pallets."exportOrderId" IS NOT NULL` : sql``}
       ORDER BY pallets.id DESC
@@ -236,6 +248,10 @@ export class PalletsService {
   async getExportOrders(query: z.infer<typeof exportOrdersFilterSchema>) {
     return sql`
       SELECT eo.id, eo.date, eo.created_at, clients.name AS client,
+        (SELECT string_agg(DISTINCT j.ref, ', ' ORDER BY j.ref) FROM pallets p
+          JOIN pallet_contents pc ON pc."palletId" = p.id
+          JOIN jobs j ON j.id = pc."jobId"
+          WHERE p."exportOrderId" = eo.id) AS jobs,
         (SELECT COUNT(*)::int FROM pallets p WHERE p."exportOrderId" = eo.id) AS pallets,
         (SELECT COALESCE(SUM(pc.amount), 0)::int FROM pallets p
           JOIN pallet_contents pc ON pc."palletId" = p.id

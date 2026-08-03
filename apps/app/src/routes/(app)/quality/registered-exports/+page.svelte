@@ -52,9 +52,10 @@
 		<TableHead>No.</TableHead>
 		<TableHead>Fecha</TableHead>
 		<TableHead>Cliente</TableHead>
+		<TableHead>Job(s)</TableHead>
 		<TableHead>Pallets</TableHead>
-		<TableHead>Piezas</TableHead>
 		<TableHead>Cajas</TableHead>
+		<TableHead>Piezas</TableHead>
 	</TableHeader>
 	<TableBody>
 		{#each $orders?.data || [] as order}
@@ -82,9 +83,10 @@
 				<TableCell class="font-semibold">{order.id}</TableCell>
 				<TableCell>{formatDate(order.date)}</TableCell>
 				<TableCell>{order.client}</TableCell>
+				<TableCell class="max-w-48 truncate">{order.jobs || ''}</TableCell>
 				<TableCell>{order.pallets}</TableCell>
-				<TableCell>{order.pieces}</TableCell>
 				<TableCell>{order.boxes}</TableCell>
+				<TableCell>{order.pieces}</TableCell>
 			</TableRow>
 		{/each}
 	</TableBody>
