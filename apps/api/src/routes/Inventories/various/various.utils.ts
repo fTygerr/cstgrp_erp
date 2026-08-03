@@ -270,23 +270,53 @@ export async function processJob(text: string) {
     if (text.includes('CrewSize')) {
       for (let j = i; j < i + 200; j++) {
         if (/^(\d+,)*\d+\.\d{5}$/.test(operationsLines[j])) {
+          // Los valores de las columnas llegan fusionados o separados de forma
+          // impredecible según el espaciado del PDF, así que se aplana todo lo
+          // que sigue a la cantidad (hasta el marcador *NN* del barcode) en
+          // palabras individuales antes de clasificarlas por patrón.
+          const words: string[] = [];
+          for (let k = j + 1; k < j + 15; k++) {
+            const token = (operationsLines[k] ?? '').trim();
+            if (/^\*\d+\*$/.test(token) || token.includes('OPERATIONS')) break;
+            words.push(...token.split(/\s+/));
+          }
+
+          const numbers: number[] = [];
           let crewSize = NaN;
-          for (let k = j; k < j + 10; k++) {
-            if (
-              /^\d{1,2}\/\d{1,2}\/\d{4}\s\d+\.\d{2}$/.test(operationsLines[k])
-            ) {
-              crewSize = Number(operationsLines[k].split(' ')[1]);
+          let pastDates = false;
+          for (const word of words) {
+            if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(word)) {
+              pastDates = true;
+            } else if (/^(\d+,)*\d+\.\d{2}$/.test(word)) {
+              if (pastDates) {
+                crewSize = Number(word.replaceAll(',', ''));
+                break;
+              }
+              numbers.push(Number(word.replaceAll(',', '')));
+            }
+          }
+
+          // numbers queda [res, setup, prod, standard]; si el crew aparece
+          // antes de las fechas en vez de después, queda al inicio del arreglo.
+          if (isNaN(crewSize) && numbers.length >= 5) crewSize = numbers.shift();
+          if (isNaN(crewSize)) crewSize = 1;
+          const setup = numbers[1] ?? 0;
+          const prod = numbers[2] ?? 0;
+
+          // El código está normalmente 2 tokens antes de la cantidad, pero la
+          // descripción puede partirse en varios tokens: se ancla al número de
+          // secuencia (entero solo) y se toma el token siguiente.
+          let code = operationsLines[j - 2];
+          for (let k = j - 1; k > j - 8 && k > i; k--) {
+            if (/^\d{1,3}$/.test((operationsLines[k] ?? '').trim())) {
+              code = operationsLines[k + 1];
+              break;
             }
           }
 
           operations.push({
-            code: operationsLines[j - 2],
-            minutes: (
-              (Number(operationsLines[j + 2].replaceAll(',', '')) +
-                Number(operationsLines[j + 3].replaceAll(',', ''))) *
-              60 *
-              crewSize
-            ).toFixed(2),
+            code,
+            minutes: ((setup + prod) * 60 * crewSize).toFixed(2),
             area: 'produccion',
           });
           break;
