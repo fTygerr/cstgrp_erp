@@ -126,12 +126,12 @@ export class PalletsService {
           })}`;
           folios.push(`${job.client}-${row.combineFolio} (combinado)`);
         } else {
-          const [{ palletSeq }] = await sql`
-            UPDATE clients SET "palletSeq" = "palletSeq" + 1
-            WHERE id = ${job.clientId} RETURNING "palletSeq"`;
+          // folio global único para toda la empresa (aclaración de Juan 04/08)
+          const [{ folio }] =
+            await sql`SELECT nextval('pallet_seq')::int AS folio`;
 
           const [pallet] = await sql`INSERT INTO pallets ${sql({
-            folio: palletSeq,
+            folio,
             clientId: job.clientId,
           })} RETURNING id`;
 
@@ -141,7 +141,7 @@ export class PalletsService {
             amount: row.amount,
             boxes: row.boxes,
           })}`;
-          folios.push(`${job.client}-${palletSeq}`);
+          folios.push(`${job.client}-${folio}`);
         }
       }
 
@@ -178,10 +178,11 @@ export class PalletsService {
 
       await sql`DELETE FROM pallets WHERE id = ${body.id}`;
 
-      // if it was the client's latest folio, roll the counter back so the
-      // number gets reused; historical gaps are never reused
-      await sql`UPDATE clients SET "palletSeq" = "palletSeq" - 1
-        WHERE id = ${pallet.clientId} AND "palletSeq" = ${pallet.folio}`;
+      // if it held the newest folio ever issued, roll the sequence back so
+      // the number gets reused; historical gaps are never reused
+      const [{ last_value }] = await sql`SELECT last_value FROM pallet_seq`;
+      if (Number(last_value) === Number(pallet.folio))
+        await sql`SELECT setval('pallet_seq', ${pallet.folio}, false)`;
 
       await this.req.record(
         `Elimino el pallet ${pallet.client}-${pallet.folio}`,

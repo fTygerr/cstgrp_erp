@@ -21,18 +21,16 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 - [ ] `2026-07-30_phase2b_pl_exportorders.sql` — exportorders.destinyId + order_destiny.exportOrderId
 - [ ] `2026-07-31_obs_packing_list.sql` — pallets.destinyId + packslip_seq (Pack Slip folio)
 - [ ] `2026-08-04_obs0308-2_export_comment.sql` — exportorders.comment (cuadro Comentarios en el PDF de la Orden de Exportación, obs 03/08-02)
+- [ ] `2026-08-04_obs0308-3_global_pallet_seq.sql` — secuencia global `pallet_seq` (folio de pallet único para toda la empresa) + drop de clients.palletSeq
 
 (`2026-07-21_phase1_export_movements.sql` was already applied to prod on 2026-07-23 — do NOT re-run.)
 
-### 2. Seed pallet folio counters (BLOCKER — needs Juan's numbers)
-Per-client current physical pallet number, so folios continue instead of starting at 1:
+### 2. Seed the pallet folio (BLOCKER — needs Juan's number)
+El folio de pallet es UN SOLO consecutivo para toda la empresa (aclaración de
+Juan 04/08 — nunca se repite entre clientes). Pedirle el ÚLTIMO número físico
+de pallet usado:
 ```sql
--- fill in Juan's numbers:
-UPDATE clients SET "palletSeq" = <n> WHERE name = 'CSI';
-UPDATE clients SET "palletSeq" = <n> WHERE name = 'ZENPET';
-UPDATE clients SET "palletSeq" = <n> WHERE name = 'OSCAR V';
-UPDATE clients SET "palletSeq" = <n> WHERE name = 'HEADREST';
-UPDATE clients SET "palletSeq" = <n> WHERE name = 'CST GROUP';
+SELECT setval('pallet_seq', <último número de pallet usado>, true);  -- el siguiente será +1
 ```
 
 ### 3. Grant the new `zenpet` permission (ZenPet Datos section)
@@ -44,9 +42,10 @@ WHERE username IN ('JUAN MUÑOZ');  -- add others if Juan wants
 
 ### 4. Seed the Pack Slip folio (BLOCKER — needs Juan's number)
 The new PL generator assigns consecutive Pack Slip #s from `packslip_seq`
-(created at 1000 in testing). Ask Juan for the NEXT real pack slip number and:
+(created at 1000 in testing). Pedirle a Juan el ÚLTIMO pack slip usado
+(mismo formato que el de pallets, para no confundir siguiente vs último):
 ```sql
-SELECT setval('packslip_seq', <next número de pack slip>, false);
+SELECT setval('packslip_seq', <último pack slip usado>, true);  -- el siguiente será +1
 ```
 
 ### 5. Grant the new `ie_packing_list` permission (Packing List submodule)
