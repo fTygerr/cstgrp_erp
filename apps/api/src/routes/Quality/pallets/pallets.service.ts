@@ -212,7 +212,7 @@ export class PalletsService {
 
     await sql.begin(async (sql) => {
       const pallets = await sql`
-        SELECT id, folio, "clientId", "exportOrderId" FROM pallets
+        SELECT id, folio, "clientId", "exportOrderId", "destinyId" FROM pallets
         WHERE id IN ${sql(body.palletIds)}`;
 
       if (pallets.length !== body.palletIds.length)
@@ -220,6 +220,11 @@ export class PalletsService {
       if (pallets.some((p) => p.exportOrderId))
         throw new HttpException(
           'Uno o varios pallets ya están en una exportación',
+          400,
+        );
+      if (pallets.some((p) => p.destinyId))
+        throw new HttpException(
+          'Uno o varios pallets ya salieron en un packing list',
           400,
         );
       const clientIds = new Set(pallets.map((p) => String(p.clientId)));
