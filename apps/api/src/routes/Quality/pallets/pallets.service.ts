@@ -178,10 +178,16 @@ export class PalletsService {
 
       await sql`DELETE FROM pallets WHERE id = ${body.id}`;
 
-      // if it held the newest folio ever issued, roll the sequence back so
-      // the number gets reused; historical gaps are never reused
-      const [{ last_value }] = await sql`SELECT last_value FROM pallet_seq`;
-      if (Number(last_value) === Number(pallet.folio))
+      // if it held the newest folio issued, roll the sequence back so the
+      // number gets reused; is_called=false means a rollback already apartó
+      // last_value, so the newest ISSUED folio is last_value - 1 (permite
+      // borrar en cadena 31→30→29 sin dejar huecos)
+      const [{ last_value, is_called }] =
+        await sql`SELECT last_value, is_called FROM pallet_seq`;
+      const newestIssued = is_called
+        ? Number(last_value)
+        : Number(last_value) - 1;
+      if (newestIssued === Number(pallet.folio))
         await sql`SELECT setval('pallet_seq', ${pallet.folio}, false)`;
 
       await this.req.record(
@@ -288,11 +294,15 @@ export class PalletsService {
         await sql`DELETE FROM exportorders WHERE id = ${body.id} RETURNING id`;
       if (!deleted) throw new HttpException('Orden no existente', 400);
 
-      // if it held the newest number ever issued, roll the sequence back so
-      // the number gets reused; historical gaps are never reused
-      const [{ last_value }] =
-        await sql`SELECT last_value FROM exportorders_id_seq`;
-      if (Number(last_value) === Number(deleted.id))
+      // if it held the newest number issued, roll the sequence back so the
+      // number gets reused (is_called=false ⇒ newest issued = last_value - 1,
+      // permite borrar en cadena sin dejar huecos)
+      const [{ last_value, is_called }] =
+        await sql`SELECT last_value, is_called FROM exportorders_id_seq`;
+      const newestIssued = is_called
+        ? Number(last_value)
+        : Number(last_value) - 1;
+      if (newestIssued === Number(deleted.id))
         await sql`SELECT setval('exportorders_id_seq', ${deleted.id}, false)`;
 
       await this.req.record(
