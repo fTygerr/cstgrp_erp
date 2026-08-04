@@ -14,7 +14,7 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ---
 
-## PENDING for next release (as of 2026-07-31)
+## PENDING for next release (as of 2026-08-04 — release planeado esta noche con visto bueno de Juan)
 
 ### 1. Migrations to run on prod, in order (already applied to testing)
 - [ ] `2026-07-28_phase2_pallets.sql` — pallets/exportorders/pallet_contents tables + clients.palletSeq
