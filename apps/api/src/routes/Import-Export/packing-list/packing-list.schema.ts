@@ -28,10 +28,12 @@ export const downloadPackingListSchema = z.object({
 
 export const previewPackingListSchema = z.object({
   jobIds: z.array(intSchema).min(1, 'Selecciona al menos un job'),
+  excludedPalletIds: z.array(intSchema).optional(),
 });
 
 export const createPackingListSchema = z.object({
   jobIds: z.array(intSchema).min(1, 'Selecciona al menos un job'),
+  excludedPalletIds: z.array(intSchema).optional(),
   shipDate: z.string(),
   shipVia: intSchema.nullish(),
   consignee: intSchema.nullish(),

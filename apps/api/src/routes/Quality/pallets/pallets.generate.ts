@@ -78,7 +78,7 @@ export async function generateExportOrderPdf(
       boxes: number;
     }[];
   }[],
-  opts: { title?: string; packSlip?: string } = {},
+  opts: { title?: string; packSlip?: string; comment?: string } = {},
 ) {
   const template = await fs.readFile(
     path.join(TEMPLATES, 'quality', 'export-order.html'),
@@ -110,6 +110,7 @@ export async function generateExportOrderPdf(
     packSlip: opts.packSlip || null,
     date: format(order.date, 'dd-MMM'),
     client: order.client,
+    comment: opts.comment || null,
     rows,
     totalPieces,
     totalBoxes,

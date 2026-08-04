@@ -59,6 +59,7 @@
 		<TableHead>Job/PO</TableHead>
 		<TableHead>Programación</TableHead>
 		<TableHead>Parte</TableHead>
+		<TableHead>Descripción</TableHead>
 		<TableHead>Cliente</TableHead>
 		<TableHead>Cantidad</TableHead>
 		<TableHead>Liberado</TableHead>
@@ -78,6 +79,7 @@
 				<TableCell>{job.ref}</TableCell>
 				<TableCell>{job.programation}</TableCell>
 				<TableCell>{job.part}</TableCell>
+				<TableCell class="max-w-56 truncate">{job.description || ''}</TableCell>
 				<TableCell>{job.client}</TableCell>
 				<TableCell>{job.amount}</TableCell>
 				<TableCell>{job.calidad}</TableCell>

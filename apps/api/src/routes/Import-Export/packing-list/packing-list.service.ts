@@ -309,6 +309,11 @@ export class PackingListService {
       WHERE p."destinyId" IS NULL
         AND EXISTS (SELECT 1 FROM pallet_contents pc
           WHERE pc."palletId" = p.id AND pc."jobId" IN ${sql(body.jobIds)})
+        ${
+          body.excludedPalletIds?.length
+            ? sql`AND p.id NOT IN ${sql(body.excludedPalletIds)}`
+            : sql``
+        }
       ORDER BY p.folio`;
 
     const palletIds = pallets.map((p) => p.id);
@@ -360,7 +365,12 @@ export class PackingListService {
         SELECT DISTINCT p.id FROM pallets p
         JOIN pallet_contents pc ON pc."palletId" = p.id
         WHERE pc."jobId" IN ${sql(body.jobIds)}
-          AND p."destinyId" IS NULL`;
+          AND p."destinyId" IS NULL
+          ${
+            body.excludedPalletIds?.length
+              ? sql`AND p.id NOT IN ${sql(body.excludedPalletIds)}`
+              : sql``
+          }`;
       if (!pallets.length)
         throw new HttpException(
           'Los jobs seleccionados no tienen pallets disponibles para exportar',

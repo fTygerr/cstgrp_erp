@@ -231,6 +231,7 @@ export class PalletsService {
 
       const [order] = await sql`INSERT INTO exportorders ${sql({
         clientId: pallets[0].clientId,
+        comment: body.comment?.trim() || null,
       })} RETURNING id`;
       orderId = order.id;
 
@@ -252,6 +253,14 @@ export class PalletsService {
           JOIN pallet_contents pc ON pc."palletId" = p.id
           JOIN jobs j ON j.id = pc."jobId"
           WHERE p."exportOrderId" = eo.id) AS jobs,
+        (SELECT string_agg(DISTINCT j.part, ', ' ORDER BY j.part) FROM pallets p
+          JOIN pallet_contents pc ON pc."palletId" = p.id
+          JOIN jobs j ON j.id = pc."jobId"
+          WHERE p."exportOrderId" = eo.id) AS parts,
+        (SELECT string_agg(DISTINCT j.description, ', ' ORDER BY j.description) FROM pallets p
+          JOIN pallet_contents pc ON pc."palletId" = p.id
+          JOIN jobs j ON j.id = pc."jobId"
+          WHERE p."exportOrderId" = eo.id) AS descriptions,
         (SELECT COUNT(*)::int FROM pallets p WHERE p."exportOrderId" = eo.id) AS pallets,
         (SELECT COALESCE(SUM(pc.amount), 0)::int FROM pallets p
           JOIN pallet_contents pc ON pc."palletId" = p.id
@@ -290,7 +299,7 @@ export class PalletsService {
 
   async downloadExportOrder(body: z.infer<typeof idObjectSchema>) {
     const [order] = await sql`
-      SELECT eo.id, eo.date, clients.name AS client
+      SELECT eo.id, eo.date, eo.comment, clients.name AS client
       FROM exportorders eo JOIN clients ON clients.id = eo."clientId"
       WHERE eo.id = ${body.id}`;
     if (!order) throw new HttpException('Orden no existente', 400);
@@ -305,6 +314,8 @@ export class PalletsService {
       FROM pallets WHERE "exportOrderId" = ${body.id}
       ORDER BY pallets.folio ASC`;
 
-    return generateExportOrderPdf(order as any, pallets as any);
+    return generateExportOrderPdf(order as any, pallets as any, {
+      comment: order.comment,
+    });
   }
 }

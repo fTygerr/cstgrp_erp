@@ -20,6 +20,7 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 - [ ] `2026-07-28_phase2_pallets.sql` — pallets/exportorders/pallet_contents tables + clients.palletSeq
 - [ ] `2026-07-30_phase2b_pl_exportorders.sql` — exportorders.destinyId + order_destiny.exportOrderId
 - [ ] `2026-07-31_obs_packing_list.sql` — pallets.destinyId + packslip_seq (Pack Slip folio)
+- [ ] `2026-08-04_obs0308-2_export_comment.sql` — exportorders.comment (cuadro Comentarios en el PDF de la Orden de Exportación, obs 03/08-02)
 
 (`2026-07-21_phase1_export_movements.sql` was already applied to prod on 2026-07-23 — do NOT re-run.)
 

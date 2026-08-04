@@ -14,6 +14,8 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
 	import DeletePopUp from '$lib/components/complex/DeletePopUp.svelte';
+	import { Dialog, DialogBody, DialogContent } from '$lib/components/ui/dialog';
+	import { Textarea } from '$lib/components/ui/textarea';
 	import { downloadFile } from '$lib/utils/files';
 	import { showSuccess, showError } from '$lib/utils/showToast';
 	import { getClients, getOptions } from '$lib/utils/queries';
@@ -31,6 +33,8 @@
 
 	let filters = $state({ folio: '', clientId: '', pending: 'true', job: '', programation: '' });
 	let selected: Record<number, any> = $state({});
+	let showComment = $state(false);
+	let comment = $state('');
 	let showDelete = $state(false);
 	const canDelete = $derived(($userData?.permissions?.['quality'] || 0) >= 3);
 	let toDelete: any = $state(null);
@@ -54,11 +58,21 @@
 		selected = { ...selected, [pallet.id]: pallet };
 	}
 
+	function openExportDialog() {
+		if (!selectedList.length) return showError(null, 'Selecciona al menos un pallet');
+		comment = '';
+		showComment = true;
+	}
+
 	async function createExport() {
 		const ids = selectedList.map((p: any) => p.id);
 		if (!ids.length) return showError(null, 'Selecciona al menos un pallet');
-		const { data } = await api.post('/quality/exportorders', { palletIds: ids });
+		const { data } = await api.post('/quality/exportorders', {
+			palletIds: ids,
+			comment: comment.trim() || null
+		});
 		selected = {};
+		showComment = false;
 		refetch(['registered-pallets']);
 		refetch(['registered-exports']);
 		showSuccess(`Orden de exportación ${data.id} creada`);
@@ -92,7 +106,7 @@
 			class="min-w-36 max-w-44"
 		/>
 		<Select menu items={pendingOptions} bind:value={filters.pending} class="min-w-36 max-w-36" />
-		<Button class="ml-auto h-8" onclick={createExport} disabled={!selectedList.length}>
+		<Button class="ml-auto h-8" onclick={openExportDialog} disabled={!selectedList.length}>
 			Orden de Exportación {selectedList.length ? `(${selectedList.length})` : ''}
 		</Button>
 	</div>
@@ -159,6 +173,31 @@
 		{/each}
 	</TableBody>
 </CusTable>
+
+<Dialog bind:open={showComment}>
+	<DialogContent class="h-auto sm:max-w-lg">
+		<DialogBody class="border-none">
+			<h2 class="text-lg font-semibold">
+				Orden de Exportación ({selectedList.length}
+				{selectedList.length === 1 ? 'pallet' : 'pallets'})
+			</h2>
+			<p class="mt-1 text-sm text-muted-foreground">
+				Comentarios (aparecerán en el PDF de la orden):
+			</p>
+			<Textarea
+				bind:value={comment}
+				rows={4}
+				maxlength={500}
+				class="mt-2"
+				placeholder="Escribe un comentario (opcional)"
+			/>
+			<div class="mt-4 flex justify-end gap-2">
+				<Button onclick={() => (showComment = false)} variant="outline">Cancelar</Button>
+				<Button onclick={createExport}>Crear orden</Button>
+			</div>
+		</DialogBody>
+	</DialogContent>
+</Dialog>
 
 <DeletePopUp
 	bind:show={showDelete}

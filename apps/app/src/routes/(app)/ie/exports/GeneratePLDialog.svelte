@@ -36,6 +36,7 @@
 	let options: any = $state(null);
 	let preview: any = $state(null);
 	let jobIds: number[] = $state([]);
+	let excludedPallets: { id: number; folio: number }[] = $state([]);
 	let saving = $state(false);
 	let showDesglose = $state(false);
 	let missingFields: string[] = $state([]);
@@ -57,6 +58,7 @@
 			shipTo: ''
 		};
 		preview = null;
+		excludedPallets = [];
 		showDesglose = false;
 		confirmStep = false;
 		missingFields = [];
@@ -65,7 +67,12 @@
 	async function fetchAll() {
 		try {
 			if (!options) options = (await api.get('/ie/packing-list-generate/options')).data;
-			preview = (await api.post('/ie/packing-list-generate/preview', { jobIds })).data;
+			preview = (
+				await api.post('/ie/packing-list-generate/preview', {
+					jobIds,
+					excludedPalletIds: excludedPallets.map((p) => p.id)
+				})
+			).data;
 		} catch (e) {
 			showError(e as any);
 		}
@@ -77,6 +84,16 @@
 			show = false;
 			return;
 		}
+		fetchAll();
+	}
+
+	function quitPallet(pallet: any) {
+		excludedPallets = [...excludedPallets, { id: pallet.id, folio: pallet.folio }];
+		fetchAll();
+	}
+
+	function restorePallet(id: number) {
+		excludedPallets = excludedPallets.filter((p) => p.id !== id);
 		fetchAll();
 	}
 
@@ -106,6 +123,7 @@
 		try {
 			const body = {
 				jobIds,
+				excludedPalletIds: excludedPallets.map((p) => p.id),
 				shipDate: data.shipDate,
 				shipVia: data.shipVia || null,
 				consignee: data.consignee || null,
@@ -266,10 +284,32 @@
 
 					{#if showDesglose}
 						<span class="mt-2 text-sm font-semibold">Desglose de pallets</span>
+						{#if excludedPallets.length}
+							<div class="flex flex-wrap items-center gap-2 text-sm">
+								<span>Pallets quitados:</span>
+								{#each excludedPallets as p}
+									<Badge color="red">
+										{p.folio}
+										<button class="ml-1 underline" onclick={() => restorePallet(p.id)}>
+											regresar
+										</button>
+									</Badge>
+								{/each}
+							</div>
+						{/if}
 						<div class="grid gap-2 sm:grid-cols-2">
 							{#each preview?.pallets || [] as pallet}
 								<div class="rounded-md border p-2 text-sm">
-									<p class="font-semibold">Pallet {pallet.folio}</p>
+									<div class="flex items-center justify-between">
+										<p class="font-semibold">Pallet {pallet.folio}</p>
+										<Button
+											variant="outline"
+											class="h-6 px-2 text-xs text-destructive-foreground"
+											onclick={() => quitPallet(pallet)}
+										>
+											Quitar
+										</Button>
+									</div>
 									{#each pallet.contents || [] as c}
 										<p class="flex justify-between">
 											<span>{c.ref} — {c.part}</span>

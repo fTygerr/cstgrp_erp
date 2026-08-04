@@ -38,6 +38,7 @@ export const updateContentSchema = z.object({
 
 export const createExportOrderSchema = z.object({
   palletIds: z.array(idSchema).nonempty('Selecciona al menos un pallet'),
+  comment: z.string().max(500).nullish(),
 });
 
 export const exportOrdersFilterSchema = z.object({

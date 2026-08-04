@@ -53,6 +53,8 @@
 		<TableHead>Fecha</TableHead>
 		<TableHead>Cliente</TableHead>
 		<TableHead>Job(s)</TableHead>
+		<TableHead>No. Parte</TableHead>
+		<TableHead>Descripción</TableHead>
 		<TableHead>Pallets</TableHead>
 		<TableHead>Cajas</TableHead>
 		<TableHead>Piezas</TableHead>
@@ -84,6 +86,8 @@
 				<TableCell>{formatDate(order.date)}</TableCell>
 				<TableCell>{order.client}</TableCell>
 				<TableCell class="max-w-48 truncate">{order.jobs || ''}</TableCell>
+				<TableCell class="max-w-48 truncate">{order.parts || ''}</TableCell>
+				<TableCell class="max-w-56 truncate">{order.descriptions || ''}</TableCell>
 				<TableCell>{order.pallets}</TableCell>
 				<TableCell>{order.boxes}</TableCell>
 				<TableCell>{order.pieces}</TableCell>

@@ -77,6 +77,23 @@
         padding: 4px;
       }
       .center { text-align: center; }
+      .comments {
+        margin-top: auto;
+        margin-bottom: auto;
+        border: 2px solid #000;
+        padding: 10px 14px;
+        min-height: 70px;
+      }
+      .comments .comments-label {
+        font-weight: bold;
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+      .comments .comments-text {
+        font-size: 15px;
+        font-weight: 600;
+        white-space: pre-wrap;
+      }
       .totals {
         margin-top: auto;
         display: grid;
@@ -134,6 +151,12 @@
           {{/rows}}
         </tbody>
       </table>
+      {{#comment}}
+      <div class="comments">
+        <div class="comments-label">COMENTARIOS:</div>
+        <div class="comments-text">{{comment}}</div>
+      </div>
+      {{/comment}}
       <div class="totals">
         <span class="label">TOTAL PIEZAS</span><span class="value">{{totalPieces}}</span>
         <span class="label">TOTAL CAJAS</span><span class="value">{{totalBoxes}}</span>
