@@ -22,7 +22,9 @@ import {
   updateAmountSchema,
   updateMovementDateSchema,
   updatePurchaseAmountSchema,
+  partialSchema,
 } from './movements.schema';
+
 import { idObjectSchema } from 'src/utils/schemas';
 
 @Controller('materialmovements')
@@ -68,6 +70,11 @@ export class MovementsController {
   @Post('adjustment')
   postAdjustment(@Body(new ZodPiPe(adjustmentSchema)) body) {
     return this.movementsService.postAdjustment(body);
+  }
+
+  @Put('partial')
+  splitMovement(@Body(new ZodPiPe(partialSchema)) body) {
+    return this.movementsService.splitMovement(body);
   }
 
   @Put('activate')

@@ -121,6 +121,47 @@ export class MovementsService {
     return movement.active;
   }
 
+  // Entrada/salida parcial (obs 04/08-02): divide el movimiento pendiente en
+  // una parte activa (afecta inventario ya) y el restante sigue pendiente.
+  async splitMovement(body: { id: number; amount: number }) {
+    let result;
+    await sql.begin(async (sql) => {
+      const [movement] = await sql`select * from materialmovements where id = ${body.id}`;
+      if (!movement) throw new HttpException('Movimiento no existente', 400);
+      if (movement.active)
+        throw new HttpException('El movimiento ya está completado', 400);
+
+      const sign = Number(movement.amount) < 0 ? -1 : 1;
+      const remaining = Math.abs(Number(movement.amount));
+      if (body.amount >= remaining)
+        throw new HttpException(
+          `La cantidad parcial debe ser menor al restante (${remaining}); si es igual o mayor usa el check`,
+          400,
+        );
+
+      await sql`insert into materialmovements
+        ("materialId", amount, "realAmount", active, "activeDate", extra,
+          "importId", "purchaseId", type, "jobId", "reqId", "orderDestinyId")
+        values (${movement.materialId}, ${sign * body.amount}, ${sign * body.amount},
+          true, now(), ${movement.extra}, ${movement.importId}, ${movement.purchaseId},
+          ${movement.type}, ${movement.jobId}, ${movement.reqId}, ${movement.orderDestinyId})`;
+
+      await sql`update materialmovements
+        set amount = ${sign * (remaining - body.amount)},
+          "realAmount" = ${sign * (remaining - body.amount)}
+        where id = ${body.id}`;
+
+      await updateMaterialAmount(movement.materialId, sql);
+      const [{ code }] = await sql`select code from materials where id = ${movement.materialId}`;
+      await this.req.record(
+        `Registro ${sign > 0 ? 'entrada' : 'salida'} parcial de ${body.amount} de ${code}`,
+        sql,
+      );
+      result = { remaining: remaining - body.amount };
+    });
+    return result;
+  }
+
   async postScrap(body: z.infer<typeof scrapSchema>) {
     try {
       await sql.begin(async (sql) => {

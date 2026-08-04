@@ -9,6 +9,8 @@ import {
 } from './orders.schema';
 import { z } from 'zod/v4';
 import sql from 'src/utils/db';
+import exceljs from 'exceljs';
+import { updateMaterialAmount } from 'src/utils/functions';
 import { ContextProvider } from 'src/interceptors/context.provider';
 import path from 'path';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
@@ -21,7 +23,15 @@ export class OrdersService {
 
   async findAllOrders(body: z.infer<typeof searchSchema>) {
     const orders =
-      await sql`Select *, (select name from purchasesuppliers where id = purchaseorders."supplierId") as supplier from purchaseorders
+      await sql`Select *, (select name from purchasesuppliers where id = purchaseorders."supplierId") as supplier,
+        (case
+          when not exists (select 1 from materialmovements mm where mm."purchaseId" = purchaseorders.id)
+            then 'abierta'
+          when not exists (select 1 from materialmovements mm where mm."purchaseId" = purchaseorders.id and mm.active = false)
+            then 'cerrada'
+          when exists (select 1 from materialmovements mm where mm."purchaseId" = purchaseorders.id and mm.active = true)
+            then 'parcial'
+          else 'abierta' end) as status from purchaseorders
       ${body.name ? sql`WHERE ref::text ILIKE ${'%' + body.name + '%'}` : sql``}
       ${body.name ? sql`OR (select name from purchasesuppliers where id = purchaseorders."supplierId") ILIKE ${'%' + body.name + '%'}` : sql``}
       order by ref desc limit 150`;
@@ -231,5 +241,67 @@ export class OrdersService {
 
     const pdfBytes = await pdfDoc.save();
     return pdfBytes;
+  }
+
+  // Cierre manual de OC (obs 04/08-02): confirma fecha de recepción y activa
+  // los movimientos pendientes de la orden (cantidad = lo esperado restante).
+  async closeOrder(body: { id: number; date: string }) {
+    await sql.begin(async (sql) => {
+      const [order] = await sql`select ref from purchaseorders where id = ${body.id}`;
+      if (!order) throw new HttpException('Orden no existente', 400);
+      const pending = await sql`update materialmovements
+        set active = true, "activeDate" = ${body.date}
+        where "purchaseId" = ${body.id} and active = false
+        returning "materialId"`;
+      for (const m of new Set(pending.map((p) => p.materialId)))
+        await updateMaterialAmount(m, sql);
+      await this.req.record(`Cerro la OC ${order.ref}`, sql);
+    });
+    return;
+  }
+
+  // Excel de OCs (obs 04/08-02): toda la información de cada OC en columnas
+  async exportOrders() {
+    const orders = await sql`Select purchaseorders.*,
+      (select name from purchasesuppliers where id = purchaseorders."supplierId") as supplier,
+      (case
+        when not exists (select 1 from materialmovements mm where mm."purchaseId" = purchaseorders.id) then 'ABIERTA'
+        when not exists (select 1 from materialmovements mm where mm."purchaseId" = purchaseorders.id and mm.active = false) then 'CERRADA'
+        when exists (select 1 from materialmovements mm where mm."purchaseId" = purchaseorders.id and mm.active = true) then 'PARCIAL'
+        else 'ABIERTA' end) as status
+      from purchaseorders order by purchaseorders.ref desc`;
+
+    const wb = new exceljs.Workbook();
+    const ws = wb.addWorksheet('Ordenes de compra');
+    ws.columns = [
+      { header: 'OC', key: 'ref', width: 12 },
+      { header: 'Status', key: 'status', width: 12 },
+      { header: 'Proveedor', key: 'supplier', width: 30 },
+      { header: 'Fecha', key: 'created_at', width: 14 },
+      { header: 'Due', key: 'due', width: 14 },
+      { header: 'Emisor', key: 'issuer', width: 22 },
+      { header: 'Empresa', key: 'business', width: 22 },
+      { header: 'Direccion', key: 'address', width: 30 },
+      { header: 'Moneda', key: 'currency', width: 10 },
+      { header: 'Neto', key: 'net', width: 12 },
+      { header: 'IVA', key: 'iva', width: 10 },
+      { header: 'Tax', key: 'tax', width: 10 },
+      { header: 'Total', key: 'total', width: 12 },
+      { header: 'Productos', key: 'products', width: 60 },
+      { header: 'Comentarios', key: 'comments', width: 40 },
+    ];
+    ws.getRow(1).font = { bold: true };
+    for (const o of orders)
+      ws.addRow({
+        ...o,
+        created_at: o.created_at?.toISOString?.().slice(0, 10) || o.created_at,
+        due: o.due?.toISOString?.().slice(0, 10) || o.due,
+        products: Array.isArray(o.products)
+          ? o.products
+              .map((p: any) => `${p.code || p.description || ''} x${p.amount || ''}`)
+              .join(' | ')
+          : '',
+      });
+    return Buffer.from(await wb.xlsx.writeBuffer());
   }
 }

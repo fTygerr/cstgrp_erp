@@ -64,3 +64,8 @@ export const updatePurchaseAmountSchema = z.object({
   id: idSchema,
   amount: absoluteNumberSchema,
 });
+
+export const partialSchema = z.object({
+  id: idSchema,
+  amount: z.number().positive(),
+});

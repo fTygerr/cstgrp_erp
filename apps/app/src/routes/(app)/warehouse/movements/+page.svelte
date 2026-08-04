@@ -9,7 +9,7 @@
 	import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '$lib/components/ui/table';
 	import api from '$lib/utils/server';
 	import { showSuccess } from '$lib/utils/showToast';
-	import { FileDown, Pen, Search } from 'lucide-svelte';
+	import { CirclePercent, FileDown, Pen, Search } from 'lucide-svelte';
 	import MenuBar from '$lib/components/basic/MenuBar.svelte';
 	import { format } from 'date-fns';
 	import MovementsMenu from './MovementsMenu.svelte';
@@ -79,6 +79,20 @@
 		showSuccess(result.data ? 'Check eliminado' : 'Material surtido');
 		show2 = false;
 		refetch(['material-movements']);
+	}
+
+	let showPartial = $state(false);
+	let partialMovement: any = $state(null);
+	let partialAmount = $state('');
+
+	async function submitPartial() {
+		const { data } = await api.put('/materialmovements/partial', {
+			id: partialMovement.id,
+			amount: Number(partialAmount)
+		});
+		showPartial = false;
+		refetch(['material-movements']);
+		showSuccess(`Parcial registrado; restante: ${data.remaining}`);
 	}
 
 	async function changeAmount(id: string, amount: string) {
@@ -214,15 +228,28 @@
 						</Badge>
 					{/if}</TableCell
 				>
-				<TableCell class="px-2"
-					><Checkbox
+				<TableCell class="px-2">
+					{#if !movement.active && $userData?.permissions.materialmovements >= 2}
+						<Button
+							size="icon"
+							variant="outline"
+							class="mr-1"
+							title={parseFloat(movement.amount) >= 0 ? 'Entrada parcial' : 'Salida parcial'}
+							onclick={() => {
+								partialMovement = movement;
+								partialAmount = '';
+								showPartial = true;
+							}}><CirclePercent class="size-3.5" /></Button
+						>
+					{/if}
+					<Checkbox
 						onclick={(e) => {
 							e.preventDefault();
 							viewCheckModal(i);
 						}}
 						checked={movement.active}
-					/></TableCell
-				>
+					/>
+				</TableCell>
 			</TableRow>
 		{/each}
 	</TableBody>
@@ -237,3 +264,23 @@
 <MovementsMenu bind:show={show3} />
 <MovementsForm bind:show={show4} {selectedMovement} />
 <PurchaseMovementsForm bind:show={show5} {selectedMovement} />
+
+<Dialog bind:open={showPartial}>
+	<DialogContent class="h-auto sm:max-w-md">
+		<DialogBody class="border-none">
+			<h2 class="text-lg font-semibold">
+				{parseFloat(partialMovement?.amount) >= 0 ? 'Entrada parcial' : 'Salida parcial'} — {partialMovement?.code}
+			</h2>
+			<p class="mt-1 text-sm text-muted-foreground">
+				Restante del movimiento: {Math.abs(parseFloat(partialMovement?.amount || 0))}
+				{partialMovement?.measurement}. La cantidad parcial afecta el inventario de inmediato;
+				el check se completa cuando llegue el resto.
+			</p>
+			<Input class="mt-2" type="number" bind:value={partialAmount} placeholder="Cantidad parcial" />
+			<div class="mt-4 flex justify-end gap-2">
+				<Button onclick={() => (showPartial = false)} variant="outline">Cancelar</Button>
+				<Button onclick={submitPartial} disabled={!Number(partialAmount)}>Registrar</Button>
+			</div>
+		</DialogBody>
+	</DialogContent>
+</Dialog>

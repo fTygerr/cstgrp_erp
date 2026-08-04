@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   Param,
+  Header,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { ZodPiPe } from 'src/interceptors/validation/validation.pipe';
@@ -43,6 +44,18 @@ export class OrdersController {
   @Delete()
   delete(@Body(new ZodPiPe(deleteSchema)) body) {
     return this.ordersService.deleteOrder(body);
+  }
+
+  @Put('close')
+  closeOrder(@Body() body: any) {
+    return this.ordersService.closeOrder({ id: Number(body.id), date: body.date });
+  }
+
+  @Get('export')
+  @Header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+  @Header('Content-Disposition', 'attachment; filename="ordenes-compra.xlsx"')
+  exportOrders() {
+    return this.ordersService.exportOrders();
   }
 
   @Get('basic-data')

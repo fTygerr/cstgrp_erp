@@ -4,7 +4,7 @@
 	import { TableBody, TableCell, TableHeader, TableRow } from '$lib/components/ui/table';
 	import TableHead from '$lib/components/ui/table/table-head.svelte';
 	import api from '$lib/utils/server';
-	import { Copy, FileDown, PlusCircle } from 'lucide-svelte';
+	import { CheckCircle, Copy, FileDown, PlusCircle } from 'lucide-svelte';
 	import DeletePopUp from '$lib/components/complex/DeletePopUp.svelte';
 	import { showSuccess } from '$lib/utils/showToast';
 	import ComputersForm from './OrdersForm.svelte';
@@ -14,6 +14,8 @@
 	import { refetch } from '$lib/utils/query';
 	import { formatDate } from '$lib/utils/functions';
 	import { downloadFile } from '$lib/utils/files';
+	import { Badge } from '$lib/components/ui/badge';
+	import { Dialog, DialogBody, DialogContent } from '$lib/components/ui/dialog';
 	import { Input } from '$lib/components/ui/input';
 	import OptionsHead from '$lib/components/basic/OptionsHead.svelte';
 
@@ -24,6 +26,9 @@
 	let show: boolean = $state(false);
 	let show1: boolean = $state(false);
 	let selectedDevice: any = $state({});
+	let showClose = $state(false);
+	let toClose: any = $state(null);
+	let closeDate = $state('');
 
 	const computers = createQuery({
 		queryKey: ['purchases-orders'],
@@ -60,6 +65,12 @@
 		/>
 	{/snippet}
 	{#snippet right()}
+		<Button
+			variant="outline"
+			size="action"
+			onclick={() => downloadFile({ url: '/purchases/orders/export', name: 'ordenes-compra.xlsx' })}
+			><FileDown class=" size-3.5" />Excel</Button
+		>
 		<Button onclick={createDevice} size="action"><PlusCircle class=" size-3.5" />Crear orden</Button
 		>
 	{/snippet}
@@ -74,6 +85,7 @@
 		<TableHead class="">Impuesto</TableHead>
 		<TableHead class="">Total</TableHead>
 		<TableHead class="">Fecha</TableHead>
+		<TableHead class="">Status</TableHead>
 	</TableHeader>
 	<TableBody>
 		{#each $computers?.data as device, i}
@@ -98,7 +110,20 @@
 							},
 							name: 'Duplicar',
 							icon: Copy
-						}
+						},
+						...(device.status !== 'cerrada'
+							? [
+									{
+										fn: () => {
+											toClose = device;
+											closeDate = new Date().toISOString().slice(0, 10);
+											showClose = true;
+										},
+										name: 'Status (cerrar)',
+										icon: CheckCircle
+									}
+								]
+							: [])
 					]}
 				/>
 				<TableCell>{device.ref || ''}</TableCell>
@@ -107,12 +132,51 @@
 				<TableCell>{device.tax || ''}</TableCell>
 				<TableCell>{device.total || ''}</TableCell>
 				<TableCell>{formatDate(device.created_at) || ''}</TableCell>
+				<TableCell>
+					<Badge
+						color={device.status === 'cerrada'
+							? 'green'
+							: device.status === 'parcial'
+								? 'yellow'
+								: 'blue'}
+					>
+						{device.status === 'cerrada'
+							? 'Cerrada'
+							: device.status === 'parcial'
+								? 'Parcial'
+								: 'Abierta'}
+					</Badge>
+				</TableCell>
 			</TableRow>
 		{/each}
 	</TableBody>
 </CusTable>
 
 <ComputersForm bind:show bind:selectedDevice />
+
+<Dialog bind:open={showClose}>
+	<DialogContent class="h-auto sm:max-w-md">
+		<DialogBody class="border-none">
+			<h2 class="text-lg font-semibold">Cerrar OC {toClose?.ref}</h2>
+			<p class="mt-1 text-sm text-muted-foreground">
+				Confirma la fecha de recepción: se marcarán como recibidos los movimientos pendientes de
+				esta orden en almacén (afecta inventario).
+			</p>
+			<Input class="mt-2" type="date" bind:value={closeDate} />
+			<div class="mt-4 flex justify-end gap-2">
+				<Button onclick={() => (showClose = false)} variant="outline">Cancelar</Button>
+				<Button
+					onclick={async () => {
+						await api.put('/purchases/orders/close', { id: toClose.id, date: closeDate });
+						showClose = false;
+						refetch(['purchases-orders']);
+						showSuccess(`OC ${toClose.ref} cerrada`);
+					}}>Cerrar orden</Button
+				>
+			</div>
+		</DialogBody>
+	</DialogContent>
+</Dialog>
 <DeletePopUp
 	bind:show={show1}
 	text="Eliminar orden"
