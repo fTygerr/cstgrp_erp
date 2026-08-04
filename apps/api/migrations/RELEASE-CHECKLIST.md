@@ -68,8 +68,14 @@ WHERE username IN ('JUAN MUÑOZ');
 
 ---
 
-## SIGUIENTE ciclo — obs 04/08 (rama `obs-0408`, NO va en el release nocturno del 04/08)
-Cuando la rama se fusione a dev y Juan la valide en app2, agregar arriba:
+## SIGUIENTE ciclo — obs 04/08 (ya en dev/app2, NO va en el release nocturno del 04/08)
+**IMPORTANTE para el release de esta noche: fusionar a master SOLO hasta el
+commit `2006dbf` (lo validado por Juan), NO la punta de dev:**
+```sh
+git checkout master && git merge 2006dbf && git push --no-verify origin master
+```
+Las obs 04/08 (commit `a3084e0`) se quedan en dev/app2 para validación de Juan
+y saldrán en el siguiente release, junto con su migración:
 - [ ] `2026-08-05_obs0408_material_types_pl_edit.sql` — materials.type (subproducto),
   order_destiny.materialId/boxes (PL de inventario), destinys.plType/totalBoxes/totalPallets
   (Modificar PL). Ya aplicada a testing. Sin seeds ni permisos nuevos.
