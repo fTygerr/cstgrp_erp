@@ -5,11 +5,13 @@ import { ContextProvider } from 'src/interceptors/context.provider';
 import sql from 'src/utils/db';
 import { z } from 'zod/v4';
 import {
+  createInventoryPlSchema,
   createPackingListSchema,
   downloadPackingListSchema,
   editPackingListSchema,
   getPackingListsSchema,
   previewPackingListSchema,
+  updatePlDataSchema,
 } from './packing-list.schema';
 import path from 'path';
 import { promises as fs } from 'fs';
@@ -278,6 +280,170 @@ export class PackingListService {
     return;
   }
 
+  // PL de inventario (obs 04/08): materia prima / subproducto directo del
+  // inventario. Descuenta existencias con referencia al PL; sin jobs/pallets.
+  async createInventory(body: z.infer<typeof createInventoryPlSchema>) {
+    let result: { id: number; folio: number };
+    await sql.begin(async (sql) => {
+      const ids = body.lines.map((l) => l.materialId);
+      const materials = await sql`
+        select materials.id, materials.code, materials.description,
+          materials.measurement, materials.total::float as available,
+          materials."clientId",
+          COALESCE(materials.type,
+            case when materials.product then 'producto' else 'materiaPrima' end) as type
+        from materials where materials.id in ${sql(ids)}`;
+
+      if (materials.length !== ids.length)
+        throw new HttpException('Uno o varios materiales no existen', 400);
+      if (materials.some((m) => m.type !== body.plType))
+        throw new HttpException(
+          'Todos los materiales deben ser del mismo tipo (un solo tipo por PL)',
+          400,
+        );
+      const clientIds = new Set(materials.map((m) => String(m.clientId)));
+      if (clientIds.size > 1)
+        throw new HttpException(
+          'Todos los materiales deben ser del mismo cliente',
+          400,
+        );
+      for (const line of body.lines) {
+        const material = materials.find((m) => Number(m.id) === line.materialId);
+        if (line.amount > material.available)
+          throw new HttpException(
+            `${material.code}: la cantidad (${line.amount}) excede la existencia (${material.available})`,
+            400,
+          );
+      }
+
+      const [{ folio }] =
+        await sql`SELECT nextval('packslip_seq')::int AS folio`;
+
+      const [destiny] = await sql`
+        INSERT INTO destinys (so, "packSlip", "shipDate", "plType")
+        VALUES (${'PS-' + folio}, ${String(folio)}, ${body.shipDate}, ${body.plType})
+        RETURNING id`;
+
+      const orders = [];
+      for (const line of body.lines) {
+        const material = materials.find((m) => Number(m.id) === line.materialId);
+        const [od] = await sql`INSERT INTO order_destiny ${sql({
+          destinyId: destiny.id,
+          materialId: line.materialId,
+          amount: line.amount,
+          date: body.shipDate,
+          po: '',
+          boxes: line.boxes ?? null,
+        })} RETURNING id`;
+
+        await sql`insert into materialmovements
+          ("materialId", "orderDestinyId", amount, "realAmount", active, "activeDate")
+          values (${line.materialId}, ${od.id}, ${-line.amount}, ${-line.amount}, true, now())`;
+
+        orders.push({
+          ref: '',
+          part: material.code,
+          amount: line.amount,
+          po: '',
+          pallets: 0,
+          description: material.description,
+          perBox: null,
+          boxes: line.boxes ?? null,
+          umc: material.measurement || 'EA',
+        });
+      }
+
+      const headerData = await sql`select key, data from docs_data`;
+      const [shipper] = body.shipVia
+        ? await sql`select name from shippers where id = ${body.shipVia}`
+        : [null];
+      const [consignee] = body.consignee
+        ? await sql`select "legalName" from clients where id = ${body.consignee}`
+        : [null];
+      const [destination] = body.destination
+        ? await sql`select name, direction from "destinationDirections" where id = ${body.destination}`
+        : [null];
+      const [carrier] = body.carrierExp
+        ? await sql`select name from carriers where id = ${body.carrierExp}`
+        : [null];
+      const [shipTo] = body.shipTo
+        ? await sql`select name, direction from "shipTo" where id = ${body.shipTo}`
+        : [null];
+
+      await sql`update destinys set ${sql({
+        shipDate: body.shipDate,
+        blNo: body.blNo || '',
+        trk: body.trk || '',
+        invoice: body.invoice || '',
+        weight: body.weight || '',
+        po: '',
+        exported: headerData.find((item) => item.key === 'ie_exported')?.data,
+        soldTo: headerData.find((item) => item.key === 'ie_sold_to')?.data,
+        orders: orders,
+        shipVia: shipper?.name || '',
+        consignee: consignee?.legalName || '',
+        destination: destination || null,
+        carrierExp: carrier?.name || '',
+        shipTo: shipTo || null,
+      })} where id = ${destiny.id}`;
+
+      for (const id of ids) await updateMaterialAmount(id, sql);
+
+      await this.req.record(
+        `Generó el packing list ${folio} de ${body.plType === 'materiaPrima' ? 'materia prima' : 'subproductos'} (inventario)`,
+        sql,
+      );
+
+      result = { id: destiny.id, folio };
+    });
+    return result;
+  }
+
+  // Modificar los datos de un PL existente (obs 04/08): actualiza el snapshot
+  // de destinys que renderiza el PDF. No toca inventario ni cantidades.
+  async updatePlData(body: z.infer<typeof updatePlDataSchema>) {
+    await sql.begin(async (sql) => {
+      const [destiny] = await sql`
+        select id, so, "packSlip", orders from destinys where id = ${body.id}
+        and (so LIKE 'PS-%' OR exported IS NOT NULL)`;
+      if (!destiny) throw new HttpException('Packing list no existente', 400);
+
+      const changes: Record<string, any> = {};
+      for (const key of [
+        'shipDate',
+        'shipVia',
+        'consignee',
+        'blNo',
+        'trk',
+        'po',
+        'invoice',
+        'weight',
+        'carrierExp',
+        'exported',
+        'soldTo',
+        'destination',
+        'totalBoxes',
+        'totalPallets',
+      ])
+        if (body[key] !== undefined) changes[key] = body[key];
+
+      if (body.orders !== undefined && Array.isArray(destiny.orders))
+        changes.orders = destiny.orders.map((order: any, i: number) => ({
+          ...order,
+          boxes: body.orders?.[i]?.boxes ?? order.boxes ?? null,
+        }));
+
+      if (Object.keys(changes).length)
+        await sql`update destinys set ${sql(changes)} where id = ${body.id}`;
+
+      await this.req.record(
+        `Modifico los datos del packing list ${destiny.packSlip || destiny.so}`,
+        sql,
+      );
+    });
+    return;
+  }
+
   // Folio proyectado para el Pack Slip (el definitivo se asigna al guardar)
   async getNextFolio() {
     const [row] = await sql`
@@ -496,10 +662,11 @@ export class PackingListService {
     return sql`select destinys.id,
       COALESCE(NULLIF(destinys."packSlip", ''), destinys.so) as "packSlip",
       destinys."shipDate",
-      string_agg(distinct clients.name, ', ') as client,
+      destinys."plType",
+      string_agg(distinct COALESCE(clients.name, matclients.name), ', ') as client,
       string_agg(distinct jobs.ref, ', ') as jobs,
-      string_agg(distinct COALESCE(materials.code, jobs.part), ', ') as parts,
-      string_agg(distinct jobs.description, ', ') as description,
+      string_agg(distinct COALESCE(materials.code, jobs.part, linemat.code), ', ') as parts,
+      string_agg(distinct COALESCE(jobs.description, linemat.description), ', ') as description,
       string_agg(distinct nullif(order_destiny.po, ''), ', ') as po,
       COALESCE(sum(order_destiny.amount), 0)::int as amount,
       ((select count(*) from pallets p where p."destinyId" = destinys.id)
@@ -511,12 +678,15 @@ export class PackingListService {
       left join clients on clients.id = jobs."clientId"
       left join materialmovements on jobs."movementId" = materialmovements.id
       left join materials on materialmovements."materialId" = materials.id
+      left join materials linemat on linemat.id = order_destiny."materialId"
+      left join clients matclients on matclients.id = linemat."clientId"
       where (destinys.so LIKE 'PS-%' OR destinys.exported IS NOT NULL)
       ${body.packSlip ? sql`AND COALESCE(NULLIF(destinys."packSlip", ''), destinys.so) ILIKE ${'%' + body.packSlip + '%'}` : sql``}
       ${body.clientId ? sql`AND destinys.id in (
         select od2."destinyId" from order_destiny od2
-        join jobs j2 on j2.id = od2."orderId"
-        where j2."clientId" = ${body.clientId})` : sql``}
+        left join jobs j2 on j2.id = od2."orderId"
+        left join materials m2 on m2.id = od2."materialId"
+        where j2."clientId" = ${body.clientId} or m2."clientId" = ${body.clientId})` : sql``}
       group by destinys.id
       order by destinys.id desc
       limit 200`;
@@ -586,6 +756,10 @@ export class PackingListService {
       'utf-8',
     );
 
+    // cajas por línea: el override editado manda; si no, el cálculo con perBox
+    const lineBoxes = (order: any) =>
+      order.boxes ?? (order.perBox ? Math.ceil(order.amount / order.perBox) : 0);
+
     const templateData = {
       ...data,
       shipDate: format(data.shipDate, 'MM-dd-yyyy'),
@@ -596,7 +770,7 @@ export class PackingListService {
           `
             <tr>
               <td>${order.part}</td>
-              <td>${Math.ceil(order.amount / order.perBox)}</td>
+              <td>${lineBoxes(order) || ''}</td>
               <td>${order.ref}</td>
               <td>${order.po}</td>
               <td class="description">${order.description}</td>
@@ -606,17 +780,24 @@ export class PackingListService {
         );
       }, ''),
       totalAmount: data.orders?.reduce((acc, order) => acc + order.amount, 0),
-      boxes: data.orders?.reduce(
-        (acc, order) => acc + Math.ceil(order.amount / order.perBox),
-        0,
-      ),
-      pallets: Math.ceil(
-        data.orders?.reduce(
-          (acc, order) => acc + Number(order.pallets || 0),
-          0,
-        ),
-      ),
-      type: 'FINISHED GOODS',
+      boxes:
+        data.totalBoxes ??
+        data.orders?.reduce((acc, order) => acc + lineBoxes(order), 0),
+      pallets:
+        data.totalPallets != null
+          ? Number(data.totalPallets)
+          : Math.ceil(
+              data.orders?.reduce(
+                (acc, order) => acc + Number(order.pallets || 0),
+                0,
+              ),
+            ),
+      type:
+        data.plType === 'materiaPrima'
+          ? 'RAW MATERIALS'
+          : data.plType === 'subproducto'
+            ? 'SUBPRODUCTS'
+            : 'FINISHED GOODS',
     };
 
     await page.setContent(Mustache.render(template, templateData));

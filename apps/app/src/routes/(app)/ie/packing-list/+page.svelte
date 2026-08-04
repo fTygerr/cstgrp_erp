@@ -17,7 +17,8 @@
 	import { formatDate } from '$lib/utils/functions';
 	import { getClients, getOptions } from '$lib/utils/queries';
 	import { userData } from '$lib/utils/store';
-	import { FileDown, Package } from 'lucide-svelte';
+	import { FileDown, Package, Pencil } from 'lucide-svelte';
+	import EditPLDialog from './EditPLDialog.svelte';
 
 	const clientsQuery = createQuery({ queryKey: ['inventory-clients'], queryFn: getClients });
 	const clients = $derived(getOptions($clientsQuery?.data));
@@ -25,7 +26,10 @@
 	let filters = $state({ packSlip: '', clientId: '' });
 	let showDelete = $state(false);
 	let toDelete: any = $state(null);
+	let showEdit = $state(false);
+	let toEdit: any = $state(null);
 	const canDelete = $derived(($userData?.permissions?.['ie_packing_list'] || 0) >= 3);
+	const canEdit = $derived(($userData?.permissions?.['ie_packing_list'] || 0) >= 2);
 
 	const lists = createQuery({
 		queryKey: ['packing-lists', { ...filters }],
@@ -78,6 +82,18 @@
 			<TableRow>
 				<OptionsCell
 					extraButtons={[
+						...(canEdit
+							? [
+									{
+										name: 'Modificar',
+										icon: Pencil,
+										fn: () => {
+											toEdit = pl;
+											showEdit = true;
+										}
+									}
+								]
+							: []),
 						{
 							name: 'Descargar PDF',
 							icon: FileDown,
@@ -123,6 +139,8 @@
 		{/each}
 	</TableBody>
 </CusTable>
+
+<EditPLDialog bind:show={showEdit} pl={toEdit} />
 
 <DeletePopUp
 	bind:show={showDelete}

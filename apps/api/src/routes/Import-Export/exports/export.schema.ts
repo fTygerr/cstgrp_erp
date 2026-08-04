@@ -5,3 +5,9 @@ export const getExportSchema = z.object({
   part: z.string().nullish(),
   clientId: z.string().nullish(),
 });
+
+export const getInventoryExportSchema = z.object({
+  type: z.enum(['materiaPrima', 'subproducto']),
+  code: z.string().nullish(),
+  clientId: z.string().nullish(),
+});

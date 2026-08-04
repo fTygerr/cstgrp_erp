@@ -26,7 +26,11 @@ export class MaterialsService {
   async createMaterial(body: z.infer<typeof createSchema>, file: File) {
     const image = await saveFile(file, 'inventory');
     await sql.begin(async (sql) => {
-      await sql`insert into materials ${sql({ ...body, image })} returning id`;
+      await sql`insert into materials ${sql({
+        ...body,
+        product: body.type === 'producto',
+        image,
+      })} returning id`;
       await this.req.record(`Creo el material ${body.code}`, sql);
     });
     return;
@@ -38,7 +42,11 @@ export class MaterialsService {
     const image = await saveFile(file, 'inventory', previousObj.image);
 
     await sql.begin(async (sql) => {
-      await sql`update materials set ${sql({ ...body, image })} where id = ${body.id}`;
+      await sql`update materials set ${sql({
+        ...body,
+        product: body.type === 'producto',
+        image,
+      })} where id = ${body.id}`;
       await this.req.record(`Actualizo el material ${previousObj.code}`, sql);
     });
     return;

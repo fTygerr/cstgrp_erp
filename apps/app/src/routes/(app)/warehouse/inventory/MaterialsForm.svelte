@@ -27,12 +27,16 @@
 
 	let { show = $bindable(false), selectedMaterial = $bindable() }: Props = $props();
 	let formData: any = $state({
-		product: false
+		type: 'materiaPrima'
 	});
 	let files: FileList | undefined = $state();
 
 	function setFormData() {
-		formData = { ...selectedMaterial };
+		formData = {
+			...selectedMaterial,
+			// materiales legacy sin type: derivarlo del booleano product
+			type: selectedMaterial.type || (selectedMaterial.product ? 'producto' : 'materiaPrima')
+		};
 	}
 
 	const measurements = [
@@ -44,8 +48,9 @@
 	];
 
 	const types = [
-		{ name: 'Materia prima', value: false, color: 'blue' },
-		{ name: 'Producto', value: true, color: 'green' }
+		{ name: 'Materia prima', value: 'materiaPrima', color: 'blue' },
+		{ name: 'Producto', value: 'producto', color: 'green' },
+		{ name: 'Subproducto', value: 'subproducto', color: 'orange' }
 	];
 
 	async function handleSubmit() {
@@ -99,7 +104,7 @@
 				<Input bind:value={formData.location} />
 			</Label>
 			<Label name="Tipo">
-				<Select items={types} bind:value={formData.product} />
+				<Select items={types} bind:value={formData.type} />
 			</Label>
 			<Label name="Medida">
 				<Select items={measurements} bind:value={formData.measurement} />

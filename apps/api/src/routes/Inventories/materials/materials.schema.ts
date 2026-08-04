@@ -8,7 +8,7 @@ export const createSchema = z.object({
   measurement: z.string(),
   clientId: z.number(),
   minAmount: numberSchema,
-  product: z.boolean(),
+  type: z.enum(['materiaPrima', 'producto', 'subproducto']),
 });
 
 export const editSchema = createSchema.extend({

@@ -15,11 +15,13 @@ import { ZodPiPe } from 'src/interceptors/validation/validation.pipe';
 import { PackingListService } from './packing-list.service';
 import {
   applyExportOrderSchema,
+  createInventoryPlSchema,
   createPackingListSchema,
   downloadPackingListSchema,
   editPackingListSchema,
   getPackingListsSchema,
   previewPackingListSchema,
+  updatePlDataSchema,
 } from './packing-list.schema';
 import { idObjectSchema } from 'src/utils/schemas';
 
@@ -48,6 +50,11 @@ export class PackingListGenerateController {
   create(@Body(new ZodPiPe(createPackingListSchema)) body) {
     return this.packingListService.create(body);
   }
+
+  @Post('inventory')
+  createInventory(@Body(new ZodPiPe(createInventoryPlSchema)) body) {
+    return this.packingListService.createInventory(body);
+  }
 }
 
 // Submódulo Packing List (permiso propio; eliminar requiere nivel 3)
@@ -69,6 +76,11 @@ export class PackingListController {
   @Get('data')
   getData(@Query(new ZodPiPe(idObjectSchema)) params) {
     return this.packingListService.getData(params);
+  }
+
+  @Put('data')
+  updatePlData(@Body(new ZodPiPe(updatePlDataSchema)) body) {
+    return this.packingListService.updatePlData(body);
   }
 
   @Get('download')

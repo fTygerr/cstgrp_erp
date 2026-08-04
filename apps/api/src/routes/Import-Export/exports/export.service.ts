@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ContextProvider } from 'src/interceptors/context.provider';
 import { z } from 'zod/v4';
-import { getExportSchema } from './export.schema';
+import { getExportSchema, getInventoryExportSchema } from './export.schema';
 import sql from 'src/utils/db';
 
 @Injectable()
@@ -48,6 +48,23 @@ export class ExportService {
     ${filter.part ? sql`AND COALESCE(materials.code, jobs.part) ILIKE ${'%' + filter.part + '%'}` : sql``}
     ${filter.clientId ? sql`AND clients.id = ${filter.clientId}` : sql``}
     order by jobs.ref desc
+    limit 300`;
+  }
+
+  // Materia prima / subproductos exportables directo del inventario (obs 04/08)
+  async findInventory(filter: z.infer<typeof getInventoryExportSchema>) {
+    return sql`select
+      materials.id, materials.code, materials.description, materials.measurement,
+      materials.total::float as available,
+      clients.name as client, clients.id as "clientId"
+    from materials
+    left join clients on clients.id = materials."clientId"
+    where COALESCE(materials.type,
+        case when materials.product then 'producto' else 'materiaPrima' end) = ${filter.type}
+      and materials.total > 0
+    ${filter.code ? sql`AND (materials.code ILIKE ${'%' + filter.code + '%'} OR materials.description ILIKE ${'%' + filter.code + '%'})` : sql``}
+    ${filter.clientId ? sql`AND materials."clientId" = ${filter.clientId}` : sql``}
+    order by materials.code
     limit 300`;
   }
 }

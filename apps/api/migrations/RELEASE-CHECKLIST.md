@@ -68,6 +68,14 @@ WHERE username IN ('JUAN MUÑOZ');
 
 ---
 
+## SIGUIENTE ciclo — obs 04/08 (rama `obs-0408`, NO va en el release nocturno del 04/08)
+Cuando la rama se fusione a dev y Juan la valide en app2, agregar arriba:
+- [ ] `2026-08-05_obs0408_material_types_pl_edit.sql` — materials.type (subproducto),
+  order_destiny.materialId/boxes (PL de inventario), destinys.plType/totalBoxes/totalPallets
+  (Modificar PL). Ya aplicada a testing. Sin seeds ni permisos nuevos.
+
+---
+
 ## Done in previous releases
 - 2026-07-23: Phase 1 (part-driven products, prod-only areas, export decrement).
   Migration `2026-07-21_phase1_export_movements.sql` applied to prod; fresh data

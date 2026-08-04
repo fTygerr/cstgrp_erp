@@ -47,12 +47,13 @@
 	let filters = $state({
 		code: '',
 		clientId: '',
-		product: false
+		type: 'materiaPrima'
 	});
 
 	const types = [
-		{ name: 'Materia prima', value: false, color: 'blue' },
-		{ name: 'Producto', value: true, color: 'green' }
+		{ name: 'Materia prima', value: 'materiaPrima', color: 'blue' },
+		{ name: 'Producto', value: 'producto', color: 'green' },
+		{ name: 'Subproducto', value: 'subproducto', color: 'orange' }
 	];
 
 	const inventoryQuery = createQuery({
@@ -68,7 +69,9 @@
 			if (filters.clientId) {
 				if (parseInt(material.clientId) !== parseInt(filters.clientId)) return false;
 			}
-			return material.product === filters.product;
+			const materialType =
+				material.type || (material.product ? 'producto' : 'materiaPrima');
+			return materialType === filters.type;
 		})
 	);
 
@@ -136,7 +139,7 @@
 			allowDeselect
 			class="w-40"
 		/>
-		<Select placeholder="Cliente" menu items={types} bind:value={filters.product} class="w-40" />
+		<Select placeholder="Cliente" menu items={types} bind:value={filters.type} class="w-40" />
 	{/snippet}
 	{#snippet right()}
 		<DropdownMenu>
