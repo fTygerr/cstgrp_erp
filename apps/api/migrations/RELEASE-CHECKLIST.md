@@ -14,75 +14,21 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ---
 
-## PENDING for next release (as of 2026-08-04 — release planeado esta noche con visto bueno de Juan)
+## PENDING for next release
 
-### 1. Migrations to run on prod, in order (already applied to testing)
-- [ ] `2026-07-28_phase2_pallets.sql` — pallets/exportorders/pallet_contents tables + clients.palletSeq
-- [ ] `2026-07-30_phase2b_pl_exportorders.sql` — exportorders.destinyId + order_destiny.exportOrderId
-- [ ] `2026-07-31_obs_packing_list.sql` — pallets.destinyId + packslip_seq (Pack Slip folio)
-- [ ] `2026-08-04_obs0308-2_export_comment.sql` — exportorders.comment (cuadro Comentarios en el PDF de la Orden de Exportación, obs 03/08-02)
-- [ ] `2026-08-04_obs0308-3_global_pallet_seq.sql` — secuencia global `pallet_seq` (folio de pallet único para toda la empresa) + drop de clients.palletSeq
-
-(`2026-07-21_phase1_export_movements.sql` was already applied to prod on 2026-07-23 — do NOT re-run.)
-
-### 2. Seed the pallet folio (BLOCKER — needs Juan's number)
-El folio de pallet es UN SOLO consecutivo para toda la empresa (aclaración de
-Juan 04/08 — nunca se repite entre clientes). Pedirle el ÚLTIMO número físico
-de pallet usado:
-```sql
-SELECT setval('pallet_seq', <último número de pallet usado>, true);  -- el siguiente será +1
-```
-
-### 3. Grant the new `zenpet` permission (ZenPet Datos section)
-```sql
-UPDATE users SET permissions = permissions || '{"zenpet": 3}'::jsonb
-WHERE username IN ('JUAN MUÑOZ');  -- add others if Juan wants
-```
-(Existing users without the key simply don't see the section — no backfill needed.)
-
-### 4. Seed the Pack Slip folio (BLOCKER — needs Juan's number)
-The new PL generator assigns consecutive Pack Slip #s from `packslip_seq`
-(created at 1000 in testing). Pedirle a Juan el ÚLTIMO pack slip usado
-(mismo formato que el de pallets, para no confundir siguiente vs último):
-```sql
-SELECT setval('packslip_seq', <último pack slip usado>, true);  -- el siguiente será +1
-```
-
-### 5. Grant the new `ie_packing_list` permission (Packing List submodule)
-```sql
-UPDATE users SET permissions = permissions || '{"ie_packing_list": 3}'::jsonb
-WHERE username IN ('JUAN MUÑOZ');  -- LEER/MODIFICAR (1/2) for other Imp-Exp users
-```
-
-### 6. Level-3 ("EDITAR Y ELIMINAR") grants per Juan's Observaciones 31/07
-Juan said only he should hold the delete privilege:
-```sql
-UPDATE users SET permissions = permissions ||
-  '{"quality": 3, "exports": 3, "contractors_orders": 3, "contractors_deliveries": 3}'::jsonb
-WHERE username IN ('JUAN MUÑOZ');
-```
-
-### 7. Explicitly NOT replicated to prod (testing-only changes)
-- `test` user elevated permissions / all prod_areas — testing convenience only.
-- Any pallets/export orders created during testing — demo data, stays in testing.
-
----
-
-## SIGUIENTE ciclo — obs 04/08 (ya en dev/app2, NO va en el release nocturno del 04/08)
-**IMPORTANTE para el release de esta noche: fusionar a master SOLO hasta el
-commit `2006dbf` (lo validado por Juan), NO la punta de dev:**
-```sh
-git checkout master && git merge 2006dbf && git push --no-verify origin master
-```
-Las obs 04/08 (commit `a3084e0`) se quedan en dev/app2 para validación de Juan
-y saldrán en el siguiente release, junto con su migración:
-- [ ] `2026-08-05_obs0408_material_types_pl_edit.sql` — materials.type (subproducto),
-  order_destiny.materialId/boxes (PL de inventario), destinys.plType/totalBoxes/totalPallets
-  (Modificar PL). Ya aplicada a testing. Sin seeds ni permisos nuevos.
+(nada pendiente — reset tras el release del 2026-08-05)
 
 ---
 
 ## Done in previous releases
+- 2026-08-05 (~00:30 UTC): TODO el backlog de julio-agosto a prod: Phase 2 pallets,
+  obs 31/07 (Imp-Exp/PL), obs 03/08 (parser NaN, pre-exportación, comentarios,
+  quitar por pallet, folio global de pallets), obs 04/08 (subproductos, PL de
+  inventario, Modificar PL) y obs 04/08-02 (parciales almacén, status OCs).
+  6 migraciones aplicadas; seeds: packslip_seq=2856 (siguiente 2857),
+  pallet_seq desde 1 (Juan pidió arrancar de cero); permisos nivel 3 a JUAN
+  MUÑOZ. Backup previo: pre-release-obs0308-20260805-0024.dump. Merge
+  master: 37f2821..40b5825.
 - 2026-07-23: Phase 1 (part-driven products, prod-only areas, export decrement).
   Migration `2026-07-21_phase1_export_movements.sql` applied to prod; fresh data
   cutover from old server; domains switched to *.cstgrp.com on 2026-07-24.
