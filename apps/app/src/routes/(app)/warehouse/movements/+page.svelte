@@ -5,6 +5,7 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
 	import { Checkbox } from '$lib/components/ui/checkbox';
+	import { Dialog, DialogBody, DialogContent } from '$lib/components/ui/dialog';
 	import { Input } from '$lib/components/ui/input';
 	import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '$lib/components/ui/table';
 	import api from '$lib/utils/server';
