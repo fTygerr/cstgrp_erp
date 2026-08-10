@@ -95,12 +95,15 @@ export class JobsService {
     description: string | null,
     clientId: number | string,
   ) {
-    const [material] =
-      await sql2`select id, product from materials where code = ${part}`;
+    // Un job puede producir un Producto terminado o un Subproducto (obs 04/08);
+    // solo se rechaza ligar la parte a materia prima.
+    const [material] = await sql2`select id, product,
+      COALESCE(type, case when product then 'producto' else 'materiaPrima' end) as type
+      from materials where code = ${part}`;
 
-    if (material && !material.product)
+    if (material && material.type === 'materiaPrima')
       throw new HttpException(
-        `El No. de parte ${part} ya existe como material de inventario (no producto)`,
+        `El No. de parte ${part} ya existe como MATERIA PRIMA en inventario; cámbialo a Producto o Subproducto en Almacén para poder producirlo`,
         400,
       );
     if (material) return material.id;
@@ -111,6 +114,7 @@ export class JobsService {
       measurement: 'PZ',
       clientId: clientId,
       product: true,
+      type: 'producto',
     })} returning id`;
     return created.id;
   }
