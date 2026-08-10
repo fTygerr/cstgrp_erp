@@ -44,6 +44,7 @@
 		ref: string;
 		amount: number | string;
 		contractorAmount?: number | string;
+		remaining?: number | string;
 		code: string;
 		description?: string;
 	}
@@ -273,11 +274,15 @@
 																onSelect={() => {
 																	jobRows[i].jobId = job.id;
 																	jobRows[i].search = job.ref ?? '';
+																	if (!jobRows[i].contractorAmount && job.remaining != null)
+																		jobRows[i].contractorAmount = String(job.remaining);
 																	jobRows[i].popoverOpen = false;
 																	jobRows = [...jobRows];
 																}}
 															>
-																{job.ref}
+																{job.ref}{job.remaining != null && Number(job.remaining) < Number(job.amount)
+																	? ` — restante ${job.remaining}`
+																	: ''}
 															</Command.Item>
 														{/each}
 													</Command.Group>

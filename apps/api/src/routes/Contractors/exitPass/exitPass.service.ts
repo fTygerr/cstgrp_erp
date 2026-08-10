@@ -71,6 +71,9 @@ export class ExitPassService {
     }
 
     await sql.begin(async (sql) => {
+      let passId: number;
+      const touchedJobs = new Set<number>();
+
       if (edit) {
         const [updatedPass] =
           await sql`update "exitPass" set ${sql({ date: body.date, contractorId: body.contractorId })} where id = ${body.id} returning id`;
@@ -78,47 +81,61 @@ export class ExitPassService {
         if (!updatedPass) {
           throw new HttpException('Pase no encontrado', 400);
         }
+        passId = updatedPass.id;
 
-        await sql`update jobs set
-          "contractorAmount" = 0,
-          "contractorPrice" = null,
-          "exitId" = null
-          where "exitId" = ${updatedPass.id}`;
-
-        for (const job of jobs) {
-          await sql`update jobs set
-          "contractorAmount" = ${job.contractorAmount},
-          "contractorPrice" = ${job.price},
-          "exitId" = ${updatedPass.id}
-          where id = ${job.id}`;
-        }
+        const previous = await sql`delete from exitpass_jobs
+          where "exitId" = ${passId} returning "jobId"`;
+        for (const row of previous) touchedJobs.add(Number(row.jobId));
       } else {
         const [insertedPass] =
           await sql`insert into "exitPass" ("date", "contractorId", "folio") values
           (${body.date}, ${body.contractorId}, (select COALESCE(max(folio), 0) from "exitPass") + 1) returning id`;
-
-        for (const job of jobs) {
-          await sql`update jobs set
-          "contractorAmount" = ${job.contractorAmount},
-          "contractorPrice" = ${job.price},
-          "exitId" = ${insertedPass.id}
-          where id = ${job.id}`;
-        }
+        passId = insertedPass.id;
       }
+
+      for (const job of jobs) {
+        // saldo: lo asignado en OTROS pases no puede excederse (obs Juan 10/08)
+        const [{ assigned }] = await sql`select COALESCE(sum(amount), 0)::int as assigned
+          from exitpass_jobs where "jobId" = ${job.id}`;
+        const [{ amount: total }] =
+          await sql`select amount from jobs where id = ${job.id}`;
+        if (assigned + job.contractorAmount > Number(total))
+          throw new HttpException(
+            `${job.ref}: la cantidad excede el restante (${Number(total) - assigned} de ${total})`,
+            400,
+          );
+
+        await sql`insert into exitpass_jobs ${sql({
+          exitId: passId,
+          jobId: job.id,
+          amount: job.contractorAmount,
+          price: job.price,
+        })}`;
+        touchedJobs.add(Number(job.id));
+      }
+
+      for (const jobId of touchedJobs) await this.resyncJob(sql, jobId);
     });
   }
 
   async delete(body: z.infer<typeof idObjectSchema>) {
     await sql.begin(async (sql) => {
-      await sql`update jobs set
-      "contractorAmount" = 0,
-      "contractorPrice" = null,
-      "exitId" = null
-      where "exitId" = ${body.id}`;
-
+      const rows = await sql`delete from exitpass_jobs
+        where "exitId" = ${body.id} returning "jobId"`;
       await sql`delete from "exitPass" where id = ${body.id}`;
+      for (const row of rows) await this.resyncJob(sql, Number(row.jobId));
     });
     return;
+  }
+
+  // jobs.contractorAmount = suma de todos sus pases; exitId/contractorPrice =
+  // último pase (compatibilidad con entregas, pagos y progress)
+  private async resyncJob(sql2: any, jobId: number) {
+    await sql2`update jobs set
+      "contractorAmount" = COALESCE((select sum(amount) from exitpass_jobs where "jobId" = ${jobId}), 0),
+      "contractorPrice" = (select price from exitpass_jobs where "jobId" = ${jobId} order by id desc limit 1),
+      "exitId" = (select "exitId" from exitpass_jobs where "jobId" = ${jobId} order by id desc limit 1)
+      where id = ${jobId}`;
   }
 
   async getJobs(body: z.infer<typeof getJobsSchema>) {
@@ -126,15 +143,16 @@ export class ExitPassService {
 
     const jobs = await sql`
     SELECT * FROM (
-      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description, jobs.amount
+      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description, jobs.amount,
+        jobs.amount - COALESCE((select sum(ej.amount) from exitpass_jobs ej where ej."jobId" = jobs.id), 0) as remaining
       from jobs
       left join materialmovements on jobs."movementId" = materialmovements.id
       left join materials on materialmovements."materialId" = materials.id
-      where "exitId" is null
       order by due desc, ref desc
       limit 500
     ) 
       WHERE code is not null
+      AND remaining > 0
       AND code in (select part from contractor_prices where "contractorId" = ${body.contractorId})
     `;
 
@@ -143,12 +161,16 @@ export class ExitPassService {
 
   async getJobsForExitPass(exitId: number) {
     return sql`
-      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description, jobs.amount, jobs."contractorAmount"
-      from jobs
+      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description, jobs.amount,
+        ej.amount as "contractorAmount",
+        jobs.amount - COALESCE((select sum(e2.amount) from exitpass_jobs e2
+          where e2."jobId" = jobs.id and e2."exitId" != ${exitId}), 0) as remaining
+      from exitpass_jobs ej
+      join jobs on jobs.id = ej."jobId"
       left join materialmovements on jobs."movementId" = materialmovements.id
       left join materials on materialmovements."materialId" = materials.id
-      where "exitId" = ${exitId}
-      order by due desc, ref desc
+      where ej."exitId" = ${exitId}
+      order by jobs.due desc, jobs.ref desc
 `;
   }
 
@@ -157,12 +179,11 @@ export class ExitPassService {
       await sql`select *, (select name from contractors where id = "contractorId") as contractor from "exitPass" where id = ${body.id}`;
 
     data.jobs =
-      await sql`select jobs.ref, jobs.description, jobs."contractorAmount"
-    from jobs
-    where "exitId" = ${body.id}
-    order by due desc, ref desc`;
-
-    console.log(data);
+      await sql`select jobs.ref, jobs.description, ej.amount as "contractorAmount"
+    from exitpass_jobs ej
+    join jobs on jobs.id = ej."jobId"
+    where ej."exitId" = ${body.id}
+    order by jobs.due desc, jobs.ref desc`;
 
     const templatePath = path.resolve(
       __dirname,
