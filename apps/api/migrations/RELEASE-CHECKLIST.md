@@ -21,6 +21,9 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ---
 
 ## Done in previous releases
+- 2026-08-10: varios pases de salida por job con saldo (petición Juan mismo día).
+  Migración `2026-08-10_multi_exitpass.sql` aplicada a testing y prod (aditiva +
+  backfill de 12 relaciones reales). E2E en testing; deploy dev y master.
 - 2026-08-05 (~00:30 UTC): TODO el backlog de julio-agosto a prod: Phase 2 pallets,
   obs 31/07 (Imp-Exp/PL), obs 03/08 (parser NaN, pre-exportación, comentarios,
   quitar por pallet, folio global de pallets), obs 04/08 (subproductos, PL de
