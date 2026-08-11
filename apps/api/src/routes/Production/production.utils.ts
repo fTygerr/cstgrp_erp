@@ -35,9 +35,14 @@ WHERE id = ${id} returning *`;
     );
   }
 
+  // La fecha de la entrada al inventario = fecha capturada en el avance
+  // (petición Juan 11/08); si no hay capturas de calidad, se conserva la actual.
   const [updatedMovement] = await db`update materialmovements set 
     "amount" = (select (calidad + contractor) from jobs where id = ${id}),
-    "realAmount" = (select (calidad + contractor) from jobs where id = ${id})
+    "realAmount" = (select (calidad + contractor) from jobs where id = ${id}),
+    "activeDate" = COALESCE(
+      (select max(date) from ordermovements where "progressId" = ${id} and calidad <> 0),
+      "activeDate")
     where id = (select "movementId" from jobs where id = ${id}) returning "materialId"`;
 
   if (updatedMovement)
