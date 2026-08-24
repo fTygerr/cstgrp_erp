@@ -97,6 +97,7 @@
 		<TableHead class="w-[10%]">Programacion</TableHead>
 		<TableHead class="w-[10%]">Fecha</TableHead>
 		<TableHead class="w-full">Parte</TableHead>
+		<TableHead class="w-[10%]">Cantidad</TableHead>
 	</TableHeader>
 	<TableBody>
 		{#each movements as movement, i}
@@ -110,6 +111,7 @@
 				<TableCell>{movement.programation || ''}</TableCell>
 				<TableCell>{formatDate(movement.due) || ''}</TableCell>
 				<TableCell>{movement.clientId === 3 ? movement.part : movement.description}</TableCell>
+				<TableCell>{movement.amount ?? ''}</TableCell>
 			</TableRow>
 		{/each}
 	</TableBody>

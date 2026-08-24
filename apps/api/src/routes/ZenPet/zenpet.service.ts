@@ -90,6 +90,180 @@ export class ZenPetService {
     };
   }
 
+  // Etapas ZenPet según las reglas de Juan (Observaciones 18-Ago):
+  // activación por requisición de material (familia) ligada a la orden,
+  // cierre al capturar la totalidad en el área correspondiente.
+  async getEtapas() {
+    const zp = await this.clientId();
+
+    // 1. Materia prima recibida (existencia con cliente ZENPET)
+    const rawByFamily = await sql`
+      SELECT substring(code from 5 for 2) AS family,
+        COUNT(*)::int AS materials, ROUND(SUM(total)::numeric, 0) AS units,
+        mode() WITHIN GROUP (ORDER BY measurement) AS unit
+      FROM materials
+      WHERE "clientId" = ${zp} AND COALESCE(type, case when product then 'producto' else 'materiaPrima' end) = 'materiaPrima'
+        AND code LIKE 'ZEN-Z%'
+      GROUP BY 1 ORDER BY 1`;
+
+    // activación por requisición: la orden aparece en r.jobs (",REF,") y el
+    // material pedido pertenece a la familia de la etapa
+    const reqActivated = (pattern: string) => sql`EXISTS (
+      SELECT 1 FROM requisitions r JOIN materials rm ON rm.id = r."materialId"
+      WHERE rm.code LIKE ${pattern} AND r.jobs LIKE '%,' || jobs.ref || ',%')`;
+    const reqActivatedAny = (p1: string, p2: string) => sql`EXISTS (
+      SELECT 1 FROM requisitions r JOIN materials rm ON rm.id = r."materialId"
+      WHERE (rm.code LIKE ${p1} OR rm.code LIKE ${p2}) AND r.jobs LIKE '%,' || jobs.ref || ',%')`;
+
+    const baseCols = sql`jobs.ref, jobs.programation, COALESCE(m.code, jobs.part) AS part,
+      jobs.description, jobs.amount::int`;
+    const baseFrom = sql`FROM jobs
+      LEFT JOIN materialmovements mm ON jobs."movementId" = mm.id
+      LEFT JOIN materials m ON mm."materialId" = m.id`;
+
+    // 2. Corte de tela: requisición de telas Z1; cierra al capturar el total de corte
+    const corteTela = await sql`
+      SELECT ${baseCols}, jobs.corte::int AS capturado, (jobs.amount - jobs.corte)::int AS faltante
+      ${baseFrom}
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
+        AND ${reqActivated('ZEN-Z1-%')} AND jobs.corte < jobs.amount
+      ORDER BY jobs.ref DESC`;
+
+    // 3. Serigrafía: activadas en corte y con operación de serigrafía
+    const serigrafia = await sql`
+      SELECT ${baseCols}, jobs.serigrafia::int AS capturado, (jobs.amount - jobs.serigrafia)::int AS faltante
+      ${baseFrom}
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
+        AND jobs."serigrafiaTime" > 0
+        AND ${reqActivated('ZEN-Z1-%')} AND jobs.serigrafia < jobs.amount
+      ORDER BY jobs.ref DESC`;
+
+    // 4/8. Corte de PVC + Bladder: requisición de film PVC (ZEN-Z4-21xx);
+    // cierra cuando se produce el bladder. Control por inventario de bladders.
+    const cortePvc = await sql`
+      SELECT ${baseCols}, GREATEST(jobs.produccion, jobs.calidad)::int AS producido,
+        (jobs.amount - GREATEST(jobs.produccion, jobs.calidad))::int AS faltante
+      ${baseFrom}
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
+        AND ${reqActivated('ZEN-Z4-21%')}
+        AND GREATEST(jobs.produccion, jobs.calidad) < jobs.amount
+      ORDER BY jobs.ref DESC`;
+    const bladderInventory = await sql`
+      SELECT code, description, ROUND(total::numeric, 0) AS units, measurement
+      FROM materials WHERE "clientId" = ${zp} AND code LIKE 'ZEN-Z4-25%'
+      ORDER BY code`;
+
+    // 5. Corte de componentes: requisición Z3/Z5; cierra al capturar cortes varios
+    const corteComponentes = await sql`
+      SELECT ${baseCols}, jobs."cortesVarios"::int AS capturado, (jobs.amount - jobs."cortesVarios")::int AS faltante
+      ${baseFrom}
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
+        AND ${reqActivatedAny('ZEN-Z3-%', 'ZEN-Z5-%')} AND jobs."cortesVarios" < jobs.amount
+      ORDER BY jobs.ref DESC`;
+
+    // 6. Corte de PET: con pase de salida (proceso externo); cierra al liberar calidad
+    const cortePet = await sql`
+      SELECT ${baseCols}, ep.surtido, jobs.calidad::int AS liberado
+      ${baseFrom}
+      JOIN LATERAL (
+        SELECT COALESCE(SUM(ej.amount), 0)::int AS surtido FROM exitpass_jobs ej WHERE ej."jobId" = jobs.id
+      ) ep ON ep.surtido > 0
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
+        AND jobs.calidad < jobs.amount
+      ORDER BY jobs.ref DESC`;
+
+    // 7. Kits: fases de corte/serigrafía/cortes varios completas (las activas);
+    // sale al generar pase de salida o al empezar a capturar producción
+    const kits = await sql`
+      SELECT ${baseCols}
+      ${baseFrom}
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
+        AND (jobs."corteTime" > 0 OR jobs."serigrafiaTime" > 0 OR jobs."cortesVariosTime" > 0)
+        AND (jobs."corteTime" = 0 OR jobs.corte >= jobs.amount)
+        AND (jobs."serigrafiaTime" = 0 OR jobs.serigrafia >= jobs.amount)
+        AND (jobs."cortesVariosTime" = 0 OR jobs."cortesVarios" >= jobs.amount)
+        AND jobs.produccion = 0
+        AND NOT EXISTS (SELECT 1 FROM exitpass_jobs ej WHERE ej."jobId" = jobs.id)
+      ORDER BY jobs.ref DESC`;
+
+    // 9. Línea de producción interna: órdenes con producción capturada
+    const prodInterna = await sql`
+      SELECT ${baseCols}, jobs.produccion::int AS producido, jobs.calidad::int AS liberado
+      ${baseFrom}
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
+        AND jobs.produccion > 0
+      ORDER BY jobs.ref DESC`;
+
+    // 10. Línea contratistas: surtido en pases − entregado aceptado = en poder
+    const prodContratistas = await sql`
+      SELECT ${baseCols}, ep.surtido, jobs.contractor::int AS aceptado,
+        (ep.surtido - jobs.contractor)::int AS "enPoder",
+        ep.contratistas
+      ${baseFrom}
+      JOIN LATERAL (
+        SELECT COALESCE(SUM(ej.amount), 0)::int AS surtido,
+          string_agg(DISTINCT c.name, ', ') AS contratistas
+        FROM exitpass_jobs ej
+        JOIN "exitPass" e ON e.id = ej."exitId"
+        JOIN contractors c ON c.id = e."contractorId"
+        WHERE ej."jobId" = jobs.id
+      ) ep ON ep.surtido > 0
+      WHERE jobs."clientId" = ${zp} AND (ep.surtido - jobs.contractor) > 0
+      ORDER BY jobs.ref DESC`;
+
+    // 11. Acabado y calidad: producto terminado liberado por calidad
+    const calidadLib = await sql`
+      SELECT ${baseCols}, jobs.calidad::int AS liberado,
+        COALESCE(pal.palletized, 0) AS "enPallet",
+        (jobs.calidad - COALESCE(pal.palletized, 0))::int AS "sinPallet"
+      ${baseFrom}
+      LEFT JOIN LATERAL (
+        SELECT SUM(pc.amount)::int AS palletized FROM pallet_contents pc WHERE pc."jobId" = jobs.id
+      ) pal ON true
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.calidad > 0
+      ORDER BY jobs.ref DESC`;
+
+    // 12/13. Empaque / PT listo: liberado y en pallet, listo para exportar
+    const empaque = await sql`
+      SELECT p.folio, string_agg(j.ref, ', ' ORDER BY j.ref) AS jobs,
+        SUM(pc.amount)::int AS units, SUM(pc.boxes)::int AS boxes,
+        (p."exportOrderId" IS NOT NULL) AS "enOrden"
+      FROM pallets p
+      JOIN pallet_contents pc ON pc."palletId" = p.id
+      JOIN jobs j ON j.id = pc."jobId"
+      WHERE p."clientId" = ${zp} AND p."destinyId" IS NULL
+      GROUP BY p.id ORDER BY p.folio`;
+
+    // En ruta: exportado en packing lists de los últimos 60 días
+    const [enRoute] = await sql`
+      SELECT COUNT(DISTINCT d.id)::int AS pls, COALESCE(SUM(od.amount), 0)::int AS units
+      FROM destinys d
+      JOIN order_destiny od ON od."destinyId" = d.id
+      LEFT JOIN jobs j ON j.id = od."orderId"
+      LEFT JOIN materials lm ON lm.id = od."materialId"
+      WHERE COALESCE(j."clientId", lm."clientId") = ${zp}
+        AND (d.so LIKE 'PS-%' OR d.exported IS NOT NULL)
+        AND d."shipDate" >= (now() - interval '60 days')`;
+
+    return {
+      generatedAt: new Date(),
+      environment: process.env.DB_NAME || 'testing',
+      rawByFamily,
+      corteTela,
+      serigrafia,
+      cortePvc,
+      bladderInventory,
+      corteComponentes,
+      cortePet,
+      kits,
+      prodInterna,
+      prodContratistas,
+      calidadLib,
+      empaque,
+      enRoute,
+    };
+  }
+
   async getFormulas() {
     const file = await fs.readFile(
       path.resolve(__dirname, '..', '..', '..', 'static', 'zenpet', 'formulas.json'),

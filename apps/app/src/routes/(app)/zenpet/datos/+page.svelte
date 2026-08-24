@@ -13,6 +13,74 @@
 		TableRow
 	} from '$lib/components/ui/table';
 
+	const etapasQuery = createQuery({
+		queryKey: ['zenpet-etapas'],
+		queryFn: async () => (await api.get('/zenpet/etapas')).data
+	});
+	const e = $derived($etapasQuery?.data);
+
+	// Reglas de Juan (Observaciones 18-Ago): columnas por etapa
+	const etapaCols: Record<string, { k: string; label: string }[]> = {
+		corteTela: [
+			{ k: 'capturado', label: 'Cortado' },
+			{ k: 'faltante', label: 'Faltante' }
+		],
+		serigrafia: [
+			{ k: 'capturado', label: 'Impreso' },
+			{ k: 'faltante', label: 'Faltante' }
+		],
+		cortePvc: [
+			{ k: 'producido', label: 'Producido' },
+			{ k: 'faltante', label: 'Faltante' }
+		],
+		corteComponentes: [
+			{ k: 'capturado', label: 'Cortado' },
+			{ k: 'faltante', label: 'Faltante' }
+		],
+		cortePet: [
+			{ k: 'surtido', label: 'Surtido (pase)' },
+			{ k: 'liberado', label: 'Liberado' }
+		],
+		kits: [],
+		prodInterna: [
+			{ k: 'producido', label: 'Producido' },
+			{ k: 'liberado', label: 'Liberado' }
+		],
+		prodContratistas: [
+			{ k: 'surtido', label: 'Surtido' },
+			{ k: 'aceptado', label: 'Entregado aceptado' },
+			{ k: 'enPoder', label: 'En poder' },
+			{ k: 'contratistas', label: 'Contratista(s)' }
+		],
+		calidadLib: [
+			{ k: 'liberado', label: 'Liberado' },
+			{ k: 'enPallet', label: 'En pallet' },
+			{ k: 'sinPallet', label: 'Sin pallet' }
+		]
+	};
+	const etapasDef = [
+		{ key: 'corteTela', num: '2', title: 'Corte de tela', rule: 'Órdenes con requisición de telas (ZEN-Z1) que aún no capturan el total del corte.' },
+		{ key: 'serigrafia', num: '3', title: 'Serigrafía', rule: 'Órdenes activadas en corte que traen operación de serigrafía y no han capturado su total.' },
+		{ key: 'cortePvc', num: '4/8', title: 'Corte de PVC / Bladder producción', rule: 'Órdenes con requisición de film PVC (ZEN-Z4-21xx); cierran al producirse el bladder. Control por inventario de bladders.' },
+		{ key: 'corteComponentes', num: '5', title: 'Corte de componentes', rule: 'Órdenes con requisición de componentes (ZEN-Z3 / ZEN-Z5) que no han capturado cortes varios completos.' },
+		{ key: 'cortePet', num: '6', title: 'Corte de PET (externo)', rule: 'Órdenes con pase de salida generado; cierran cuando calidad libera el producto.' },
+		{ key: 'kits', num: '7', title: 'Kits listos para producir', rule: 'Fases de corte, serigrafía y cortes varios completas (las que apliquen), sin pase de salida y sin producción iniciada.' },
+		{ key: 'prodInterna', num: '9', title: 'Línea de producción interna', rule: 'Órdenes con producción capturada en planta.' },
+		{ key: 'prodContratistas', num: '10', title: 'Línea de contratistas', rule: 'Surtido en pases de salida menos lo entregado aceptado = piezas en poder del contratista.' },
+		{ key: 'calidadLib', num: '11', title: 'Acabado y calidad', rule: 'Producto terminado liberado por calidad, con su avance de empaque.' }
+	];
+	function etapaUnits(key: string): number {
+		const rows = (e?.[key] as any[]) || [];
+		const sumKey =
+			key === 'prodContratistas' ? 'enPoder'
+			: key === 'calidadLib' ? 'sinPallet'
+			: key === 'cortePet' ? 'surtido'
+			: key === 'prodInterna' ? 'producido'
+			: etapaCols[key]?.some((c) => c.k === 'faltante') ? 'faltante'
+			: 'amount';
+		return rows.reduce((a, r) => a + Number(r[sumKey] ?? r.amount ?? 0), 0);
+	}
+
 	const stagesQuery = createQuery({
 		queryKey: ['zenpet-stages'],
 		queryFn: async () => (await api.get('/zenpet/stages')).data
@@ -214,12 +282,139 @@
 		</p>
 	</div>
 
-	<Tabs value="etapas">
-		<TabsList class="grid w-full grid-cols-3">
-			<TabsTrigger value="etapas">Las 13 etapas</TabsTrigger>
+	<Tabs value="ordenes">
+		<TabsList class="grid w-full grid-cols-4">
+			<TabsTrigger value="ordenes">Órdenes por etapa</TabsTrigger>
+			<TabsTrigger value="etapas">Resumen 13 etapas</TabsTrigger>
 			<TabsTrigger value="formulas">Fórmulas de kits</TabsTrigger>
 			<TabsTrigger value="pendientes">Qué falta por definir</TabsTrigger>
 		</TabsList>
+
+		<!-- ============ TAB 0: ÓRDENES POR ETAPA (reglas de Juan 18-Ago) ============ -->
+		<TabsContent value="ordenes" class="mt-4">
+			<div class="flex flex-col gap-5">
+				<div class="rounded-md border p-3">
+					<div class="mb-1 flex items-center justify-between">
+						<h3 class="font-semibold">1. Materia prima recibida (existencia ZENPET por familia)</h3>
+						{#if e?.enRoute}
+							<Badge color="blue">En ruta (60 días): {e.enRoute.units} pzs en {e.enRoute.pls} PL</Badge>
+						{/if}
+					</div>
+					<Table divClass="h-auto overflow-visible">
+						<TableHeader>
+							<TableHead>Familia</TableHead>
+							<TableHead>Materiales</TableHead>
+							<TableHead>Existencia</TableHead>
+							<TableHead>Medida</TableHead>
+						</TableHeader>
+						<TableBody>
+							{#each e?.rawByFamily || [] as r}
+								<TableRow>
+									<TableCell class="font-semibold">{r.family}</TableCell>
+									<TableCell>{r.materials}</TableCell>
+									<TableCell>{r.units}</TableCell>
+									<TableCell>{r.unit}</TableCell>
+								</TableRow>
+							{/each}
+						</TableBody>
+					</Table>
+				</div>
+
+				{#each etapasDef as et}
+					<div class="rounded-md border p-3">
+						<div class="mb-1 flex flex-wrap items-center justify-between gap-2">
+							<h3 class="font-semibold">{et.num}. {et.title}</h3>
+							<div class="flex gap-2">
+								<Badge color="gray">{(e?.[et.key] || []).length} órdenes</Badge>
+								<Badge color="green">{etapaUnits(et.key)} pzs</Badge>
+							</div>
+						</div>
+						<p class="mb-2 text-xs text-muted-foreground">{et.rule}</p>
+						{#if (e?.[et.key] || []).length}
+							<Table divClass="h-auto max-h-72 overflow-auto">
+								<TableHeader>
+									<TableHead>Job</TableHead>
+									<TableHead>Programación</TableHead>
+									<TableHead>Parte</TableHead>
+									<TableHead class="min-w-44">Descripción</TableHead>
+									<TableHead>Cantidad</TableHead>
+									{#each etapaCols[et.key] || [] as c}
+										<TableHead>{c.label}</TableHead>
+									{/each}
+								</TableHeader>
+								<TableBody>
+									{#each e?.[et.key] || [] as row}
+										<TableRow>
+											<TableCell class="font-semibold">{row.ref}</TableCell>
+											<TableCell>{row.programation || ''}</TableCell>
+											<TableCell>{row.part}</TableCell>
+											<TableCell class="max-w-56 truncate" title={row.description}>{row.description}</TableCell>
+											<TableCell>{row.amount}</TableCell>
+											{#each etapaCols[et.key] || [] as c}
+												<TableCell>{row[c.k] ?? ''}</TableCell>
+											{/each}
+										</TableRow>
+									{/each}
+								</TableBody>
+							</Table>
+						{:else}
+							<p class="text-sm text-muted-foreground">Sin órdenes activas en esta etapa.</p>
+						{/if}
+						{#if et.key === 'cortePvc' && e?.bladderInventory?.length}
+							<p class="mb-1 mt-3 text-xs font-semibold">Inventario de bladders (control de la etapa):</p>
+							<div class="flex flex-wrap gap-2">
+								{#each e.bladderInventory as b}
+									<Badge color="blue">{b.code} · {b.description}: {b.units} {b.measurement}</Badge>
+								{/each}
+							</div>
+						{/if}
+					</div>
+				{/each}
+
+				<div class="rounded-md border p-3">
+					<div class="mb-1 flex items-center justify-between">
+						<h3 class="font-semibold">12/13. Empaque · Producto terminado listo</h3>
+						<div class="flex gap-2">
+							<Badge color="gray">{(e?.empaque || []).length} pallets</Badge>
+							<Badge color="green">
+								{(e?.empaque || []).reduce((a: number, r: any) => a + Number(r.units || 0), 0)} pzs
+							</Badge>
+						</div>
+					</div>
+					<p class="mb-2 text-xs text-muted-foreground">
+						Producto liberado y asignado a pallet, listo para exportar (sale al generar su packing list).
+					</p>
+					{#if (e?.empaque || []).length}
+						<Table divClass="h-auto max-h-72 overflow-auto">
+							<TableHeader>
+								<TableHead>Pallet</TableHead>
+								<TableHead>Job(s)</TableHead>
+								<TableHead>Piezas</TableHead>
+								<TableHead>Cajas</TableHead>
+								<TableHead>Estado</TableHead>
+							</TableHeader>
+							<TableBody>
+								{#each e?.empaque || [] as pl}
+									<TableRow>
+										<TableCell class="font-semibold">{pl.folio}</TableCell>
+										<TableCell class="max-w-56 truncate" title={pl.jobs}>{pl.jobs}</TableCell>
+										<TableCell>{pl.units}</TableCell>
+										<TableCell>{pl.boxes}</TableCell>
+										<TableCell>
+											<Badge color={pl.enOrden ? 'green' : 'yellow'}>
+												{pl.enOrden ? 'En orden de exportación' : 'Pendiente'}
+											</Badge>
+										</TableCell>
+									</TableRow>
+								{/each}
+							</TableBody>
+						</Table>
+					{:else}
+						<p class="text-sm text-muted-foreground">Sin pallets pendientes de exportar.</p>
+					{/if}
+				</div>
+			</div>
+		</TabsContent>
 
 		<!-- ============ TAB 1: ETAPAS ============ -->
 		<TabsContent value="etapas" class="mt-4"><div class="flex flex-col gap-4">

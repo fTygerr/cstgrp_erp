@@ -7,6 +7,11 @@ import { ZenPetService } from './zenpet.service';
 export class ZenPetController {
   constructor(private readonly zenpetService: ZenPetService) {}
 
+  @Get('etapas')
+  getEtapas() {
+    return this.zenpetService.getEtapas();
+  }
+
   @Get('stages')
   getStages() {
     return this.zenpetService.getStages();
