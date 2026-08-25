@@ -61,7 +61,7 @@
 	const etapasDef = [
 		{ key: 'corteTela', num: '2', title: 'Corte de tela', rule: 'Órdenes con requisición de telas (ZEN-Z1) que aún no capturan el total del corte.' },
 		{ key: 'serigrafia', num: '3', title: 'Serigrafía', rule: 'Órdenes activadas en corte que traen operación de serigrafía y no han capturado su total.' },
-		{ key: 'cortePvc', num: '4/8', title: 'Corte de PVC / Bladder producción', rule: 'Órdenes con requisición de film PVC (ZEN-Z4-21xx); cierran al producirse el bladder. Control por inventario de bladders.' },
+		{ key: 'cortePvc', num: '4/8', title: 'Corte de PVC / Bladder producción', rule: 'Órdenes con requisición de film PVC (ZEN-Z4-2115/2116); cierran al producirse el bladder. Control por inventario de bladders.' },
 		{ key: 'corteComponentes', num: '5', title: 'Corte de componentes', rule: 'Órdenes con requisición de componentes (ZEN-Z3 / ZEN-Z5) que no han capturado cortes varios completos.' },
 		{ key: 'cortePet', num: '6', title: 'Corte de PET (externo)', rule: 'Órdenes con pase de salida generado; cierran cuando calidad libera el producto.' },
 		{ key: 'kits', num: '7', title: 'Kits listos para producir', rule: 'Fases de corte, serigrafía y cortes varios completas (las que apliquen), sin pase de salida y sin producción iniciada.' },

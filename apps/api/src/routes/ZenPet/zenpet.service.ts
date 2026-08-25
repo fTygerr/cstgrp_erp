@@ -138,14 +138,18 @@ export class ZenPetService {
         AND ${reqActivated('ZEN-Z1-%')} AND jobs.serigrafia < jobs.amount
       ORDER BY jobs.ref DESC`;
 
-    // 4/8. Corte de PVC + Bladder: requisición de film PVC (ZEN-Z4-21xx);
+    // 4/8. Corte de PVC + Bladder: requisición de film PVC (solo 2115/2116,
+    // los demás films son obsoletos — Juan 25/08);
     // cierra cuando se produce el bladder. Control por inventario de bladders.
     const cortePvc = await sql`
       SELECT ${baseCols}, GREATEST(jobs.produccion, jobs.calidad)::int AS producido,
         (jobs.amount - GREATEST(jobs.produccion, jobs.calidad))::int AS faltante
       ${baseFrom}
       WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
-        AND ${reqActivated('ZEN-Z4-21%')}
+        AND EXISTS (
+          SELECT 1 FROM requisitions r JOIN materials rm ON rm.id = r."materialId"
+          WHERE rm.code IN ('ZEN-Z4-2115', 'ZEN-Z4-2116')
+            AND r.jobs LIKE '%,' || jobs.ref || ',%')
         AND GREATEST(jobs.produccion, jobs.calidad) < jobs.amount
       ORDER BY jobs.ref DESC`;
     const bladderInventory = await sql`
