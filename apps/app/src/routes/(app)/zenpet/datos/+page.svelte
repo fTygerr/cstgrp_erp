@@ -283,11 +283,10 @@
 	</div>
 
 	<Tabs value="ordenes">
-		<TabsList class="grid w-full grid-cols-4">
+		<TabsList class="grid w-full grid-cols-2">
 			<TabsTrigger value="ordenes">Órdenes por etapa</TabsTrigger>
-			<TabsTrigger value="etapas">Resumen 13 etapas</TabsTrigger>
+			<!-- oculto por ahora (Hector 25/08): <TabsTrigger value="etapas">Resumen 13 etapas</TabsTrigger> -->
 			<TabsTrigger value="formulas">Fórmulas de kits</TabsTrigger>
-			<TabsTrigger value="pendientes">Qué falta por definir</TabsTrigger>
 		</TabsList>
 
 		<!-- ============ TAB 0: ÓRDENES POR ETAPA (reglas de Juan 18-Ago) ============ -->
@@ -573,38 +572,6 @@
 					</li>
 					<li><b class="text-foreground">Qué cuenta como empaque:</b> {(f?.rules?.packaging_families || []).join(' · ')}</li>
 				</ul>
-			</div>
-		</div></TabsContent>
-
-		<!-- ============ TAB 3: PENDIENTES ============ -->
-		<TabsContent value="pendientes" class="mt-4"><div class="flex flex-col gap-3">
-			<div class="rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
-				<b class="text-foreground">Qué es esto:</b> las 4 decisiones que faltan para cerrar el mapeo y
-				conectar con ZenPet. Cada una dice quién la responde y qué desbloquea.
-			</div>
-
-			<div class="rounded-md border border-yellow-300 p-3">
-				<div class="flex items-center justify-between"><p class="font-semibold">1 · Atribución de los cortes (etapas 2, 4, 5, 6)</p><Badge color="yellow">RESPONDE: JUAN</Badge></div>
-				<p class="mt-1 text-sm text-muted-foreground">¿Es correcto separar los cortes por la familia del material del BOM? (Z1 = tela, Z4 = películas PVC/PET, Z2/Z3 = componentes). Y cuando un job corta varias familias, ¿se reparte o se clasifica por la principal?</p>
-				<p class="mt-1 text-xs text-muted-foreground">Desbloquea: las 4 etapas de corte dejan de ser un pool y se muestran separadas como las quiere ZenPet.</p>
-			</div>
-
-			<div class="rounded-md border border-orange-300 p-3">
-				<div class="flex items-center justify-between"><p class="font-semibold">2 · Kits y bladders (etapas 7 y 8)</p><Badge color="orange">RESPONDE: JUAN</Badge></div>
-				<p class="mt-1 text-sm text-muted-foreground">¿El proxy de kits (material surtido sin iniciar producción) refleja el piso? ¿Y los bladders: se cuentan, se estiman por válvulas consumidas, o se agrupan en producción?</p>
-				<p class="mt-1 text-xs text-muted-foreground">Desbloquea: las 2 etapas intermedias de producción.</p>
-			</div>
-
-			<div class="rounded-md border border-blue-300 p-3">
-				<div class="flex items-center justify-between"><p class="font-semibold">3 · Vigencia de costos y fórmulas</p><Badge color="blue">RESPONDE: HC</Badge></div>
-				<p class="mt-1 text-sm text-muted-foreground">Las fórmulas y costos vienen de CST-Tracker (extracto {f?.extracted_at ?? '…'}). ¿Siguen vigentes? ¿Los costos para ZenPet salen de aquí o los pone ZenPet de su lado?</p>
-				<p class="mt-1 text-xs text-muted-foreground">Desbloquea: la valuación en dólares por etapa (hoy solo mostramos unidades).</p>
-			</div>
-
-			<div class="rounded-md border p-3">
-				<div class="flex items-center justify-between"><p class="font-semibold">4 · Cadencia del envío a ZenPet</p><Badge color="cyan">RESPONDE: HA + JUAN</Badge></div>
-				<p class="mt-1 text-sm text-muted-foreground">Propuesta: lunes y miércoles, proceso de solo lectura (el ERP no se toca, nadie captura nada extra). Puede ser diario si se quiere.</p>
-				<p class="mt-1 text-xs text-muted-foreground">Desbloquea: el arranque del envío automático de datos.</p>
 			</div>
 		</div></TabsContent>
 	</Tabs>
