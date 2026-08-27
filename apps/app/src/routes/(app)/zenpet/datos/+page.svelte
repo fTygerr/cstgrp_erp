@@ -42,12 +42,9 @@
 			{ k: 'liberado', label: 'Liberado' }
 		],
 		kits: [],
-		prodInterna: [
-			{ k: 'producido', label: 'Producido' },
-			{ k: 'liberado', label: 'Liberado' }
-		],
-		prodContratistas: [
-			{ k: 'surtido', label: 'Surtido' },
+		produccion: [
+			{ k: 'producido', label: 'Producido planta' },
+			{ k: 'surtido', label: 'Surtido contratista' },
 			{ k: 'aceptado', label: 'Entregado aceptado' },
 			{ k: 'enPoder', label: 'En poder' },
 			{ k: 'contratistas', label: 'Contratista(s)' }
@@ -65,17 +62,37 @@
 		{ key: 'corteComponentes', num: '5', title: 'Corte de componentes', rule: 'Órdenes con requisición de componentes (ZEN-Z3 / ZEN-Z5) que no han capturado cortes varios completos.' },
 		{ key: 'cortePet', num: '6', title: 'Corte de PET (externo)', rule: 'Órdenes con pase de salida generado; cierran cuando calidad libera el producto.' },
 		{ key: 'kits', num: '7', title: 'Kits listos para producir', rule: 'Fases de corte, serigrafía y cortes varios completas (las que apliquen), sin pase de salida y sin producción iniciada.' },
-		{ key: 'prodInterna', num: '9', title: 'Línea de producción interna', rule: 'Órdenes con producción capturada en planta.' },
-		{ key: 'prodContratistas', num: '10', title: 'Línea de contratistas', rule: 'Surtido en pases de salida menos lo entregado aceptado = piezas en poder del contratista.' },
+		{ key: 'produccion', num: '9/10', title: 'Producción (interna y contratistas)', rule: 'Toda la producción en un solo apartado: lo capturado en planta y lo surtido a contratistas (en poder = surtido − entregado aceptado).' },
 		{ key: 'calidadLib', num: '11', title: 'Acabado y calidad', rule: 'Producto terminado liberado por calidad, con su avance de empaque.' }
 	];
+	// Punto 6 (obs 26-Ago): sintetizar por número de parte — totales para el cliente
+	let showDetalle: Record<string, boolean> = $state({});
+	function groupByPart(key: string) {
+		const rows = (e?.[key] as any[]) || [];
+		const numCols = (etapaCols[key] || []).filter((c) => c.k !== 'contratistas');
+		const map = new Map<string, any>();
+		for (const r of rows) {
+			const g = map.get(r.part) ?? {
+				part: r.part,
+				description: r.description,
+				ordenes: 0,
+				amount: 0,
+				...Object.fromEntries(numCols.map((c) => [c.k, 0]))
+			};
+			g.ordenes += 1;
+			g.amount += Number(r.amount || 0);
+			for (const c of numCols) g[c.k] += Number(r[c.k] || 0);
+			map.set(r.part, g);
+		}
+		return [...map.values()];
+	}
+
 	function etapaUnits(key: string): number {
 		const rows = (e?.[key] as any[]) || [];
 		const sumKey =
-			key === 'prodContratistas' ? 'enPoder'
+			key === 'produccion' ? 'enPoder'
 			: key === 'calidadLib' ? 'sinPallet'
 			: key === 'cortePet' ? 'surtido'
-			: key === 'prodInterna' ? 'producido'
 			: etapaCols[key]?.some((c) => c.k === 'faltante') ? 'faltante'
 			: 'amount';
 		return rows.reduce((a, r) => a + Number(r[sumKey] ?? r.amount ?? 0), 0);
@@ -332,30 +349,62 @@
 						{#if (e?.[et.key] || []).length}
 							<Table divClass="h-auto max-h-72 overflow-auto">
 								<TableHeader>
-									<TableHead>Job</TableHead>
-									<TableHead>Programación</TableHead>
 									<TableHead>Parte</TableHead>
 									<TableHead class="min-w-44">Descripción</TableHead>
-									<TableHead>Cantidad</TableHead>
-									{#each etapaCols[et.key] || [] as c}
+									<TableHead>Órdenes</TableHead>
+									<TableHead>Cantidad total</TableHead>
+									{#each (etapaCols[et.key] || []).filter((c) => c.k !== 'contratistas') as c}
 										<TableHead>{c.label}</TableHead>
 									{/each}
 								</TableHeader>
 								<TableBody>
-									{#each e?.[et.key] || [] as row}
+									{#each groupByPart(et.key) as g}
 										<TableRow>
-											<TableCell class="font-semibold">{row.ref}</TableCell>
-											<TableCell>{row.programation || ''}</TableCell>
-											<TableCell>{row.part}</TableCell>
-											<TableCell class="max-w-56 truncate" title={row.description}>{row.description}</TableCell>
-											<TableCell>{row.amount}</TableCell>
-											{#each etapaCols[et.key] || [] as c}
-												<TableCell>{row[c.k] ?? ''}</TableCell>
+											<TableCell class="font-semibold">{g.part}</TableCell>
+											<TableCell class="max-w-56 truncate" title={g.description}>{g.description}</TableCell>
+											<TableCell>{g.ordenes}</TableCell>
+											<TableCell>{g.amount}</TableCell>
+											{#each (etapaCols[et.key] || []).filter((c) => c.k !== 'contratistas') as c}
+												<TableCell>{g[c.k]}</TableCell>
 											{/each}
 										</TableRow>
 									{/each}
 								</TableBody>
 							</Table>
+							<button
+								class="mt-1 text-xs text-muted-foreground underline"
+								onclick={() => (showDetalle[et.key] = !showDetalle[et.key])}
+							>
+								{showDetalle[et.key] ? 'Ocultar detalle por orden' : 'Ver detalle por orden'}
+							</button>
+							{#if showDetalle[et.key]}
+								<Table divClass="mt-1 h-auto max-h-72 overflow-auto">
+									<TableHeader>
+										<TableHead>Job</TableHead>
+										<TableHead>Programación</TableHead>
+										<TableHead>Parte</TableHead>
+										<TableHead class="min-w-44">Descripción</TableHead>
+										<TableHead>Cantidad</TableHead>
+										{#each etapaCols[et.key] || [] as c}
+											<TableHead>{c.label}</TableHead>
+										{/each}
+									</TableHeader>
+									<TableBody>
+										{#each e?.[et.key] || [] as row}
+											<TableRow>
+												<TableCell class="font-semibold">{row.ref}</TableCell>
+												<TableCell>{row.programation || ''}</TableCell>
+												<TableCell>{row.part}</TableCell>
+												<TableCell class="max-w-56 truncate" title={row.description}>{row.description}</TableCell>
+												<TableCell>{row.amount}</TableCell>
+												{#each etapaCols[et.key] || [] as c}
+													<TableCell>{row[c.k] ?? ''}</TableCell>
+												{/each}
+											</TableRow>
+										{/each}
+									</TableBody>
+								</Table>
+							{/if}
 						{:else}
 							<p class="text-sm text-muted-foreground">Sin órdenes activas en esta etapa.</p>
 						{/if}

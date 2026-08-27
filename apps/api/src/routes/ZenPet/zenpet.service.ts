@@ -165,7 +165,8 @@ export class ZenPetService {
         AND ${reqActivatedAny('ZEN-Z3-%', 'ZEN-Z5-%')} AND jobs."cortesVarios" < jobs.amount
       ORDER BY jobs.ref DESC`;
 
-    // 6. Corte de PET: con pase de salida (proceso externo); cierra al liberar calidad
+    // 6. Corte de PET: con pase de salida (proceso externo); cierra al liberar
+    // calidad. Solo los 4 números de parte de PET (Juan, obs 26-Ago).
     const cortePet = await sql`
       SELECT ${baseCols}, ep.surtido, jobs.calidad::int AS liberado
       ${baseFrom}
@@ -173,6 +174,7 @@ export class ZenPetService {
         SELECT COALESCE(SUM(ej.amount), 0)::int AS surtido FROM exitpass_jobs ej WHERE ej."jobId" = jobs.id
       ) ep ON ep.surtido > 0
       WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
+        AND COALESCE(m.code, jobs.part) IN ('ZEN-Z4-3520', 'ZEN-Z4-3521', 'ZEN-Z4-3522', 'ZEN-Z4-3523')
         AND jobs.calidad < jobs.amount
       ORDER BY jobs.ref DESC`;
 
@@ -190,29 +192,26 @@ export class ZenPetService {
         AND NOT EXISTS (SELECT 1 FROM exitpass_jobs ej WHERE ej."jobId" = jobs.id)
       ORDER BY jobs.ref DESC`;
 
-    // 9. Línea de producción interna: órdenes con producción capturada
-    const prodInterna = await sql`
-      SELECT ${baseCols}, jobs.produccion::int AS producido, jobs.calidad::int AS liberado
-      ${baseFrom}
-      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
-        AND jobs.produccion > 0
-      ORDER BY jobs.ref DESC`;
-
-    // 10. Línea contratistas: surtido en pases − entregado aceptado = en poder
-    const prodContratistas = await sql`
-      SELECT ${baseCols}, ep.surtido, jobs.contractor::int AS aceptado,
-        (ep.surtido - jobs.contractor)::int AS "enPoder",
+    // 9/10 fusionados (Juan, obs 26-Ago): "Producción" — interna + contratistas
+    // en un solo apartado. En poder de contratistas = surtido − entregado aceptado.
+    const produccion = await sql`
+      SELECT ${baseCols},
+        jobs.produccion::int AS producido,
+        COALESCE(ep.surtido, 0) AS surtido,
+        jobs.contractor::int AS aceptado,
+        GREATEST(COALESCE(ep.surtido, 0) - jobs.contractor, 0)::int AS "enPoder",
         ep.contratistas
       ${baseFrom}
-      JOIN LATERAL (
+      LEFT JOIN LATERAL (
         SELECT COALESCE(SUM(ej.amount), 0)::int AS surtido,
           string_agg(DISTINCT c.name, ', ') AS contratistas
         FROM exitpass_jobs ej
         JOIN "exitPass" e ON e.id = ej."exitId"
         JOIN contractors c ON c.id = e."contractorId"
         WHERE ej."jobId" = jobs.id
-      ) ep ON ep.surtido > 0
-      WHERE jobs."clientId" = ${zp} AND (ep.surtido - jobs.contractor) > 0
+      ) ep ON true
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
+        AND (jobs.produccion > 0 OR COALESCE(ep.surtido, 0) - jobs.contractor > 0)
       ORDER BY jobs.ref DESC`;
 
     // 11. Acabado y calidad: producto terminado liberado por calidad
@@ -260,8 +259,7 @@ export class ZenPetService {
       corteComponentes,
       cortePet,
       kits,
-      prodInterna,
-      prodContratistas,
+      produccion,
       calidadLib,
       empaque,
       enRoute,
