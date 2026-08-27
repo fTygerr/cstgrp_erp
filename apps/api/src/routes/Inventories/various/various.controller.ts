@@ -22,8 +22,8 @@ export class VariousController {
   }
 
   @Get('materials')
-  getMaterials() {
-    return this.variousService.getMaterials();
+  getMaterials(@Query() query) {
+    return this.variousService.getMaterials(query?.type);
   }
 
   @Get('clients-legal')

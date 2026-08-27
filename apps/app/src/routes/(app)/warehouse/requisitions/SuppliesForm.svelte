@@ -112,6 +112,7 @@
 						<TableRow>
 							<TableCell class="border-l p-0 px-[1px]"
 								><MaterialInput
+									type="insumo"
 									bind:value={materials[i].code}
 									bind:measurement={materials[i].measurement}
 								/></TableCell

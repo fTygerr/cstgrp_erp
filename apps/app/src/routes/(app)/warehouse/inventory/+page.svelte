@@ -53,7 +53,8 @@
 	const types = [
 		{ name: 'Materia prima', value: 'materiaPrima', color: 'blue' },
 		{ name: 'Producto', value: 'producto', color: 'green' },
-		{ name: 'Subproducto', value: 'subproducto', color: 'orange' }
+		{ name: 'Subproducto', value: 'subproducto', color: 'orange' },
+		{ name: 'Insumo', value: 'insumo', color: 'purple' }
 	];
 
 	const inventoryQuery = createQuery({

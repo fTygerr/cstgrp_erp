@@ -33,6 +33,11 @@ export class PaymentsController {
     return this.paymentsService.create(body);
   }
 
+  @Get('deliveries')
+  getPaymentDeliveries(@Query(new ZodPiPe(idObjectSchema)) params) {
+    return this.paymentsService.getPaymentDeliveries(params);
+  }
+
   @Get('download')
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'inline; filename="pago-contratista.pdf"')

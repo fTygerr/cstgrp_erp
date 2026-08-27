@@ -27,9 +27,10 @@
 	interface Props {
 		show: boolean;
 		selectedMovement?: any;
+		viewOnly?: boolean;
 	}
 
-	let { show = $bindable(), selectedMovement = {} }: Props = $props();
+	let { show = $bindable(), selectedMovement = {}, viewOnly = false }: Props = $props();
 	interface material {
 		code: string;
 		amount: string;
@@ -118,6 +119,7 @@
 			title={selectedMovement.id ? 'Actualizar importacion' : 'Registrar importacion'}
 		/>
 		<DialogBody>
+			<fieldset disabled={viewOnly} class="contents">
 			<div class="grid w-full gap-4 sm:grid-cols-3">
 				<Label name="Importacion">
 					<Input disabled={inputDisabled} name="text" bind:value={formData.ref} />
@@ -178,7 +180,8 @@
 					</TableRow>
 				</TableBody>
 			</Table>
+			</fieldset>
 		</DialogBody>
-		<DialogFooter submitFunc={handleSubmit} hideFunc={() => (show = false)} />
+		<DialogFooter submitFunc={viewOnly ? undefined : handleSubmit} hideFunc={() => (show = false)} />
 	</DialogContent>
 </Dialog>

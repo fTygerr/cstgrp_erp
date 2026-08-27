@@ -15,10 +15,12 @@ export const getProgressSchema = z.object({
 export const getHistorySchema = z.object({
   id: idSchema,
   all: z.string().nullish(),
+  contractorId: z.string().nullish(),
 });
 
 export const captureProgressSchema = z.object({
   orderId: idSchema,
+  contractorId: idSchema,
   amount: intSchema.min(1, 'La cantidad debe ser mayor a 0'),
   date: dateSchema,
 });

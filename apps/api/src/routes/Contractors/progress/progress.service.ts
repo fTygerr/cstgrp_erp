@@ -16,14 +16,32 @@ export class ProgressService {
   constructor(private readonly req: ContextProvider) {}
 
   async getOrders(body: z.infer<typeof getProgressSchema>) {
-    const jobs = await sql`select jobs.*, "exitPass"."contractorId"
+    // Una fila por orden×contratista (obs 26-Ago): cada contratista ve SU
+    // surtido, SUS entregas y SU faltante — sin mezclar con los demás.
+    const jobs = await sql`select jobs.*,
+        ec."contractorId",
+        ec.surtido AS "contractorAmount",
+        COALESCE(del.accepted, 0)::int AS contractor,
+        (COALESCE(del.accepted, 0) >= ec.surtido) AS "completedContractor"
        from jobs
-       left join "exitPass" on "exitPass"."id" = jobs."exitId"
-       where "contractorAmount" > 0
-       ${body.completed === null ? sql`` : body.completed ? sql`AND jobs."completedContractor" = true` : sql`AND jobs."completedContractor" = false`}
+       join lateral (
+         select e."contractorId", SUM(ej.amount)::int AS surtido
+         from exitpass_jobs ej
+         join "exitPass" e on e.id = ej."exitId"
+         where ej."jobId" = jobs.id
+         group by e."contractorId"
+       ) ec on ec.surtido > 0
+       left join lateral (
+         select SUM(cm.accepted)::int AS accepted
+         from contractormovements cm
+         where cm."orderId" = jobs.id and cm."contractorId" = ec."contractorId"
+           and cm.approved = true
+       ) del on true
+       where true
+       ${body.completed === null ? sql`` : body.completed ? sql`AND COALESCE(del.accepted, 0) >= ec.surtido` : sql`AND COALESCE(del.accepted, 0) < ec.surtido`}
        ${body.job ? sql`AND jobs.ref LIKE ${'%' + body.job + '%'}` : sql``}
        ${body.programation ? sql`AND jobs.programation LIKE ${'%' + body.programation + '%'}` : sql``}
-       ${body.contractorId ? sql`AND "exitPass"."contractorId" = ${body.contractorId}` : sql``}
+       ${body.contractorId ? sql`AND ec."contractorId" = ${body.contractorId}` : sql``}
        order by jobs.ref desc limit 200`;
 
     return jobs;
@@ -32,6 +50,7 @@ export class ProgressService {
   async getOrderHistory(body: z.infer<typeof getHistorySchema>) {
     const movements =
       await sql`select * from contractormovements where "orderId" = ${body.id}
+      ${body.contractorId ? sql`and "contractorId" = ${body.contractorId}` : sql``}
       ${body.all === 'true' ? sql`` : sql`and approved = true`}
       order by date desc`;
     return movements;
@@ -39,17 +58,26 @@ export class ProgressService {
 
   async captureDailyProgress(body: z.infer<typeof captureProgressSchema>) {
     await sql.begin(async (sql) => {
-      const [order] = await sql`select SUM(accepted)::integer as done,
-         (select "contractorAmount" from jobs where id = ${body.orderId}) as amount,
-         (select ref from jobs where id = ${body.orderId})
-          from contractormovements where "orderId" = ${body.orderId}`;
+      // tope por contratista: lo entregado por ESTE contratista no puede
+      // exceder lo que ESE contratista tiene surtido en pases (obs 26-Ago)
+      const [order] = await sql`select
+         (select COALESCE(SUM(accepted), 0)::integer from contractormovements
+           where "orderId" = ${body.orderId} and "contractorId" = ${body.contractorId}) as done,
+         (select COALESCE(SUM(ej.amount), 0)::integer from exitpass_jobs ej
+           join "exitPass" e on e.id = ej."exitId"
+           where ej."jobId" = ${body.orderId} and e."contractorId" = ${body.contractorId}) as amount,
+         (select ref from jobs where id = ${body.orderId})`;
 
+      if (order.amount === 0)
+        throw new BadRequestException(
+          'Ese contratista no tiene pases de salida de esta orden',
+        );
       if (order.done + body.amount > order.amount)
         throw new BadRequestException(
-          'El progreso no puede ser mayor al total',
+          'El progreso no puede ser mayor a lo surtido a ese contratista',
         );
 
-      await sql`insert into contractormovements (date, "orderId", amount) values (${body.date}, ${body.orderId}, ${body.amount})`;
+      await sql`insert into contractormovements (date, "orderId", "contractorId", amount) values (${body.date}, ${body.orderId}, ${body.contractorId}, ${body.amount})`;
       await updateContractorAmounts(body.orderId, sql);
 
       await this.req.record(
@@ -79,10 +107,14 @@ export class ProgressService {
 
       const [others] = await sql`select COALESCE(SUM(accepted), 0)::int as done
         from contractormovements
-        where "orderId" = ${movement.orderId} and id != ${body.id}`;
+        where "orderId" = ${movement.orderId} and id != ${body.id}
+          and "contractorId" is not distinct from ${movement.contractorId}`;
+      const [{ surtido }] = await sql`select COALESCE(SUM(ej.amount), 0)::int as surtido
+        from exitpass_jobs ej join "exitPass" e on e.id = ej."exitId"
+        where ej."jobId" = ${movement.orderId} and e."contractorId" = ${movement.contractorId}`;
 
       if (others.done + (body.amount - movement.rejected) >
-        movement.contractorAmount)
+        (surtido || movement.contractorAmount))
         throw new BadRequestException(
           'El progreso no puede ser mayor al total',
         );

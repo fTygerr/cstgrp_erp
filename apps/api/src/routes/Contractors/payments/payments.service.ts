@@ -22,9 +22,7 @@ export class PaymentsService {
     const rows = await sql`select p.*,
     (select string_agg(distinct c.name, ', ')
       from contractormovements cm
-      join jobs j on j.id = cm."orderId"
-      join "exitPass" e on e.id = j."exitId"
-      join contractors c on c.id = e."contractorId"
+      join contractors c on c.id = cm."contractorId"
       where cm."paymentId" = p.id) as contractors,
     (select string_agg(distinct j.ref, ', ')
       from contractormovements cm
@@ -74,9 +72,7 @@ export class PaymentsService {
     const deliveries = await sql`select id, rejected, accepted, date, 
     (select ref from jobs where id = "orderId"),
     (select description from jobs where id = "orderId"),
-    (select name from contractors where id = 
-      (select "contractorId" from "exitPass" where id = 
-        (select "exitId" from jobs where id = "orderId"))) as contractor
+    (select name from contractors where id = contractormovements."contractorId") as contractor
 
     FROM contractormovements
     WHERE date >= ${body.startDate} AND date <= ${body.endDate}
@@ -87,6 +83,22 @@ export class PaymentsService {
     return deliveries;
   }
 
+  // Detalle de entregas de un pago (opción "Ver", obs 26-Ago) — solo lectura
+  async getPaymentDeliveries(body: z.infer<typeof idObjectSchema>) {
+    const rows = await sql`select cm.id, cm.date, cm.accepted, cm.rejected,
+      (select name from contractors where id = cm."contractorId") as contractor,
+      j.ref, COALESCE(m.code, j.part) as part, j.description,
+      j."contractorPrice" as price,
+      (cm.accepted * j."contractorPrice")::numeric(12,2) as total
+    from contractormovements cm
+    join jobs j on j.id = cm."orderId"
+    left join materialmovements mm on j."movementId" = mm.id
+    left join materials m on mm."materialId" = m.id
+    where cm."paymentId" = ${body.id}
+    order by cm.date asc`;
+    return rows;
+  }
+
   async download(body: z.infer<typeof idObjectSchema>) {
     const [payment] =
       await sql`select * from "contractorPayments" where id = ${body.id}`;
@@ -94,9 +106,7 @@ export class PaymentsService {
 
     const rows = await sql`select rejected, accepted, date, "orderId",
 
-    (select name from contractors where id = 
-      (select "contractorId" from "exitPass" where id = 
-        (select "exitId" from jobs where id = "orderId"))) as contractor
+    (select name from contractors where id = contractormovements."contractorId") as contractor
 
     FROM contractormovements
     WHERE "paymentId" = ${payment.id}

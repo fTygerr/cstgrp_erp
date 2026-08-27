@@ -35,9 +35,10 @@
 	interface Props {
 		show?: boolean;
 		selectedExitPass: any;
+		viewOnly?: boolean;
 	}
 
-	let { show = $bindable(false), selectedExitPass = $bindable({}) }: Props = $props();
+	let { show = $bindable(false), selectedExitPass = $bindable({}), viewOnly = false }: Props = $props();
 
 	interface AvailableJob {
 		id: number;
@@ -221,6 +222,7 @@
 		/>
 
 		<DialogBody class="flex max-h-[85vh] flex-col gap-4 overflow-auto">
+			<fieldset disabled={viewOnly} class="contents">
 			<div class="grid w-full gap-2 sm:grid-cols-2">
 				<Label name="Contratista">
 					<Select items={contractorsQuery} bind:value={formData.contractorId} />
@@ -324,7 +326,8 @@
 				</Table>
 				<Button onclick={addJobRow} class="mx-auto w-fit" type="button">Agregar job</Button>
 			</div>
+			</fieldset>
 		</DialogBody>
-		<DialogFooter submitFunc={handleSubmit} hideFunc={() => (show = false)} />
+		<DialogFooter submitFunc={viewOnly ? undefined : handleSubmit} hideFunc={() => (show = false)} />
 	</DialogContent>
 </Dialog>

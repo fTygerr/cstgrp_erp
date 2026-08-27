@@ -33,9 +33,10 @@
 	interface Props {
 		show: boolean;
 		selectedMovement?: any;
+		viewOnly?: boolean;
 	}
 
-	let { show = $bindable(), selectedMovement = {} }: Props = $props();
+	let { show = $bindable(), selectedMovement = {}, viewOnly = false }: Props = $props();
 
 	interface material {
 		code: string;
@@ -277,6 +278,7 @@
 	<DialogContent class="min-h-[99%] sm:max-w-5xl">
 		<DialogHeader title={selectedMovement.id ? 'Actualizar job-po' : 'Registrar job-po'} />
 		<DialogBody class="flex flex-col gap-4 overflow-scroll">
+			<fieldset disabled={viewOnly} class="contents">
 			<div class="grid w-full gap-2 sm:grid-cols-5">
 				<Label name="Programación">
 					<Input bind:value={formData.programation} />
@@ -617,7 +619,8 @@
 					>
 				</TabsContent>
 			</Tabs>
+			</fieldset>
 		</DialogBody>
-		<DialogFooter submitFunc={handleSubmit} hideFunc={() => (show = false)} />
+		<DialogFooter submitFunc={viewOnly ? undefined : handleSubmit} hideFunc={() => (show = false)} />
 	</DialogContent>
 </Dialog>

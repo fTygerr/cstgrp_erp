@@ -15,7 +15,7 @@
 	import ProgressForm from './ProgressForm.svelte';
 	import MovementCard from './MovementCard.svelte';
 	import { Badge, type BadgeVariant } from '$lib/components/ui/badge';
-	import { getAreas, getOptions } from '$lib/utils/queries';
+	import { getClients, getOptions } from '$lib/utils/queries';
 
 	interface Props {
 		area: string;
@@ -26,11 +26,11 @@
 		{ name: 'Pendiente', value: 'false', color: 'yellow' }
 	];
 
-	const areasQuery = createQuery({
-		queryKey: ['areas'],
-		queryFn: getAreas
+	const clientsQuery = createQuery({
+		queryKey: ['inventory-clients'],
+		queryFn: getClients
 	});
-	const areas = $derived(getOptions($areasQuery.data));
+	const clients = $derived(getOptions($clientsQuery.data));
 	const dateStates: Record<number, BadgeVariant> = {
 		0: 'outline',
 		1: 'yellow',
@@ -43,7 +43,7 @@
 		job: '',
 		programation: '',
 		completed: 'false',
-		filterArea: ''
+		clientId: ''
 	});
 
 	let show: boolean = $state(false);
@@ -73,9 +73,10 @@
 		<Select menu items={completed} bind:value={filters.completed} class="min-w-36 max-w-36" />
 		<Select
 			menu
-			items={areas}
-			bind:value={filters.filterArea}
+			items={clients}
+			bind:value={filters.clientId}
 			allowDeselect
+			placeholder="Cliente"
 			class="min-w-36 max-w-52"
 		/>
 	</div>

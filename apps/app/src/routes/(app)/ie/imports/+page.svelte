@@ -7,7 +7,7 @@
 	import OptionsCell from '$lib/components/basic/OptionsCell.svelte';
 	import OptionsHead from '$lib/components/basic/OptionsHead.svelte';
 	import { formatDate } from '$lib/utils/functions';
-	import { Pen } from 'lucide-svelte';
+	import { Eye, Pen } from 'lucide-svelte';
 	import DeletePopUp from '$lib/components/complex/DeletePopUp.svelte';
 	import { showSuccess } from '$lib/utils/showToast';
 	import { Button } from '$lib/components/ui/button';
@@ -36,7 +36,14 @@
 		})
 	);
 
+	let viewOnly = $state(false);
+	function verImport(i: number) {
+		selectedMovement = movements[i];
+		viewOnly = true;
+		show4 = true;
+	}
 	function editImport(i: number) {
+		viewOnly = false;
 		selectedMovement = movements[i];
 		show4 = true;
 	}
@@ -81,7 +88,11 @@
 	<TableBody>
 		{#each movements as movement, i}
 			<TableRow>
-				<OptionsCell editFunc={() => editImport(i)} deleteFunc={() => deleteIE(i)} />
+				<OptionsCell
+					editFunc={() => editImport(i)}
+					deleteFunc={() => deleteIE(i)}
+					extraButtons={[{ fn: () => verImport(i), name: 'Ver', icon: Eye }]}
+				/>
 				<TableCell>{movement.ref}</TableCell>
 				<TableCell>{formatDate(movement.due)}</TableCell>
 			</TableRow>
@@ -90,4 +101,4 @@
 </CusTable>
 
 <DeletePopUp bind:show={show3} text="Eliminar movimiento" deleteFunc={handleDelete} />
-<ImportMovementsForm bind:show={show4} {selectedMovement} />
+<ImportMovementsForm bind:show={show4} {selectedMovement} {viewOnly} />

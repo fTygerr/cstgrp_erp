@@ -25,9 +25,10 @@
 	interface Props {
 		show: boolean;
 		pl: any;
+		viewOnly?: boolean;
 	}
 
-	let { show = $bindable(), pl }: Props = $props();
+	let { show = $bindable(), pl, viewOnly = false }: Props = $props();
 
 	let data: any = $state({});
 	let orders: any[] = $state([]);
@@ -97,9 +98,10 @@
 <Dialog bind:open={show}>
 	<DialogContent class="sm:max-w-4xl">
 		<DialogHeader>
-			<DialogTitle>Modificar Packing List — {pl?.packSlip}</DialogTitle>
+			<DialogTitle>{viewOnly ? 'Packing List' : 'Modificar Packing List'} — {pl?.packSlip}</DialogTitle>
 		</DialogHeader>
 		<DialogBody class="flex max-h-[80dvh] flex-col gap-4 overflow-auto">
+			<fieldset disabled={viewOnly} class="contents">
 			<div class="grid gap-2 sm:grid-cols-3">
 				<Label name="Ship Date">
 					<Input type="date" bind:value={data.shipDate} />
@@ -193,9 +195,14 @@
 				</Label>
 			</div>
 
+			</fieldset>
 			<div class="mt-auto flex justify-end gap-2">
-				<Button variant="outline" onclick={() => (show = false)}>Cancelar</Button>
-				<Button onclick={save} disabled={saving}>Guardar</Button>
+				<Button variant="outline" onclick={() => (show = false)}>
+					{viewOnly ? 'Cerrar' : 'Cancelar'}
+				</Button>
+				{#if !viewOnly}
+					<Button onclick={save} disabled={saving}>Guardar</Button>
+				{/if}
 			</div>
 		</DialogBody>
 	</DialogContent>

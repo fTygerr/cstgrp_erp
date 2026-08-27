@@ -11,13 +11,15 @@
 		measurement?: string;
 		normal?: boolean;
 		disabled?: boolean;
+		type?: string;
 	}
 
 	let {
 		value = $bindable(),
 		measurement = $bindable(),
 		normal = false,
-		disabled = false
+		disabled = false,
+		type = ''
 	}: Props = $props();
 
 	async function getMeasurement() {
@@ -27,7 +29,7 @@
 	let materials = $state<string[]>([]);
 
 	async function getMaterials() {
-		materials = (await api.get('/inventoryvarious/materials')).data;
+		materials = (await api.get('/inventoryvarious/materials' + (type ? '?type=' + type : ''))).data;
 	}
 
 	onMount(() => {

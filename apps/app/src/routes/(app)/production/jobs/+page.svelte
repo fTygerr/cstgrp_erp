@@ -9,7 +9,7 @@
 	import OptionsHead from '$lib/components/basic/OptionsHead.svelte';
 	import { formatDate } from '$lib/utils/functions';
 	import JobComparisonCard from './JobComparisonCard.svelte';
-	import { Pen, Ruler } from 'lucide-svelte';
+	import { Eye, Pen, Ruler } from 'lucide-svelte';
 	import DeletePopUp from '$lib/components/complex/DeletePopUp.svelte';
 	import { showSuccess } from '$lib/utils/showToast';
 	import { Button } from '$lib/components/ui/button';
@@ -27,6 +27,7 @@
 	});
 
 	let selectedMovement: any = $state({});
+	let viewOnly = $state(false);
 
 	const movementsQuery = createQuery({
 		queryKey: ['jobs', { ...filters }],
@@ -43,7 +44,13 @@
 		selectedMovement = movements[i];
 		show3 = true;
 	}
+	function verJobPO(i: number) {
+		selectedMovement = movements[i];
+		viewOnly = true;
+		show5 = true;
+	}
 	function editJobPO(i: number) {
+		viewOnly = false;
 		selectedMovement = movements[i];
 		show5 = true;
 	}
@@ -105,7 +112,10 @@
 				<OptionsCell
 					editFunc={() => editJobPO(i)}
 					deleteFunc={() => deleteIE(i)}
-					extraButtons={[{ fn: () => compareJob(i), name: 'Comparar', icon: Ruler }]}
+					extraButtons={[
+						{ fn: () => verJobPO(i), name: 'Ver', icon: Eye },
+						{ fn: () => compareJob(i), name: 'Comparar', icon: Ruler }
+					]}
 				/>
 				<TableCell>{movement.ref || ''}</TableCell>
 				<TableCell>{movement.programation || ''}</TableCell>
@@ -119,4 +129,4 @@
 
 <JobComparisonCard bind:show={show2} bind:selectedJob={selectedMovement} />
 <DeletePopUp bind:show={show3} text="Eliminar movimiento" deleteFunc={handleDelete} />
-<ExportMovementsForm bind:show={show5} {selectedMovement} />
+<ExportMovementsForm {viewOnly} bind:show={show5} {selectedMovement} />

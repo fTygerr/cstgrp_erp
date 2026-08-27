@@ -14,9 +14,15 @@
 	import { showSuccess } from '$lib/utils/showToast';
 	import PaymentsForm from './PaymentsForm.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { FileDown } from 'lucide-svelte';
+	import { Eye, FileDown } from 'lucide-svelte';
+	import { Dialog, DialogBody, DialogContent } from '$lib/components/ui/dialog';
+	import { Button } from '$lib/components/ui/button';
+	import { formatDate as fmtF } from '$lib/utils/functions';
 
 	let showForm: boolean = $state(false);
+	let showVer = $state(false);
+	let verPago: any = $state(null);
+	let verRows: any[] = $state([]);
 	let selectedMovement: any = $state({});
 	let showDelete: boolean = $state(false);
 
@@ -82,6 +88,17 @@
 				<OptionsCell
 					extraButtons={[
 						{
+							fn: async () => {
+								verPago = payment;
+								verRows = (
+									await api.get('/contractors/payments/deliveries', { params: { id: payment.id } })
+								).data;
+								showVer = true;
+							},
+							name: 'Ver',
+							icon: Eye
+						},
+						{
 							fn: () => {
 								window.open(
 									import.meta.env.VITE_BASEURL + '/contractors/payments/download?id=' + payment.id,
@@ -114,6 +131,47 @@
 </CusTable>
 
 <PaymentsForm bind:show={showForm} />
+
+<Dialog bind:open={showVer}>
+	<DialogContent class="h-auto sm:max-w-3xl">
+		<DialogBody class="border-none">
+			<h2 class="text-lg font-semibold">Pago #{verPago?.folio} — entregas incluidas</h2>
+			<div class="mt-2 max-h-96 overflow-auto">
+				<table class="w-full text-sm">
+					<thead>
+						<tr class="border-b text-left">
+							<th class="py-1 pr-2">Fecha</th>
+							<th class="pr-2">Orden</th>
+							<th class="pr-2">Parte</th>
+							<th class="pr-2">Contratista</th>
+							<th class="pr-2">Aceptadas</th>
+							<th class="pr-2">Rechazadas</th>
+							<th class="pr-2">Precio</th>
+							<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each verRows as r}
+							<tr class="border-b border-dotted">
+								<td class="py-1 pr-2">{fmtF(r.date)}</td>
+								<td class="pr-2 font-semibold">{r.ref}</td>
+								<td class="pr-2">{r.part}</td>
+								<td class="pr-2">{r.contractor || ''}</td>
+								<td class="pr-2">{r.accepted}</td>
+								<td class="pr-2">{r.rejected}</td>
+								<td class="pr-2">{r.price}</td>
+								<td>{r.total}</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+			<div class="mt-4 flex justify-end">
+				<Button variant="outline" onclick={() => (showVer = false)}>Cerrar</Button>
+			</div>
+		</DialogBody>
+	</DialogContent>
+</Dialog>
 
 <DeletePopUp
 	bind:show={showDelete}

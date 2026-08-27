@@ -17,10 +17,11 @@
 	import DeletePopUp from '$lib/components/complex/DeletePopUp.svelte';
 	import { showSuccess } from '$lib/utils/showToast';
 	import { Button } from '$lib/components/ui/button';
-	import { FileDown, PlusCircle } from 'lucide-svelte';
+	import { Eye, FileDown, PlusCircle } from 'lucide-svelte';
 
 	let showForm: boolean = $state(false);
 	let selectedExitPass: any = $state({});
+	let viewOnly = $state(false);
 	let showDelete: boolean = $state(false);
 
 	let filters = $state({
@@ -88,6 +89,15 @@
 					extraButtons={[
 						{
 							fn: () => {
+								selectedExitPass = exitPass;
+								viewOnly = true;
+								showForm = true;
+							},
+							name: 'Ver',
+							icon: Eye
+						},
+						{
+							fn: () => {
 								window.open(
 									import.meta.env.VITE_BASEURL +
 										'/contractors/exit-pass/download?id=' +
@@ -101,6 +111,7 @@
 					]}
 					editFunc={() => {
 						selectedExitPass = exitPass;
+						viewOnly = false;
 						showForm = true;
 					}}
 					deleteFunc={() => {
@@ -120,7 +131,7 @@
 	</TableBody>
 </CusTable>
 
-<ExitPassForm bind:show={showForm} bind:selectedExitPass />
+<ExitPassForm bind:show={showForm} bind:selectedExitPass {viewOnly} />
 
 <DeletePopUp
 	bind:show={showDelete}

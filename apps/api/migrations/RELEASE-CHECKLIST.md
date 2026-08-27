@@ -16,7 +16,19 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
-(nada pendiente — reset tras el release del 2026-08-05)
+### Migrations to run on prod (already applied to testing)
+- [ ] `2026-08-27_obs26_insumo_atribucion_contratista.sql` — (1) tipo de material
+  'insumo' en el CHECK de materials.type; (2) contractormovements."contractorId"
+  + backfill desde el pase vigente de cada orden (fix atribución por contratista:
+  resumen/entregas/pagos por orden×contratista).
+
+### Notas del batch obs 26-Ago (en dev/app2, pendiente visto bueno de Juan)
+- Filtros por cliente en Corte/Cortes varios/Serigrafía/Producción (antes por área).
+- Requisición de "insumos" solo lista materiales tipo insumo (Juan reclasificará
+  los insumos manualmente en Almacén→Inventario).
+- Opción "Ver" (solo lectura) en: pases de salida, jobs, importaciones, packing
+  lists y pagos. Peticiones no la lleva (la tabla ya muestra todo — confirmar con Juan).
+- Sin seeds ni permisos nuevos.
 
 ---
 

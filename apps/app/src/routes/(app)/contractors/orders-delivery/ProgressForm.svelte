@@ -30,6 +30,7 @@
 		try {
 			await api.post('/contractors/progress', {
 				orderId: selectedOrder.id,
+				contractorId: selectedOrder.contractorId,
 				amount: formData.newProgress,
 				date: formData.date
 			});

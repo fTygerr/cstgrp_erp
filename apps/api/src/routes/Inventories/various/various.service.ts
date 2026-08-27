@@ -13,8 +13,9 @@ export class VariousService {
     return rows[0].measurement;
   }
 
-  async getMaterials() {
-    const rows = await sql`select code from materials`;
+  async getMaterials(type?: string) {
+    const rows = await sql`select code from materials
+      ${type ? sql`where COALESCE(type, case when product then 'producto' else 'materiaPrima' end) = ${type}` : sql``}`;
     return rows.map((row) => row.code);
   }
 

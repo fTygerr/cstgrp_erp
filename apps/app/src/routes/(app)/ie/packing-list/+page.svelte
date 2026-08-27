@@ -17,7 +17,7 @@
 	import { formatDate } from '$lib/utils/functions';
 	import { getClients, getOptions } from '$lib/utils/queries';
 	import { userData } from '$lib/utils/store';
-	import { FileDown, Package, Pencil } from 'lucide-svelte';
+	import { Eye, FileDown, Package, Pencil } from 'lucide-svelte';
 	import EditPLDialog from './EditPLDialog.svelte';
 
 	const clientsQuery = createQuery({ queryKey: ['inventory-clients'], queryFn: getClients });
@@ -28,6 +28,7 @@
 	let toDelete: any = $state(null);
 	let showEdit = $state(false);
 	let toEdit: any = $state(null);
+	let plViewOnly = $state(false);
 	const canDelete = $derived(($userData?.permissions?.['ie_packing_list'] || 0) >= 3);
 	const canEdit = $derived(($userData?.permissions?.['ie_packing_list'] || 0) >= 2);
 
@@ -82,6 +83,15 @@
 			<TableRow>
 				<OptionsCell
 					extraButtons={[
+						{
+							name: 'Ver',
+							icon: Eye,
+							fn: () => {
+								toEdit = pl;
+								plViewOnly = true;
+								showEdit = true;
+							}
+						},
 						...(canEdit
 							? [
 									{
@@ -89,6 +99,7 @@
 										icon: Pencil,
 										fn: () => {
 											toEdit = pl;
+											plViewOnly = false;
 											showEdit = true;
 										}
 									}
@@ -140,7 +151,7 @@
 	</TableBody>
 </CusTable>
 
-<EditPLDialog bind:show={showEdit} pl={toEdit} />
+<EditPLDialog bind:show={showEdit} pl={toEdit} viewOnly={plViewOnly} />
 
 <DeletePopUp
 	bind:show={showDelete}
