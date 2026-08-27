@@ -16,8 +16,6 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Eye, FileDown } from 'lucide-svelte';
 	import { Dialog, DialogBody, DialogContent } from '$lib/components/ui/dialog';
-	import { Button } from '$lib/components/ui/button';
-	import { formatDate as fmtF } from '$lib/utils/functions';
 
 	let showForm: boolean = $state(false);
 	let showVer = $state(false);
@@ -153,7 +151,7 @@
 					<tbody>
 						{#each verRows as r}
 							<tr class="border-b border-dotted">
-								<td class="py-1 pr-2">{fmtF(r.date)}</td>
+								<td class="py-1 pr-2">{formatDate(r.date)}</td>
 								<td class="pr-2 font-semibold">{r.ref}</td>
 								<td class="pr-2">{r.part}</td>
 								<td class="pr-2">{r.contractor || ''}</td>
