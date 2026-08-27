@@ -16,23 +16,16 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
-### Migrations to run on prod (already applied to testing)
-- [ ] `2026-08-27_obs26_insumo_atribucion_contratista.sql` — (1) tipo de material
-  'insumo' en el CHECK de materials.type; (2) contractormovements."contractorId"
-  + backfill desde el pase vigente de cada orden (fix atribución por contratista:
-  resumen/entregas/pagos por orden×contratista).
-
-### Notas del batch obs 26-Ago (en dev/app2, pendiente visto bueno de Juan)
-- Filtros por cliente en Corte/Cortes varios/Serigrafía/Producción (antes por área).
-- Requisición de "insumos" solo lista materiales tipo insumo (Juan reclasificará
-  los insumos manualmente en Almacén→Inventario).
-- Opción "Ver" (solo lectura) en: pases de salida, jobs, importaciones, packing
-  lists y pagos. Peticiones no la lleva (la tabla ya muestra todo — confirmar con Juan).
-- Sin seeds ni permisos nuevos.
+(nada pendiente — reset tras el release del 2026-08-27)
 
 ---
 
 ## Done in previous releases
+- 2026-08-27: obs 26-Ago puntos 1-3 + fix atribución por contratista a prod
+  (visto bueno de Juan en app2). Migración `2026-08-27_obs26_insumo_atribucion_contratista.sql`
+  aplicada a prod (26 entregas reales backfilled con su contratista). Antes en el
+  día: puntos 4-6 ZenPet (PET 4 códigos, producción fusionada, totales por parte)
+  a testing y prod. Merge master: 152b408..649b048.
 - 2026-08-10: varios pases de salida por job con saldo (petición Juan mismo día).
   Migración `2026-08-10_multi_exitpass.sql` aplicada a testing y prod (aditiva +
   backfill de 12 relaciones reales). E2E en testing; deploy dev y master.
