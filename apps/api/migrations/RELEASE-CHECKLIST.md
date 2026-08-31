@@ -16,7 +16,10 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
-(nada pendiente — reset tras el release del 2026-08-27)
+### Notas del batch (en dev/app2, pendiente visto bueno de Juan)
+- Requisición de insumos: el backend ahora rechaza materiales no marcados como
+  insumo (obs Juan 31-Ago, commit `75f9559`). Sin migración ni seeds. Recordar a
+  Juan que debe reclasificar sus insumos en Almacén→Inventario para poder usarla.
 
 ---
 
