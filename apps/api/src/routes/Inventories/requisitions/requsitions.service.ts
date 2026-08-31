@@ -94,8 +94,13 @@ export class RequisitionsService {
     await sql.begin(async (sql) => {
       for (const movement of body.materials) {
         const [material] =
-          await sql`select id from materials where code = ${movement.code}`;
+          await sql`select id, type from materials where code = ${movement.code}`;
         if (!material) throw new HttpException('Material no existente', 400);
+        if (material.type !== 'insumo')
+          throw new HttpException(
+            `El material ${movement.code} no está marcado como insumo. Márquelo como insumo en Almacén → Inventario para poder pedirlo aquí`,
+            400,
+          );
 
         const [inserted] =
           await sql`insert into requisitions (folio, petitioner, "user", motive, area, "materialId", jobs, requested, necesary) values
