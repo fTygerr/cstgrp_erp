@@ -214,7 +214,9 @@ export class ZenPetService {
         AND (jobs.produccion > 0 OR COALESCE(ep.surtido, 0) - jobs.contractor > 0)
       ORDER BY jobs.ref DESC`;
 
-    // 11. Acabado y calidad: producto terminado liberado por calidad
+    // 11. Acabado y calidad: producto terminado liberado por calidad.
+    // Solo familia Z0 — los Z4 (bladders) y Z9 (collares ensamblados) son
+    // subensambles, no producto terminado (Juan 01/09)
     const calidadLib = await sql`
       SELECT ${baseCols}, jobs.calidad::int AS liberado,
         COALESCE(pal.palletized, 0) AS "enPallet",
@@ -224,6 +226,7 @@ export class ZenPetService {
         SELECT SUM(pc.amount)::int AS palletized FROM pallet_contents pc WHERE pc."jobId" = jobs.id
       ) pal ON true
       WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.calidad > 0
+        AND COALESCE(m.code, jobs.part) LIKE 'ZEN-Z0-%'
       ORDER BY jobs.ref DESC`;
 
     // 12/13. Empaque / PT listo: liberado y en pallet, listo para exportar
