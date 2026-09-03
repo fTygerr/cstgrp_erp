@@ -106,6 +106,15 @@ export class ZenPetService {
         AND code LIKE 'ZEN-Z%'
       GROUP BY 1 ORDER BY 1`;
 
+    // detalle por material para el drop-down de cada familia
+    const rawMaterials = await sql`
+      SELECT substring(code from 5 for 2) AS family, code, description,
+        ROUND(total::numeric, 2) AS units, measurement
+      FROM materials
+      WHERE "clientId" = ${zp} AND COALESCE(type, case when product then 'producto' else 'materiaPrima' end) = 'materiaPrima'
+        AND code LIKE 'ZEN-Z%'
+      ORDER BY code`;
+
     // activación por requisición: la orden aparece en r.jobs (",REF,") y el
     // material pedido pertenece a la familia de la etapa
     const reqActivated = (pattern: string) => sql`EXISTS (
@@ -255,6 +264,7 @@ export class ZenPetService {
       generatedAt: new Date(),
       environment: process.env.DB_NAME || 'testing',
       rawByFamily,
+      rawMaterials,
       corteTela,
       serigrafia,
       cortePvc,

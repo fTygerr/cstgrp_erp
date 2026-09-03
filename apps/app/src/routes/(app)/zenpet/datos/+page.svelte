@@ -67,6 +67,7 @@
 	];
 	// Punto 6 (obs 26-Ago): sintetizar por número de parte — totales para el cliente
 	let showDetalle: Record<string, boolean> = $state({});
+	let openFams: Record<string, boolean> = $state({});
 	function groupByPart(key: string) {
 		const rows = (e?.[key] as any[]) || [];
 		const numCols = (etapaCols[key] || []).filter((c) => c.k !== 'contratistas');
@@ -325,12 +326,29 @@
 						</TableHeader>
 						<TableBody>
 							{#each e?.rawByFamily || [] as r}
-								<TableRow>
-									<TableCell class="font-semibold">{r.family}</TableCell>
+								<TableRow
+									class="cursor-pointer"
+									onclick={() => (openFams[r.family] = !openFams[r.family])}
+								>
+									<TableCell class="font-semibold"
+										>{openFams[r.family] ? '▾' : '▸'} {r.family}</TableCell
+									>
 									<TableCell>{r.materials}</TableCell>
 									<TableCell>{r.units}</TableCell>
 									<TableCell>{r.unit}</TableCell>
 								</TableRow>
+								{#if openFams[r.family]}
+									{#each (e?.rawMaterials || []).filter((m: any) => m.family === r.family) as m}
+										<TableRow class="bg-muted/40">
+											<TableCell class="pl-8 text-xs">{m.code}</TableCell>
+											<TableCell class="max-w-72 truncate text-xs" title={m.description}
+												>{m.description}</TableCell
+											>
+											<TableCell class="text-xs">{m.units}</TableCell>
+											<TableCell class="text-xs">{m.measurement}</TableCell>
+										</TableRow>
+									{/each}
+								{/if}
 							{/each}
 						</TableBody>
 					</Table>
