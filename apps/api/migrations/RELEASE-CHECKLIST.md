@@ -16,35 +16,16 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
-### Migrations to run on prod (already applied to testing)
-- [ ] `2026-09-02_obs0209_iva_jobs_ref.sql` — (1) `contractors.iva` boolean
-  (IVA 16% opcional en PDF de pagos); (2) quita el UNIQUE de `jobs.ref`
-  (Job/PO repetido permitido con confirmación) y deja índice normal.
-
-### Notas del batch obs 2-Sept (en dev/app2, pendiente visto bueno de Juan)
-- P1: "liberado" = calidad interna + entregas de contratista aceptadas, en:
-  Calidad→Liberación (total a liberar = cantidad de la orden), Calidad→Pallets
-  (listado y tope al crear pallet) y ZenPet etapa 11. El inventario ya se
-  incrementaba con lo aceptado (calidad+contractor) — sin cambio ahí. Sin backfill:
-  es cambio de lectura, los datos ya estaban.
-- P1-PD: filtro Job en Contratistas→Liberación no funcionaba (mandaba `jobpo`).
-- P2: IVA 16% por contratista (check en Estructura→Contratistas; en el PDF de
-  pagos: TOTAL, IVA (16%), GRAN TOTAL solo para quien lo tenga).
-- P3: Calidad→Pallets excluye subproductos (solo producto terminado).
-- P4: Job/PO repetido permitido con alerta de confirmación (409 + force).
-- P5/P6: ZenPet — partes ZEN-Z4-% fuera de Corte de componentes y de Kits.
-- P7 (pregunta): Empaque/PT se depura solo al exportar — confirmado, sin cambio.
-- ZenPet drop-down materia prima (batch anterior) ya está en prod; `/zenpet/etapas`
-  sin cambios para la app de ZenPet.
-
-### Notas del batch (en dev/app2, pendiente visto bueno de Juan)
-- Requisición de insumos: el backend ahora rechaza materiales no marcados como
-  insumo (obs Juan 31-Ago, commit `75f9559`). Sin migración ni seeds. Recordar a
-  Juan que debe reclasificar sus insumos en Almacén→Inventario para poder usarla.
+(nada pendiente — reset tras el release del 2026-09-03)
 
 ---
 
 ## Done in previous releases
+- 2026-09-03: obs 2-Sept a prod (visto bueno de Juan). Migración
+  `2026-09-02_obs0209_iva_jobs_ref.sql` (contractors.iva + drop unique jobs.ref)
+  y seed `2026-09-03_obs0209_seed_iva_cristobal.sql` (IVA a CRISTOBAL ASCOLANI,
+  igual que Juan lo marcó en app2) aplicados a prod. Backup previo:
+  pre-release-obs0209-20260903-2024.dump. Merge master: b185560..2c21dc4.
 - 2026-08-27: obs 26-Ago puntos 1-3 + fix atribución por contratista a prod
   (visto bueno de Juan en app2). Migración `2026-08-27_obs26_insumo_atribucion_contratista.sql`
   aplicada a prod (26 entregas reales backfilled con su contratista). Antes en el
