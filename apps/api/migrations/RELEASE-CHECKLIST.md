@@ -16,6 +16,12 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
+### EN DEV, NO SUBIR A PROD AÚN (esperando visto bueno de Juan — Hector 01/09)
+- ZenPet Datos: drop-down por familia en materia prima + campo `rawMaterials` en
+  `/zenpet/etapas` (commit `ea0cfa5`). Hector pidió explícitamente NO mandarlo a
+  prod todavía; si hay que liberar otra cosa antes, hacer el merge hasta el commit
+  anterior o consultar. Sin migraciones.
+
 ### Notas del batch (en dev/app2, pendiente visto bueno de Juan)
 - Requisición de insumos: el backend ahora rechaza materiales no marcados como
   insumo (obs Juan 31-Ago, commit `75f9559`). Sin migración ni seeds. Recordar a
