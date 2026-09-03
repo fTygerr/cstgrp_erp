@@ -12,6 +12,13 @@ export class ZenPetController {
     return this.zenpetService.getEtapas();
   }
 
+  // detalle por material para la página del ERP; separado de /etapas a propósito
+  // para no cambiar aún el payload que consume la app de ZenPet (Hector 01/09)
+  @Get('materials')
+  getRawMaterials() {
+    return this.zenpetService.getRawMaterials();
+  }
+
   @Get('stages')
   getStages() {
     return this.zenpetService.getStages();

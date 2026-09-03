@@ -18,6 +18,11 @@
 		queryFn: async () => (await api.get('/zenpet/etapas')).data
 	});
 	const e = $derived($etapasQuery?.data);
+	const rawMatsQuery = createQuery({
+		queryKey: ['zenpet-materials'],
+		queryFn: async () => (await api.get('/zenpet/materials')).data
+	});
+	const rawMats = $derived($rawMatsQuery?.data || []);
 
 	// Reglas de Juan (Observaciones 18-Ago): columnas por etapa
 	const etapaCols: Record<string, { k: string; label: string }[]> = {
@@ -338,7 +343,7 @@
 									<TableCell>{r.unit}</TableCell>
 								</TableRow>
 								{#if openFams[r.family]}
-									{#each (e?.rawMaterials || []).filter((m: any) => m.family === r.family) as m}
+									{#each rawMats.filter((m: any) => m.family === r.family) as m}
 										<TableRow class="bg-muted/40">
 											<TableCell class="pl-8 text-xs">{m.code}</TableCell>
 											<TableCell class="max-w-72 truncate text-xs" title={m.description}
