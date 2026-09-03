@@ -16,7 +16,7 @@ export class ExportService {
     COALESCE(materials.code, jobs.part) as part,
     jobs.description,
     clients.name as client, clients.id as "clientId",
-    jobs.amount, jobs.calidad as liberated,
+    jobs.amount, (jobs.calidad + jobs.contractor)::int as liberated,
     (select string_agg(distinct d.so, ', ')
       from order_destiny od join destinys d on d.id = od."destinyId"
       where od."orderId" = jobs.id and od."exportOrderId" is null
@@ -40,7 +40,10 @@ export class ExportService {
     left join materialmovements on jobs."movementId" = materialmovements.id
     left join materials on materialmovements."materialId" = materials.id
 
-    where jobs.calidad > 0
+    -- liberado incluye entregas de contratista aceptadas (obs 02/09 punto 1;
+    -- fix 03/09: este listado se quedó con la regla vieja y ocultaba jobs
+    -- liberados 100% vía contratista — caso pallet 92 / S-16898)
+    where (jobs.calidad + jobs.contractor) > 0
     and exists (select 1 from pallet_contents pc
       join pallets p on p.id = pc."palletId"
       where pc."jobId" = jobs.id and p."destinyId" is null)
