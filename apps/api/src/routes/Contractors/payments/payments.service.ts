@@ -106,7 +106,8 @@ export class PaymentsService {
 
     const rows = await sql`select rejected, accepted, date, "orderId",
 
-    (select name from contractors where id = contractormovements."contractorId") as contractor
+    (select name from contractors where id = contractormovements."contractorId") as contractor,
+    (select iva from contractors where id = contractormovements."contractorId") as iva
 
     FROM contractormovements
     WHERE "paymentId" = ${payment.id}
@@ -205,9 +206,21 @@ export class PaymentsService {
       `,
         )
         .join('')}
-        <tr>
-          <td colspan="7" class="total-cell">TOTAL: ${contractorsGroups[contractor].reduce((acc, row) => acc + row.total, 0)}</td>
-        </tr>
+        ${(() => {
+          // IVA 16% solo para contratistas con la opción habilitada (obs 02/09):
+          // Total, renglón de IVA y gran total; el precio unitario no cambia.
+          const subtotal = contractorsGroups[contractor].reduce(
+            (acc, row) => acc + row.total,
+            0,
+          );
+          if (!contractorsGroups[contractor][0]?.iva)
+            return `<tr><td colspan="7" class="total-cell">TOTAL: ${subtotal}</td></tr>`;
+          const iva = Math.round(subtotal * 0.16 * 100) / 100;
+          return `
+        <tr><td colspan="7" class="total-cell">TOTAL: ${subtotal}</td></tr>
+        <tr><td colspan="7" class="total-cell">IVA (16%): ${iva}</td></tr>
+        <tr><td colspan="7" class="total-cell">GRAN TOTAL: ${Math.round((subtotal + iva) * 100) / 100}</td></tr>`;
+        })()}
       </tbody>`;
     }
 
@@ -215,7 +228,13 @@ export class PaymentsService {
       folio: payment.folio,
       startDate: format(payment.startDate, 'dd/MM/yyyy'),
       endDate: format(payment.endDate, 'dd/MM/yyyy'),
-      total: rows.reduce((acc, row) => acc + row.total, 0),
+      total:
+        Math.round(
+          rows.reduce(
+            (acc, row) => acc + row.total * (row.iva ? 1.16 : 1),
+            0,
+          ) * 100,
+        ) / 100,
       tableHTML,
     };
 

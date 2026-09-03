@@ -116,13 +116,9 @@
 				<TableCell>{device.programation}</TableCell>
 				<TableCell>{device.clientId === 3 ? device.part : device.description}</TableCell>
 				<TableCell>{device[area]}</TableCell>
+				<TableCell>{area === 'produccion' ? device.prodAmount : device.amount}</TableCell>
 				<TableCell
-					>{area === 'calidad' || area === 'produccion'
-						? device.prodAmount
-						: device.amount}</TableCell
-				>
-				<TableCell
-					>{area === 'calidad' || area === 'produccion'
+					>{area === 'produccion'
 						? device.prodAmount - device[area]
 						: device.amount - device[area]}</TableCell
 				>

@@ -22,15 +22,27 @@ export class ProgressService {
         ? 'prodAmount'
         : 'amount';
 
+    // Calidad: lo liberado incluye entregas de contratista aceptadas y el
+    // total a liberar es la cantidad completa de la orden (obs 02/09 punto 1)
+    const isCalidad = body.area === 'calidad';
     const jobs = await sql`select *,
-       CASE 
+       ${isCalidad ? sql`(jobs.calidad + jobs.contractor)::int as calidad,` : sql``}
+       CASE
          WHEN ${getTijuanaDate()} >= due - INTERVAL '2 days' AND ${getTijuanaDate()} <= due THEN 1
          WHEN ${getTijuanaDate()} > due THEN 2
          ELSE 0
        END as "state"
        from jobs
        where ${sql(`${body.area}Time`)} <> 0
-       ${body.completed ? sql`AND (jobs.completed = true OR ${sql('jobs.' + body.area)} = jobs.${sql(amountColumn)})` : sql`AND jobs.completed = false AND ${sql('jobs.' + body.area)} < jobs.${sql(amountColumn)}`}
+       ${
+         isCalidad
+           ? body.completed
+             ? sql`AND (jobs.completed = true OR (jobs.calidad + jobs.contractor) >= jobs.amount)`
+             : sql`AND jobs.completed = false AND (jobs.calidad + jobs.contractor) < jobs.amount`
+           : body.completed
+             ? sql`AND (jobs.completed = true OR ${sql('jobs.' + body.area)} = jobs.${sql(amountColumn)})`
+             : sql`AND jobs.completed = false AND ${sql('jobs.' + body.area)} < jobs.${sql(amountColumn)}`
+       }
        ${body.job ? sql`AND jobs.ref LIKE ${'%' + body.job + '%'}` : sql``}
        ${body.programation ? sql`AND jobs.programation LIKE ${'%' + body.programation + '%'}` : sql``}
        ${body.clientId ? sql`AND jobs."clientId" = ${body.clientId}` : sql``}

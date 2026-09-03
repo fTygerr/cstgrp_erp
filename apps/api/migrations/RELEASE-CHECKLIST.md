@@ -16,12 +16,26 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
-### Notas del batch
-- ZenPet Datos: drop-down por familia en materia prima. El detalle vive en un
-  endpoint propio `/zenpet/materials` (solo para la página del ERP); `/zenpet/etapas`
-  — el que consume la app de ZenPet — quedó sin cambios a propósito (Hector 01/09:
-  Juan revisará con datos reales qué campos se mandarán a ZenPet antes de tocar ese
-  payload). Sin migraciones.
+### Migrations to run on prod (already applied to testing)
+- [ ] `2026-09-02_obs0209_iva_jobs_ref.sql` — (1) `contractors.iva` boolean
+  (IVA 16% opcional en PDF de pagos); (2) quita el UNIQUE de `jobs.ref`
+  (Job/PO repetido permitido con confirmación) y deja índice normal.
+
+### Notas del batch obs 2-Sept (en dev/app2, pendiente visto bueno de Juan)
+- P1: "liberado" = calidad interna + entregas de contratista aceptadas, en:
+  Calidad→Liberación (total a liberar = cantidad de la orden), Calidad→Pallets
+  (listado y tope al crear pallet) y ZenPet etapa 11. El inventario ya se
+  incrementaba con lo aceptado (calidad+contractor) — sin cambio ahí. Sin backfill:
+  es cambio de lectura, los datos ya estaban.
+- P1-PD: filtro Job en Contratistas→Liberación no funcionaba (mandaba `jobpo`).
+- P2: IVA 16% por contratista (check en Estructura→Contratistas; en el PDF de
+  pagos: TOTAL, IVA (16%), GRAN TOTAL solo para quien lo tenga).
+- P3: Calidad→Pallets excluye subproductos (solo producto terminado).
+- P4: Job/PO repetido permitido con alerta de confirmación (409 + force).
+- P5/P6: ZenPet — partes ZEN-Z4-% fuera de Corte de componentes y de Kits.
+- P7 (pregunta): Empaque/PT se depura solo al exportar — confirmado, sin cambio.
+- ZenPet drop-down materia prima (batch anterior) ya está en prod; `/zenpet/etapas`
+  sin cambios para la app de ZenPet.
 
 ### Notas del batch (en dev/app2, pendiente visto bueno de Juan)
 - Requisición de insumos: el backend ahora rechaza materiales no marcados como

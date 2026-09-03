@@ -130,6 +130,15 @@ export class JobsService {
         400,
       );
 
+    // Job/PO repetido se permite, pero avisando primero (obs 02/09 punto 4):
+    // sin body.force regresa 409 y el frontend pide confirmación
+    const dupes = await sql`SELECT DISTINCT ref FROM jobs WHERE ref in ${sql(body.jobs)}`;
+    if (dupes.length && !body.force)
+      throw new HttpException(
+        `Job/PO ya repetido: ${dupes.map((d) => d.ref).join(', ')}`,
+        409,
+      );
+
     await sql.begin(async (sql) => {
       for (const ref of body.jobs) {
         const [insertedJob] = await sql`Insert into jobs ${sql({

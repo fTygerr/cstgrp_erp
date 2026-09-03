@@ -163,6 +163,7 @@ export class ZenPetService {
       ${baseFrom}
       WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
         AND ${reqActivatedAny('ZEN-Z3-%', 'ZEN-Z5-%')} AND jobs."cortesVarios" < jobs.amount
+        AND COALESCE(m.code, jobs.part) NOT LIKE 'ZEN-Z4-%'
       ORDER BY jobs.ref DESC`;
 
     // 6. Corte de PET: con pase de salida (proceso externo); cierra al liberar
@@ -190,6 +191,7 @@ export class ZenPetService {
         AND (jobs."cortesVariosTime" = 0 OR jobs."cortesVarios" >= jobs.amount)
         AND jobs.produccion = 0
         AND NOT EXISTS (SELECT 1 FROM exitpass_jobs ej WHERE ej."jobId" = jobs.id)
+        AND COALESCE(m.code, jobs.part) NOT LIKE 'ZEN-Z4-%'
       ORDER BY jobs.ref DESC`;
 
     // 9/10 fusionados (Juan, obs 26-Ago): "Producción" — interna + contratistas
@@ -217,15 +219,16 @@ export class ZenPetService {
     // 11. Acabado y calidad: producto terminado liberado por calidad.
     // Solo familia Z0 — los Z4 (bladders) y Z9 (collares ensamblados) son
     // subensambles, no producto terminado (Juan 01/09)
+    // liberado = calidad interna + entregas de contratista aceptadas (obs 02/09)
     const calidadLib = await sql`
-      SELECT ${baseCols}, jobs.calidad::int AS liberado,
+      SELECT ${baseCols}, (jobs.calidad + jobs.contractor)::int AS liberado,
         COALESCE(pal.palletized, 0) AS "enPallet",
-        (jobs.calidad - COALESCE(pal.palletized, 0))::int AS "sinPallet"
+        (jobs.calidad + jobs.contractor - COALESCE(pal.palletized, 0))::int AS "sinPallet"
       ${baseFrom}
       LEFT JOIN LATERAL (
         SELECT SUM(pc.amount)::int AS palletized FROM pallet_contents pc WHERE pc."jobId" = jobs.id
       ) pal ON true
-      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.calidad > 0
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND (jobs.calidad + jobs.contractor) > 0
         AND COALESCE(m.code, jobs.part) LIKE 'ZEN-Z0-%'
       ORDER BY jobs.ref DESC`;
 

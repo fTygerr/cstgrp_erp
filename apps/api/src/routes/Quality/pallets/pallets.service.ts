@@ -20,20 +20,25 @@ export class PalletsService {
   constructor(private readonly req: ContextProvider) {}
 
   async getJobs(query: z.infer<typeof palletJobsFilterSchema>) {
+    // liberado = calidad interna + entregas de contratista aceptadas (obs 02/09
+    // punto 1). Solo productos terminados: los subproductos no se paletizan
+    // (obs 02/09 punto 3).
     return sql`
       SELECT jobs.id, jobs.ref, jobs.programation, jobs.part, jobs.description,
-        jobs.amount, jobs.calidad, jobs."perBox", jobs."clientId", clients.name AS client, jobs.due,
+        jobs.amount, (jobs.calidad + jobs.contractor)::int AS calidad, jobs."perBox", jobs."clientId", clients.name AS client, jobs.due,
         COALESCE((SELECT SUM(pc.amount)::int FROM pallet_contents pc WHERE pc."jobId" = jobs.id), 0) AS palletized
       FROM jobs
       JOIN clients ON clients.id = jobs."clientId"
+      LEFT JOIN materials pm ON pm.code = jobs.part AND pm."clientId" = jobs."clientId"
       WHERE jobs.part IS NOT NULL
-      AND jobs.calidad > 0
+      AND (jobs.calidad + jobs.contractor) > 0
+      AND COALESCE(pm.type, case when pm.product then 'producto' else 'materiaPrima' end) IS DISTINCT FROM 'subproducto'
       ${query.job ? sql`AND jobs.ref ILIKE ${'%' + query.job + '%'}` : sql``}
       ${query.programation ? sql`AND jobs.programation ILIKE ${'%' + query.programation + '%'}` : sql``}
       ${query.clientId ? sql`AND jobs."clientId" = ${query.clientId}` : sql``}
       ${
         query.pending === 'true'
-          ? sql`AND COALESCE((SELECT SUM(pc.amount) FROM pallet_contents pc WHERE pc."jobId" = jobs.id), 0) < jobs.calidad`
+          ? sql`AND COALESCE((SELECT SUM(pc.amount) FROM pallet_contents pc WHERE pc."jobId" = jobs.id), 0) < (jobs.calidad + jobs.contractor)`
           : sql``
       }
       ORDER BY jobs.due DESC, jobs.id DESC
@@ -78,7 +83,7 @@ export class PalletsService {
 
     await sql.begin(async (sql) => {
       const [job] = await sql`
-        SELECT jobs.id, jobs.ref, jobs.amount, jobs.calidad, jobs."clientId", clients.name AS client
+        SELECT jobs.id, jobs.ref, jobs.amount, (jobs.calidad + jobs.contractor)::int AS calidad, jobs."clientId", clients.name AS client
         FROM jobs JOIN clients ON clients.id = jobs."clientId"
         WHERE jobs.id = ${body.jobId}`;
       if (!job) throw new HttpException('Job no existente', 400);
@@ -90,7 +95,7 @@ export class PalletsService {
       const requested = body.rows.reduce((acc, r) => acc + r.amount, 0);
       if (palletized + requested > job.calidad)
         throw new HttpException(
-          `La cantidad excede lo liberado por calidad (${palletized + requested} de ${job.calidad} liberadas)`,
+          `La cantidad excede lo liberado por calidad (${palletized + requested} de ${job.calidad} liberadas, incluyendo entregas de contratista aceptadas)`,
           400,
         );
 

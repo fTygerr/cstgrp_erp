@@ -21,11 +21,12 @@
 	let { show = $bindable(false), selectedPosition = $bindable({}) }: Props = $props();
 	let formData: any = $state({
 		name: '',
-		active: true
+		active: true,
+		iva: false
 	});
 
 	function setFormData() {
-		formData = { ...selectedPosition };
+		formData = { iva: false, ...selectedPosition };
 	}
 
 	async function handleSubmit() {
@@ -56,6 +57,9 @@
 			</Label>
 			<Label name="Activo">
 				<Checkbox name="text" bind:checked={formData.active} />
+			</Label>
+			<Label name="Aplica IVA (16%)">
+				<Checkbox name="text" bind:checked={formData.iva} />
 			</Label>
 		</DialogBody>
 		<DialogFooter submitFunc={handleSubmit} hideFunc={() => (show = false)} />

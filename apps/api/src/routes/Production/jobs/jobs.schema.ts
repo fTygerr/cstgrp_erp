@@ -35,6 +35,8 @@ export const exportSchema = z.object({
   part: z.string().min(1, 'El No. de parte es requerido'),
   description: z.string().nullable(),
   jobs: z.array(z.string()).nonempty('Al menos un job es requerido.'),
+  // confirmación de Job/PO repetido (obs 02/09 punto 4)
+  force: z.boolean().nullish(),
   due: z.string(),
   areaId: idSchema,
   clientId: idSchema,

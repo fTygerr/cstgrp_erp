@@ -26,7 +26,7 @@
 
 	let filters = $state({
 		programation: '',
-		jobpo: '',
+		job: '',
 		contractorId: '',
 		approved: 'false'
 	});
@@ -62,7 +62,7 @@
 <MenuBar>
 	<div class="flex flex-col gap-1.5 lg:flex-row">
 		<Input menu bind:value={filters.programation} placeholder="Programación" class="max-w-32" />
-		<Input menu bind:value={filters.jobpo} placeholder="Job" class="max-w-32" />
+		<Input menu bind:value={filters.job} placeholder="Job" class="max-w-32" />
 		<Select
 			placeholder="Completado"
 			menu

@@ -100,7 +100,16 @@
 			jobs
 		};
 		if (selectedMovement.id) await api.put('/jobs', body);
-		else await api.post('/jobs', body);
+		else {
+			try {
+				await api.post('/jobs', body);
+			} catch (err: any) {
+				// Job/PO repetido: el backend pide confirmación (obs 02/09 punto 4)
+				if (err?.response?.status !== 409) throw err;
+				if (!confirm(`${err.response.data?.message}. ¿Cargar de todos modos?`)) return;
+				await api.post('/jobs', { ...body, force: true });
+			}
+		}
 
 		refetch(['jobs']);
 		show = false;
