@@ -19,6 +19,12 @@ export class ZenPetController {
     return this.zenpetService.getRawMaterials();
   }
 
+  // producto terminado Z0 (fase 13) — items + agregado {skus, units}
+  @Get('finished-goods')
+  getFinishedGoods() {
+    return this.zenpetService.getFinishedGoods();
+  }
+
   @Get('stages')
   getStages() {
     return this.zenpetService.getStages();

@@ -104,9 +104,13 @@
 		return rows.reduce((a, r) => a + Number(r[sumKey] ?? r.amount ?? 0), 0);
 	}
 
+	// pestaña "Resumen 13 etapas" oculta desde 25/08; llamada apagada para no
+	// pegarle a /zenpet/stages en cada carga (el endpoint sigue vivo hasta que
+	// el sistema de ZenPet confirme su migración a /finished-goods)
 	const stagesQuery = createQuery({
 		queryKey: ['zenpet-stages'],
-		queryFn: async () => (await api.get('/zenpet/stages')).data
+		queryFn: async () => (await api.get('/zenpet/stages')).data,
+		enabled: false
 	});
 	const formulasQuery = createQuery({
 		queryKey: ['zenpet-formulas'],

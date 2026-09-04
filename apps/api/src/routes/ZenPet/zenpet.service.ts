@@ -272,6 +272,25 @@ export class ZenPetService {
     };
   }
 
+  // Producto terminado Z0 en fábrica (fase 13). Incluye existencias en CERO a
+  // propósito — el cero es dato ("se acabaron los conos M"). Trae también el
+  // agregado {skus, units} para que el sistema de ZenPet migre de /stages con
+  // un cambio de una línea (petición chat ZenPet 04/09).
+  async getFinishedGoods() {
+    const zp = await this.clientId();
+    const items = await sql`
+      SELECT code, description, ROUND(total::numeric, 0) AS units, measurement
+      FROM materials
+      WHERE "clientId" = ${zp} AND code LIKE 'ZEN-Z0-%'
+        AND COALESCE(type, case when product then 'producto' else 'materiaPrima' end) = 'producto'
+      ORDER BY code`;
+    return {
+      skus: items.length,
+      units: items.reduce((acc, m) => acc + Number(m.units), 0),
+      items,
+    };
+  }
+
   // detalle por material (drop-down de familias en Datos). Endpoint propio,
   // fuera de /etapas, para no tocar el payload que consume la app de ZenPet.
   async getRawMaterials() {
