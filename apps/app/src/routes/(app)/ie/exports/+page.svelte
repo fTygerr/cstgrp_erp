@@ -25,7 +25,7 @@
 		{ name: 'Subproductos', value: 'subproducto', color: 'orange' }
 	];
 
-	let filters = $state({ job: '', part: '', clientId: '', type: 'producto' });
+	let filters = $state({ job: '', part: '', clientId: '', type: 'producto', exportOrder: '' });
 	let selected: Record<number, any> = $state({});
 	let showGenerate = $state(false);
 	let showInventoryGenerate = $state(false);
@@ -39,7 +39,12 @@
 			if (filters.type === 'producto')
 				return (
 					await api.get('/ie/exports', {
-						params: { job: filters.job, part: filters.part, clientId: filters.clientId }
+						params: {
+							job: filters.job,
+							part: filters.part,
+							clientId: filters.clientId,
+							exportOrder: filters.exportOrder
+						}
 					})
 				).data;
 			return (
@@ -85,6 +90,7 @@
 	<div class="flex w-full flex-col gap-1.5 lg:flex-row">
 		{#if !isInventory}
 			<Input menu bind:value={filters.job} placeholder="Job" class="max-w-32" />
+			<Input menu bind:value={filters.exportOrder} placeholder="Orden Exp. #" class="max-w-32" />
 		{/if}
 		<Input menu bind:value={filters.part} placeholder="Parte" class="max-w-36" />
 		<Select
@@ -177,6 +183,7 @@
 <GeneratePLDialog
 	bind:show={showGenerate}
 	jobs={selectedList}
+	exportOrderId={filters.exportOrder ? Number(filters.exportOrder) : null}
 	onGenerated={() => {
 		selected = {};
 		refetch(['ie-export-jobs']);

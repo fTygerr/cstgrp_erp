@@ -16,7 +16,20 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
-(nada pendiente — reset tras el release del 2026-09-03)
+### Migrations to run on prod (already applied to testing)
+- [ ] `2026-09-04_obs0309_req_parcial.sql` — (1) relaja `only_one_type` para
+  permitir jobId+reqId en materialmovements (liga explícita requisición↔movimiento);
+  (2) backfill de las ligas históricas (en testing fueron 9,171 filas).
+
+### Notas del batch obs 3-Sept (en dev/app2, pendiente visto bueno de Juan)
+- P1/P2: requisiciones parciales — reparto FIFO por antigüedad; la orden más
+  reciente se divide (renglón ligado a la req por lo pedido + renglón restante
+  pendiente). Vistas de Movimientos/Requisiciones ahora leen la liga reqId
+  (ya no el truco de texto). Borrar una requisición desliga (no borra) los
+  movimientos de job.
+- P3: folio de la orden de exportación en su PDF (mismo de Exportaciones Registradas).
+- P4: filtro "Orden Exp. #" en Imp-Exp→Exportaciones: muestra exactamente los
+  pallets de esa orden y el Generar PL queda limitado a ellos (preview y create).
 
 ---
 

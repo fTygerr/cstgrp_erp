@@ -11,6 +11,11 @@ export class ExportService {
   // Jobs liberados por Calidad, con sus pallets disponibles (sin exportar).
   // Base del nuevo flujo de generación de packing lists.
   async findAll(filter: z.infer<typeof getExportSchema>) {
+    // filtro por folio de orden de exportación (obs 03/09 p.4): cuando viene,
+    // los pallets listados/contados son EXACTAMENTE los de esa orden
+    const eo = filter.exportOrder ? Number(filter.exportOrder) : null;
+    const palletScope = () =>
+      eo ? sql`and p."exportOrderId" = ${eo}` : sql``;
     return sql`select
     jobs.id, jobs.ref, jobs.programation,
     COALESCE(materials.code, jobs.part) as part,
@@ -23,17 +28,17 @@ export class ExportService {
         and d.exported is null) as so,
     (select string_agg(p.folio::text, ', ' order by p.folio)
       from pallets p
-      where p."destinyId" is null
+      where p."destinyId" is null ${palletScope()}
         and exists (select 1 from pallet_contents pc
           where pc."palletId" = p.id and pc."jobId" = jobs.id)) as "palletFolios",
     (select count(*)::int
       from pallets p
-      where p."destinyId" is null
+      where p."destinyId" is null ${palletScope()}
         and exists (select 1 from pallet_contents pc
           where pc."palletId" = p.id and pc."jobId" = jobs.id)) as "palletCount",
     (select COALESCE(sum(pc.amount), 0)::int
       from pallet_contents pc join pallets p on p.id = pc."palletId"
-      where pc."jobId" = jobs.id and p."destinyId" is null) as "availableAmount"
+      where pc."jobId" = jobs.id and p."destinyId" is null ${palletScope()}) as "availableAmount"
 
     from jobs
     join clients on clients.id = jobs."clientId"
@@ -46,7 +51,7 @@ export class ExportService {
     where (jobs.calidad + jobs.contractor) > 0
     and exists (select 1 from pallet_contents pc
       join pallets p on p.id = pc."palletId"
-      where pc."jobId" = jobs.id and p."destinyId" is null)
+      where pc."jobId" = jobs.id and p."destinyId" is null ${palletScope()})
     ${filter.job ? sql`AND jobs.ref ILIKE ${'%' + filter.job + '%'}` : sql``}
     ${filter.part ? sql`AND COALESCE(materials.code, jobs.part) ILIKE ${'%' + filter.part + '%'}` : sql``}
     ${filter.clientId ? sql`AND clients.id = ${filter.clientId}` : sql``}

@@ -28,10 +28,11 @@
 	interface Props {
 		show: boolean;
 		jobs: any[];
+		exportOrderId?: number | null;
 		onGenerated?: () => void;
 	}
 
-	let { show = $bindable(), jobs, onGenerated = () => {} }: Props = $props();
+	let { show = $bindable(), jobs, exportOrderId = null, onGenerated = () => {} }: Props = $props();
 
 	let options: any = $state(null);
 	let preview: any = $state(null);
@@ -70,6 +71,7 @@
 			preview = (
 				await api.post('/ie/packing-list-generate/preview', {
 					jobIds,
+					exportOrderId,
 					excludedPalletIds: excludedPallets.map((p) => p.id)
 				})
 			).data;
@@ -123,6 +125,7 @@
 		try {
 			const body = {
 				jobIds,
+				exportOrderId,
 				excludedPalletIds: excludedPallets.map((p) => p.id),
 				shipDate: data.shipDate,
 				shipVia: data.shipVia || null,

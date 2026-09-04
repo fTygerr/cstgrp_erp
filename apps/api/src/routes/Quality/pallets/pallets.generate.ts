@@ -107,6 +107,8 @@ export async function generateExportOrderPdf(
   const html = Mustache.render(template, {
     logo: await getLogo(),
     title: opts.title || 'ORDEN DE EXPORTACIÓN',
+    // folio de la orden (el mismo de Exportaciones Registradas) — obs 03/09 p.3
+    folio: order.id || null,
     packSlip: opts.packSlip || null,
     date: format(order.date, 'dd-MMM'),
     client: order.client,

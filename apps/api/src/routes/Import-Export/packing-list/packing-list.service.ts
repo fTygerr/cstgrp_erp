@@ -475,6 +475,7 @@ export class PackingListService {
       WHERE p."destinyId" IS NULL
         AND EXISTS (SELECT 1 FROM pallet_contents pc
           WHERE pc."palletId" = p.id AND pc."jobId" IN ${sql(body.jobIds)})
+        ${body.exportOrderId ? sql`AND p."exportOrderId" = ${body.exportOrderId}` : sql``}
         ${
           body.excludedPalletIds?.length
             ? sql`AND p.id NOT IN ${sql(body.excludedPalletIds)}`
@@ -532,6 +533,7 @@ export class PackingListService {
         JOIN pallet_contents pc ON pc."palletId" = p.id
         WHERE pc."jobId" IN ${sql(body.jobIds)}
           AND p."destinyId" IS NULL
+          ${body.exportOrderId ? sql`AND p."exportOrderId" = ${body.exportOrderId}` : sql``}
           ${
             body.excludedPalletIds?.length
               ? sql`AND p.id NOT IN ${sql(body.excludedPalletIds)}`
