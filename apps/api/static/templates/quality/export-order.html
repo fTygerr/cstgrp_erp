@@ -120,6 +120,9 @@
         <div class="logo"><img src="{{{logo}}}" alt="logo" /></div>
         <div class="title">{{title}}</div>
         <div class="meta">
+          {{#folio}}
+          <div><span>Folio:</span><span>{{folio}}</span></div>
+          {{/folio}}
           <div><span>Fecha:</span><span>{{date}}</span></div>
           <div><span>Cliente:</span><span>{{client}}</span></div>
           {{#packSlip}}

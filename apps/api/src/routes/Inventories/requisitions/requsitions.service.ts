@@ -26,7 +26,7 @@ export class RequisitionsService {
       WHERE
       NOT materialmovements.active AND
       NOT materialmovements.extra AND
-      (select STRING_AGG(folio::text, ', ') from requisitions where jobs LIKE CONCAT('%', jobs.ref, '%') and requisitions."materialId" = materials.id limit 1) is null AND
+      materialmovements."reqId" IS NULL AND
       ${body.jobpo ? sql`jobs.ref = ${body.jobpo}` : sql`TRUE`} AND
       ${body.programation ? sql`jobs.programation = ${body.programation}` : sql`TRUE`} AND
       ${body.code ? sql`materials.code LIKE ${'%' + body.code + '%'}` : sql`TRUE`} AND
@@ -43,9 +43,9 @@ export class RequisitionsService {
       JOIN materials on materials.id = materialmovements."materialId"
       JOIN jobs on jobs.id = materialmovements."jobId"
       WHERE
-      materials.code = ${body.code} AND  
+      materials.code = ${body.code} AND
       jobs."areaId" IN (SELECT unnest(prod_areas) FROM users WHERE id = ${this.req.userId}) AND
-      (select folio from requisitions where jobs LIKE CONCAT('%', jobs.ref, '%') and requisitions."materialId" = materials.id limit 1) is null AND
+      materialmovements."reqId" IS NULL AND
       NOT materialmovements.active AND
       NOT materialmovements.extra
       ORDER BY jobs.due DESC, jobs.ref DESC`;
@@ -53,17 +53,28 @@ export class RequisitionsService {
   }
 
   async createRequisition(body: z.infer<typeof requisitionSchema>) {
-    const [data] =
-      await sql`SELECT COALESCE(',' || STRING_AGG((SELECT ref FROM jobs WHERE id = "jobId"), ',') || ',', '') as jobs,
-        BOOL_OR((select folio from requisitions where jobs LIKE CONCAT('%', (select ref from jobs where id = materialmovements."jobId"), '%') and requisitions."materialId" = (select "materialId" from materialmovements where id IN ${sql(body.jobIds)} limit 1)) is not null) as req,
-        BOOL_OR(active) as active, SUM(amount) as necessary
-        FROM materialmovements WHERE id IN ${sql(body.jobIds)}`;
+    // movimientos seleccionados, más viejo primero (obs 03/09: el reparto de
+    // una requisición parcial es por antigüedad — las órdenes viejas completas
+    // y la más reciente se divide)
+    const movements = await sql`SELECT materialmovements.id, materialmovements.amount,
+        materialmovements.active, materialmovements."reqId", materialmovements."jobId",
+        jobs.ref, jobs.due
+      FROM materialmovements JOIN jobs ON jobs.id = materialmovements."jobId"
+      WHERE materialmovements.id IN ${sql(body.jobIds)}
+      ORDER BY jobs.due ASC, materialmovements.id ASC`;
 
-    if (!data?.jobs) throw new HttpException('Selecciona al menos un job', 400);
-    if (data?.active)
+    if (!movements.length)
+      throw new HttpException('Selecciona al menos un job', 400);
+    if (movements.some((m) => m.active))
       throw new HttpException('Uno de los jobs ya fue expedido', 400);
-    if (data?.req)
+    if (movements.some((m) => m.reqId))
       throw new HttpException('Uno de los jobs ya tiene una requisicion', 400);
+
+    const necessary = movements.reduce(
+      (acc, m) => acc + Math.abs(Number(m.amount)),
+      0,
+    );
+    const requested = Math.abs(Number(body.requested));
 
     const inserted = await sql.begin(async (sql) => {
       const [inserted] =
@@ -75,10 +86,33 @@ export class RequisitionsService {
           ${body.motive},
           (select name from areas where id = ${body.areaId}),
           (select id from materials where code = ${body.code}),
-          ${data.jobs},
-          ${Math.abs(Number(body.requested))},
-          ${Math.abs(Number(data.necessary))}
+          ${',' + movements.map((m) => m.ref).join(',') + ','},
+          ${requested},
+          ${necessary}
         ) returning id, folio`;
+
+      // reparto FIFO de lo requerido entre los movimientos seleccionados
+      let remaining = requested;
+      for (const m of movements) {
+        const amount = Math.abs(Number(m.amount));
+        if (remaining >= amount) {
+          // cubierto completo: el movimiento del job queda ligado entero
+          await sql`update materialmovements set "reqId" = ${inserted.id} where id = ${m.id}`;
+          remaining -= amount;
+        } else if (remaining > 0) {
+          // parcial (obs 03/09): renglón nuevo ligado a la requisición por lo
+          // pedido, y el renglón de la orden queda con el restante pendiente
+          await sql`insert into materialmovements
+            ("materialId", "jobId", "reqId", amount, "realAmount", active)
+            values ((select "materialId" from materialmovements where id = ${m.id}),
+              ${m.jobId}, ${inserted.id}, ${-remaining}, ${-remaining}, false)`;
+          await sql`update materialmovements
+            set amount = ${-(amount - remaining)}, "realAmount" = ${-(amount - remaining)}
+            where id = ${m.id}`;
+          remaining = 0;
+        }
+        // remaining = 0: movimientos restantes quedan sin requisición
+      }
 
       await this.req.record(
         `Hizo una requisicion de folio: ${inserted.folio}`,

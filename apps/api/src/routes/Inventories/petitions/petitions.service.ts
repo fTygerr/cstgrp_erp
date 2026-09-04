@@ -108,6 +108,13 @@ export class PetitionsService {
       if (movements.length)
         throw new HttpException('La peticion esta en uso', 400);
 
+      // los movimientos de JOB ligados a la requisición NO deben borrarse en
+      // cascada (el FK es ON DELETE CASCADE): solo se desligan. Un renglón
+      // partido queda como pendiente normal de su orden — la suma no cambia
+      // y vuelve a ser requisitionable (obs 03/09).
+      await sql`update materialmovements set "reqId" = null
+        where "reqId" = ${body.id} and "jobId" is not null`;
+
       [deletedObj] =
         await sql`delete from requisitions where id = ${body.id} returning folio`;
 

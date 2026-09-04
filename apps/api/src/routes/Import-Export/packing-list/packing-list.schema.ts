@@ -80,11 +80,14 @@ export const downloadPackingListSchema = z.object({
 export const previewPackingListSchema = z.object({
   jobIds: z.array(intSchema).min(1, 'Selecciona al menos un job'),
   excludedPalletIds: z.array(intSchema).optional(),
+  // limita los pallets a una orden de exportación (obs 03/09 p.4)
+  exportOrderId: intSchema.nullish(),
 });
 
 export const createPackingListSchema = z.object({
   jobIds: z.array(intSchema).min(1, 'Selecciona al menos un job'),
   excludedPalletIds: z.array(intSchema).optional(),
+  exportOrderId: intSchema.nullish(),
   shipDate: z.string(),
   shipVia: intSchema.nullish(),
   consignee: intSchema.nullish(),
