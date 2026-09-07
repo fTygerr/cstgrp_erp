@@ -16,7 +16,14 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
-(nada pendiente — reset tras el release del 2026-09-04)
+### Notas del batch obs 7-Sept (en dev/app2, pendiente visto bueno de Juan)
+- Producción de contratistas integrada en: Historial (producción/calidad + contractor,
+  cantidad = total de la orden), historial cronológico de la orden (filas de entregas
+  aceptadas por contratista, solo lectura), y módulo Producción (completado =
+  interna + contratistas, total = cantidad de la orden).
+- Diálogo Capturar pallets: muestra el folio real que tomará cada pallet nuevo
+  ("Nuevo 1 (No. XXX)") — informativo, leído de pallet_seq sin consumirla.
+- Sin migraciones ni seeds.
 
 ---
 

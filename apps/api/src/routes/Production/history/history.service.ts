@@ -15,14 +15,17 @@ export class HistoryService {
   constructor(private readonly req: ContextProvider) {}
 
   async getOrders(body: z.infer<typeof getHistorySchema>) {
+    // Producción y Calidad incluyen lo hecho por contratistas (obs 07/09):
+    // producción = interna + entregas aceptadas; calidad = liberado total.
+    // Cantidad = la cantidad completa de la orden.
     const orders = await sql`
     select id, programation, ref, part, description, "due", "clientId",
-    "prodAmount" as amount, completed,
+    amount, completed,
     CASE WHEN "serigrafiaTime" > 0 THEN "serigrafia" ELSE NULL END as "serigrafia",
     CASE WHEN "corteTime" > 0 THEN "corte" ELSE NULL END as "corte",
     CASE WHEN "cortesVariosTime" > 0 THEN "cortesVarios" ELSE NULL END as "cortesVarios",
-    CASE WHEN "produccionTime" > 0 THEN "produccion" ELSE NULL END as "produccion",
-    CASE WHEN "calidadTime" > 0 THEN "calidad" ELSE NULL END as "calidad"
+    CASE WHEN "produccionTime" > 0 OR contractor > 0 THEN ("produccion" + contractor) ELSE NULL END as "produccion",
+    CASE WHEN "calidadTime" > 0 OR contractor > 0 THEN ("calidad" + contractor) ELSE NULL END as "calidad"
     from jobs
     WHERE
       ${body.jobpo ? sql`ref LIKE ${'%' + body.jobpo + '%'}` : sql`TRUE`} AND
@@ -35,9 +38,20 @@ export class HistoryService {
   }
 
   async getMovements(body: z.infer<typeof getMovementsSchema>) {
-    const jobs = await sql`select id, created_at, date,
-      corte, "cortesVarios", produccion, calidad, serigrafia
-      from ordermovements where "progressId" = ${body.id} order by created_at desc`;
+    // historial cronológico completo (obs 07/09): capturas internas + entregas
+    // de contratistas aceptadas (producción externa y liberación de calidad).
+    // Las filas de contratista son de solo lectura (editable = false).
+    const jobs = await sql`
+      select id, created_at, date, corte, "cortesVarios", produccion, calidad,
+        serigrafia, NULL::text as contratista, NULL::int as entrega, true as editable
+      from ordermovements where "progressId" = ${body.id}
+      UNION ALL
+      select cm.id, cm.created_at, cm.date, NULL, NULL, NULL, NULL, NULL,
+        COALESCE(c.name, '(sin contratista)'), cm.accepted::int, false
+      from contractormovements cm
+      left join contractors c on c.id = cm."contractorId"
+      where cm."orderId" = ${body.id} and cm.approved = true
+      order by date asc, created_at asc`;
     return jobs;
   }
 
