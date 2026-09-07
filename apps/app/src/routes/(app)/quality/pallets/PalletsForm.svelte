@@ -37,6 +37,7 @@
 
 	let palletCount = $state('');
 	let rows: palletRow[] = $state([]);
+	let nextFolio: number | null = $state(null);
 
 	const remaining = $derived(
 		selectedJob ? Number(selectedJob.calidad) - Number(selectedJob.palletized) : 0
@@ -58,6 +59,10 @@
 		const n = fullRows + (hasPartial ? 1 : 0);
 
 		const perFull = n > 0 ? Math.floor(remaining / count) : 0;
+		api
+			.get('/quality/pallets/next-folio')
+			.then((r) => (nextFolio = r.data.next))
+			.catch(() => (nextFolio = null));
 		rows = [];
 		let assigned = 0;
 		for (let i = 0; i < n; i++) {
@@ -140,7 +145,14 @@
 					<TableBody>
 						{#each rows as row, i}
 							<TableRow>
-								<TableCell>{row.combine ? 'Combinado' : `Nuevo #${i + 1}`}</TableCell>
+								<TableCell
+									>{row.combine
+										? 'Combinado'
+										: `Nuevo ${i + 1}` +
+											(nextFolio !== null
+												? ` (No. ${nextFolio + rows.slice(0, i).filter((r) => !r.combine).length})`
+												: '')}</TableCell
+								>
 								<TableCell>
 									<Input
 										bind:value={row.amount}

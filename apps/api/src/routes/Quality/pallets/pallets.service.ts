@@ -78,6 +78,13 @@ export class PalletsService {
       LIMIT 200`;
   }
 
+  // folio del siguiente pallet nuevo, leyendo pallet_seq sin consumirla
+  // (informativo: si dos personas capturan a la vez puede correrse)
+  async getNextFolio() {
+    const [seq] = await sql`SELECT last_value, is_called FROM pallet_seq`;
+    return { next: Number(seq.last_value) + (seq.is_called ? 1 : 0) };
+  }
+
   async create(body: z.infer<typeof createPalletsSchema>) {
     const folios: string[] = [];
 

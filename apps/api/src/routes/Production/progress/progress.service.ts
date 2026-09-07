@@ -22,11 +22,11 @@ export class ProgressService {
         ? 'prodAmount'
         : 'amount';
 
-    // Calidad: lo liberado incluye entregas de contratista aceptadas y el
-    // total a liberar es la cantidad completa de la orden (obs 02/09 punto 1)
-    const isCalidad = body.area === 'calidad';
+    // Calidad y Producción: el avance incluye entregas de contratista aceptadas
+    // y el total es la cantidad completa de la orden (obs 02/09 p.1 + obs 07/09)
+    const plusContractor = body.area === 'calidad' || body.area === 'produccion';
     const jobs = await sql`select *,
-       ${isCalidad ? sql`(jobs.calidad + jobs.contractor)::int as calidad,` : sql``}
+       ${plusContractor ? sql`(${sql('jobs.' + body.area)} + jobs.contractor)::int as ${sql(body.area)},` : sql``}
        CASE
          WHEN ${getTijuanaDate()} >= due - INTERVAL '2 days' AND ${getTijuanaDate()} <= due THEN 1
          WHEN ${getTijuanaDate()} > due THEN 2
@@ -35,10 +35,10 @@ export class ProgressService {
        from jobs
        where ${sql(`${body.area}Time`)} <> 0
        ${
-         isCalidad
+         plusContractor
            ? body.completed
-             ? sql`AND (jobs.completed = true OR (jobs.calidad + jobs.contractor) >= jobs.amount)`
-             : sql`AND jobs.completed = false AND (jobs.calidad + jobs.contractor) < jobs.amount`
+             ? sql`AND (jobs.completed = true OR (${sql('jobs.' + body.area)} + jobs.contractor) >= jobs.amount)`
+             : sql`AND jobs.completed = false AND (${sql('jobs.' + body.area)} + jobs.contractor) < jobs.amount`
            : body.completed
              ? sql`AND (jobs.completed = true OR ${sql('jobs.' + body.area)} = jobs.${sql(amountColumn)})`
              : sql`AND jobs.completed = false AND ${sql('jobs.' + body.area)} < jobs.${sql(amountColumn)}`

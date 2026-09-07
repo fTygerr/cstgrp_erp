@@ -69,30 +69,35 @@
 					{#each movements as row}
 						<TableRow class="border-l">
 							<TableCell
-								>{row.corte
-									? 'Corte'
-									: row.cortesVarios
-										? 'Cortes Varios'
-										: row.produccion
-											? 'Producción'
-											: row.calidad
-												? 'Calidad'
-												: 'Serigrafía'}</TableCell
+								>{row.contratista
+									? `Contratista ${row.contratista} (producción + calidad)`
+									: row.corte
+										? 'Corte'
+										: row.cortesVarios
+											? 'Cortes Varios'
+											: row.produccion
+												? 'Producción'
+												: row.calidad
+													? 'Calidad'
+													: 'Serigrafía'}</TableCell
 							>
 							<TableCell
-								>{row.corte
-									? row.corte
-									: row.cortesVarios
-										? row.cortesVarios
-										: row.produccion
-											? row.produccion
-											: row.calidad
-												? row.calidad
-												: row.serigrafia}</TableCell
+								>{row.contratista
+									? row.entrega
+									: row.corte
+										? row.corte
+										: row.cortesVarios
+											? row.cortesVarios
+											: row.produccion
+												? row.produccion
+												: row.calidad
+													? row.calidad
+													: row.serigrafia}</TableCell
 							>
 							<TableCell>{formatDate(row.date)}</TableCell>
 							<TableCell>{formatDate(row.created_at)}</TableCell>
 							<TableCell class="flex w-min items-center gap-1 px-1 ">
+								{#if row.editable}
 								<Button
 									size="icon"
 									variant="outline"
@@ -115,6 +120,7 @@
 								>
 									<Trash class="size-4" />
 								</Button>
+								{/if}
 							</TableCell>
 						</TableRow>
 					{/each}

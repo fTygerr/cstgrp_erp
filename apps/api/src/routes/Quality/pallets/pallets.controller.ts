@@ -33,6 +33,12 @@ export class PalletsController {
     return this.palletsService.getJobs(query);
   }
 
+  // folio que tomará el siguiente pallet nuevo (obs 07/09 — informativo)
+  @Get('next-folio')
+  getNextFolio() {
+    return this.palletsService.getNextFolio();
+  }
+
   @Get('label')
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'inline; filename="pallet-label.pdf"')
