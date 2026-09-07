@@ -16,18 +16,14 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
-### Notas del batch obs 7-Sept (en dev/app2, pendiente visto bueno de Juan)
-- Producción de contratistas integrada en: Historial (producción/calidad + contractor,
-  cantidad = total de la orden), historial cronológico de la orden (filas de entregas
-  aceptadas por contratista, solo lectura), y módulo Producción (completado =
-  interna + contratistas, total = cantidad de la orden).
-- Diálogo Capturar pallets: muestra el folio real que tomará cada pallet nuevo
-  ("Nuevo 1 (No. XXX)") — informativo, leído de pallet_seq sin consumirla.
-- Sin migraciones ni seeds.
+(nada pendiente — reset tras el release del 2026-09-07)
 
 ---
 
 ## Done in previous releases
+- 2026-09-07: obs 7-Sept a prod (visto bueno de Juan). Contratistas integrados en
+  Historial, cronológico de la orden y módulo Producción; folio real en Capturar
+  pallets. Sin migraciones. Merge master: e2b1433..9cd90ee.
 - 2026-09-04: obs 3-Sept a prod (visto bueno de Juan). Migración
   `2026-09-04_obs0309_req_parcial.sql` aplicada a prod (only_one_type relajado
   para jobId+reqId; backfill de 9,714 ligas históricas). Requisiciones parciales
