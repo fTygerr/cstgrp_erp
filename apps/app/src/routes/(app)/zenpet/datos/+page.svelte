@@ -23,6 +23,45 @@
 		queryFn: async () => (await api.get('/zenpet/materials')).data
 	});
 	const rawMats = $derived($rawMatsQuery?.data || []);
+	const fgQuery = createQuery({
+		queryKey: ['zenpet-finished-goods'],
+		queryFn: async () => (await api.get('/zenpet/finished-goods')).data
+	});
+	const fg = $derived($fgQuery?.data);
+
+	// ======= Vista ZenPet: las 12 etapas EXACTAMENTE como las arma su sistema =======
+	// (fórmulas de como-agrupamos-los-datos.md, 08/09/2026 — misma fuente: estos 2 endpoints)
+	const sum = (rows: any[], f: (r: any) => number) =>
+		(rows || []).reduce((a, r) => a + (Number(f(r)) || 0), 0);
+	const zpView = $derived.by(() => {
+		if (!e) return [];
+		const prod = e.produccion || [];
+		const enPoder = prod.filter((r: any) => (r.enPoder || 0) > 0);
+		return [
+			{ en: 'Fabric cutting', es: 'Corte de tela', o: (e.corteTela || []).length, u: sum(e.corteTela, (r) => r.faltante), f: 'órdenes del bloque corteTela · Σ faltante' },
+			{ en: 'Screen printing', es: 'Serigrafía', o: (e.serigrafia || []).length, u: sum(e.serigrafia, (r) => r.faltante), f: 'bloque serigrafia · Σ faltante' },
+			{ en: 'PVC film cutting', es: 'Corte de PVC', o: (e.cortePvc || []).length, u: sum(e.cortePvc, (r) => r.faltante), f: 'bloque cortePvc · Σ faltante' },
+			{ en: 'Component cutting', es: 'Corte de componentes', o: (e.corteComponentes || []).length, u: sum(e.corteComponentes, (r) => r.faltante), f: 'bloque corteComponentes · Σ faltante' },
+			{ en: 'PET cutting', es: 'Corte de PET', o: (e.cortePet || []).length, u: sum(e.cortePet, (r) => Math.max((r.amount || 0) - (r.liberado || 0), 0)), f: 'bloque cortePet · Σ max(cantidad − liberado, 0)' },
+			{ en: 'Staged, not started', es: 'Kits surtidos sin arrancar', o: (e.kits || []).length, u: sum(e.kits, (r) => r.amount), f: 'bloque kits · Σ cantidad' },
+			{ en: 'Assembly', es: 'Ensamble', o: prod.length, u: sum(prod, (r) => Math.max((r.amount || 0) - (r.producido || 0) - (r.aceptado || 0), 0)), f: 'bloque produccion · Σ max(cantidad − producido − aceptado, 0) — SÍ resta lo que el contratista ya regresó' },
+			{ en: 'With outside contractors', es: 'En poder de contratistas', o: enPoder.length, u: sum(enPoder, (r) => r.enPoder), f: 'mismo bloque produccion, filas con enPoder > 0 · Σ enPoder — NO es etapa aparte: se traslapa con Ensamble' },
+			{ en: 'Quality-approved, not packed', es: 'Liberado sin empacar', o: (e.calidadLib || []).length, u: sum(e.calidadLib, (r) => r.sinPallet), f: 'bloque calidadLib (solo Z0) · Σ sinPallet' },
+			{ en: 'Finished goods at factory', es: 'Producto terminado en fábrica', o: fg?.skus ?? '…', u: fg?.units ?? '…', f: '/zenpet/finished-goods · inventario Z0 (31 SKUs, ceros incluidos)' },
+			{ en: 'Palletized, ready to ship', es: 'En pallet, listo', o: (e.empaque || []).length, u: sum(e.empaque, (r) => r.units), f: 'bloque empaque (pallets sin embarque) · Σ piezas' },
+			{ en: 'Shipped (last 60 days)', es: 'Embarcado (últimos 60 días)', o: e.enRoute?.pls ?? 0, u: e.enRoute?.units ?? 0, f: 'enRoute · packing lists exportadas — VENTANA MÓVIL: al cumplir 60 días un embarque se sale solo del número' }
+		];
+	});
+	const zpCards = $derived.by(() => {
+		if (!e) return null;
+		const v = Object.fromEntries(zpView.map((r) => [r.en, r]));
+		return {
+			finished: { n: fg?.units ?? '…', sub: `${(fg?.items || []).filter((m: any) => Number(m.units) > 0).length} SKUs con existencia` },
+			pallets: { n: v['Palletized, ready to ship']?.u ?? 0, sub: `${v['Palletized, ready to ship']?.o ?? 0} pallets` },
+			inprod: { n: (Number(v['Assembly']?.u) || 0) + (Number(v['Staged, not started']?.u) || 0), sub: `${v['Assembly']?.o ?? 0} órdenes abiertas (ensamble + kits)` },
+			contractors: { n: v['With outside contractors']?.u ?? 0, sub: `${v['With outside contractors']?.o ?? 0} órdenes` }
+		};
+	});
 
 	// Reglas de Juan (Observaciones 18-Ago): columnas por etapa
 	const etapaCols: Record<string, { k: string; label: string }[]> = {
@@ -310,8 +349,9 @@
 	</div>
 
 	<Tabs value="ordenes">
-		<TabsList class="grid w-full grid-cols-2">
+		<TabsList class="grid w-full grid-cols-3">
 			<TabsTrigger value="ordenes">Órdenes por etapa</TabsTrigger>
+			<TabsTrigger value="vistazenpet">Vista ZenPet</TabsTrigger>
 			<!-- oculto por ahora (Hector 25/08): <TabsTrigger value="etapas">Resumen 13 etapas</TabsTrigger> -->
 			<TabsTrigger value="formulas">Fórmulas de kits</TabsTrigger>
 		</TabsList>
@@ -585,6 +625,90 @@
 		</div></TabsContent>
 
 		<!-- ============ TAB 2: FORMULAS ============ -->
+		<!-- ============ TAB: VISTA ZENPET (espejo exacto de su dashboard) ============ -->
+		<TabsContent value="vistazenpet" class="mt-4">
+			<div class="flex flex-col gap-4">
+				<div class="rounded-md border border-blue-300 bg-blue-50 p-3 text-sm">
+					<b>Esta pestaña muestra los números EXACTAMENTE como los ve ZenPet en su sistema</b>, con la
+					fórmula de cada renglón. Su dashboard se alimenta de los mismos 2 endpoints que esta página
+					(<code>/zenpet/etapas</code> y <code>/zenpet/finished-goods</code>) — si un número de aquí no
+					cuadra con su pantalla, casi siempre es la <b>hora</b>: ellos ven una foto congelada que se
+					toma <b>miércoles 12:00 y viernes 17:00</b> (hora Tijuana); esta pestaña es en vivo.
+				</div>
+
+				{#if zpCards}
+					<div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+						<div class="rounded-md border p-3">
+							<p class="text-xs text-muted-foreground">Finished at factory</p>
+							<p class="text-2xl font-bold">{zpCards.finished.n}</p>
+							<p class="text-xs text-muted-foreground">{zpCards.finished.sub}</p>
+						</div>
+						<div class="rounded-md border p-3">
+							<p class="text-xs text-muted-foreground">On pallets</p>
+							<p class="text-2xl font-bold">{zpCards.pallets.n}</p>
+							<p class="text-xs text-muted-foreground">{zpCards.pallets.sub}</p>
+						</div>
+						<div class="rounded-md border p-3">
+							<p class="text-xs text-muted-foreground">In production</p>
+							<p class="text-2xl font-bold">{zpCards.inprod.n}</p>
+							<p class="text-xs text-muted-foreground">{zpCards.inprod.sub}</p>
+						</div>
+						<div class="rounded-md border p-3">
+							<p class="text-xs text-muted-foreground">With contractors</p>
+							<p class="text-2xl font-bold">{zpCards.contractors.n}</p>
+							<p class="text-xs text-muted-foreground">{zpCards.contractors.sub}</p>
+						</div>
+					</div>
+				{/if}
+
+				<div class="rounded-md border p-3">
+					<h3 class="mb-1 font-semibold">Las 12 etapas de su pantalla — con su fórmula</h3>
+					<Table divClass="h-auto overflow-visible">
+						<TableHeader>
+							<TableHead>Etiqueta en ZenPet</TableHead>
+							<TableHead>Equivalente</TableHead>
+							<TableHead class="text-right">Órdenes</TableHead>
+							<TableHead class="text-right">Unidades</TableHead>
+							<TableHead>Fórmula (del feed del ERP)</TableHead>
+						</TableHeader>
+						<TableBody>
+							{#each zpView as r}
+								<TableRow>
+									<TableCell class="font-medium">{r.en}</TableCell>
+									<TableCell>{r.es}</TableCell>
+									<TableCell class="text-right">{r.o}</TableCell>
+									<TableCell class="text-right font-semibold">{r.u}</TableCell>
+									<TableCell class="max-w-md text-xs text-muted-foreground">{r.f}</TableCell>
+								</TableRow>
+							{/each}
+						</TableBody>
+					</Table>
+				</div>
+
+				<div class="rounded-md border p-3 text-sm">
+					<h3 class="mb-1 font-semibold">Reglas para leerla (y para contestarle a ZenPet)</h3>
+					<ul class="list-disc space-y-1 pl-5">
+						<li><b>Las etapas NO se suman.</b> Cada una es una posición en el flujo, no una rebanada
+						de un total. "Producto terminado" es el paraguas: "Liberado sin empacar" y "En pallet"
+						son vistas de adentro — sumarlas cuenta doble.</li>
+						<li><b>"En poder de contratistas" se traslapa con "Ensamble"</b>: es la columna enPoder
+						del mismo bloque, mostrada como renglón propio.</li>
+						<li><b>La materia prima nunca se suma entre familias</b> (Z1/Z3 son yardas, el resto piezas).</li>
+						<li><b>Las columnas del detalle cambian por etapa</b>: en cortes la base es lo ordenado;
+						en calidad la base es lo LIBERADO (liberado = en pallet + sin pallet) — usar lo ordenado
+						ahí "inventa" piezas perdidas.</li>
+						<li><b>Su pantalla agrupa por SKU</b> = el sufijo del código de parte (ZEN-Z0-5919 y
+						ZEN-Z9-5919 son el MISMO producto 5919). Los nombres son de su catálogo, no la
+						descripción del ERP.</li>
+						<li><b>"Shipped" es ventana móvil de 60 días</b>: los embarques se salen solos del número
+						al cumplir 60 días (el 22-sep se salen las 40,618 de PS-2858 — no es que se pierdan).</li>
+						<li>Al comparar contra su pantalla, usar la <b>hora del snapshot</b> que dice "as of ..."
+						arriba en su dashboard — no la hora actual.</li>
+					</ul>
+				</div>
+			</div>
+		</TabsContent>
+
 		<TabsContent value="formulas" class="mt-4"><div class="flex flex-col gap-4">
 			<div class="rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
 				<b class="text-foreground">Qué es esto:</b> la receta exacta de materiales de cada producto (el
