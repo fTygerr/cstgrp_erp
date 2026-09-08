@@ -68,7 +68,7 @@
 			{ key: 'kits', rows: e.kits || [], cols: { l1: 'ORDERED', l2: '', l3: 'STAGED', c1: (r: any) => r.amount, c2: null, c3: (r: any) => r.amount }, en: 'Staged, not started', es: 'Kits surtidos sin arrancar', o: (e.kits || []).length, u: sum(e.kits, (r) => r.amount), f: 'bloque kits · Σ cantidad' },
 			{ key: 'produccion', rows: prod, withCol: true, cols: faltCols((r: any) => (r.producido || 0) + (r.aceptado || 0)), en: 'Assembly', es: 'Ensamble', o: prod.length, u: sum(prod, (r) => Math.max((r.amount || 0) - (r.producido || 0) - (r.aceptado || 0), 0)), f: 'bloque produccion · Σ max(cantidad − producido − aceptado, 0) — SÍ resta lo que el contratista ya regresó' },
 			{ key: 'enPoder', rows: enPoder, cols: { l1: 'SURTIDO', l2: 'ACEPTADO', l3: 'EN PODER', c1: (r: any) => r.surtido, c2: (r: any) => r.aceptado, c3: (r: any) => r.enPoder }, en: 'With outside contractors', es: 'En poder de contratistas', o: enPoder.length, u: sum(enPoder, (r) => r.enPoder), f: 'mismo bloque produccion, filas con enPoder > 0 · Σ enPoder — NO es etapa aparte: se traslapa con Ensamble' },
-			{ key: 'calidadLib', rows: e.calidadLib || [], cols: { l1: 'RELEASED', l2: 'PACKED', l3: 'NOT PACKED', c1: (r: any) => r.liberado, c2: (r: any) => r.enPallet, c3: (r: any) => r.sinPallet }, en: 'Quality-approved, not packed', es: 'Liberado sin empacar', o: (e.calidadLib || []).length, u: sum(e.calidadLib, (r) => r.sinPallet), f: 'bloque calidadLib (solo Z0) · Σ sinPallet — la base es lo LIBERADO, no lo ordenado' },
+			{ key: 'calidadLib', rows: e.calidadLib || [], cols: { l1: 'RELEASED', l2: 'PACKED', l3: 'NOT PACKED', c1: (r: any) => r.liberado, c2: (r: any) => r.enPallet, c3: (r: any) => r.sinPallet }, en: 'Quality-approved, not packed', es: 'Subensambles liberados sin empacar', o: (e.calidadLib || []).length, u: sum(e.calidadLib, (r) => r.sinPallet), f: 'bloque calidadLib (SUBPRODUCTOS sin bladders — regla 08/09) · Σ sinPallet — el Z0 liberado ya vive en Finished goods, así estas dos etapas NO se duplican' },
 			{ key: 'fg', en: 'Finished goods at factory', es: 'Producto terminado en fábrica', o: fg?.skus ?? '…', u: fg?.units ?? '…', f: '/zenpet/finished-goods · inventario Z0 (31 SKUs, ceros incluidos — un cero dice \"se acabó\")' },
 			{ key: 'empaque', en: 'Palletized, ready to ship', es: 'En pallet, listo', o: (e.empaque || []).length, u: sum(e.empaque, (r) => r.units), f: 'bloque empaque (pallets sin embarque) · Σ piezas' },
 			{ key: 'shipped', en: 'Shipped (last 60 days)', es: 'Embarcado (últimos 60 días)', o: e.enRoute?.pls ?? 0, u: e.enRoute?.units ?? 0, f: 'enRoute · packing lists exportadas — VENTANA MÓVIL: al cumplir 60 días un embarque se sale solo del número. Su pantalla NO tiene desglose de esta etapa' }
@@ -129,7 +129,7 @@
 		{ key: 'cortePet', num: '6', title: 'Corte de PET (externo)', rule: 'Órdenes con pase de salida generado; cierran cuando calidad libera el producto.' },
 		{ key: 'kits', num: '7', title: 'Kits listos para producir', rule: 'Fases de corte, serigrafía y cortes varios completas (las que apliquen), sin pase de salida y sin producción iniciada.' },
 		{ key: 'produccion', num: '9/10', title: 'Producción (interna y contratistas)', rule: 'Toda la producción en un solo apartado: lo capturado en planta y lo surtido a contratistas (en poder = surtido − entregado aceptado).' },
-		{ key: 'calidadLib', num: '11', title: 'Acabado y calidad', rule: 'Producto terminado liberado por calidad, con su avance de empaque.' }
+		{ key: 'calidadLib', num: '11', title: 'Acabado y calidad', rule: 'Subproductos liberados por calidad con su avance de empaque (collares, PET; los bladders tienen su bloque). El producto terminado Z0 vive en su inventario de finished goods — regla Juan 08/09.' }
 	];
 	// Punto 6 (obs 26-Ago): sintetizar por número de parte — totales para el cliente
 	let showDetalle: Record<string, boolean> = $state({});
@@ -834,8 +834,9 @@
 					<h3 class="mb-1 font-semibold">Reglas para leerla (y para contestarle a ZenPet)</h3>
 					<ul class="list-disc space-y-1 pl-5">
 						<li><b>Las etapas NO se suman.</b> Cada una es una posición en el flujo, no una rebanada
-						de un total. "Producto terminado" es el paraguas: "Liberado sin empacar" y "En pallet"
-						son vistas de adentro — sumarlas cuenta doble.</li>
+						de un total. Desde el 08/09: "Quality-approved" rastrea SUBPRODUCTOS (ya no se duplica
+						con Finished goods, que es el Z0); "En pallet" sí sigue dentro del paraguas de Finished
+						goods hasta que el packing list descuenta el inventario.</li>
 						<li><b>"En poder de contratistas" se traslapa con "Ensamble"</b>: es la columna enPoder
 						del mismo bloque, mostrada como renglón propio.</li>
 						<li><b>La materia prima nunca se suma entre familias</b> (Z1/Z3 son yardas, el resto piezas).</li>
