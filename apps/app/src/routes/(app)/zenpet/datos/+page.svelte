@@ -33,23 +33,45 @@
 	// (fórmulas de como-agrupamos-los-datos.md, 08/09/2026 — misma fuente: estos 2 endpoints)
 	const sum = (rows: any[], f: (r: any) => number) =>
 		(rows || []).reduce((a, r) => a + (Number(f(r)) || 0), 0);
+	// detalle por etapa (sección 8 del md): SKU = sufijo numérico del código de parte
+	const skuOf = (part: string) => (part || '').match(/(\d{4})$/)?.[1] || part || '?';
+	const CHECK_SKUS = ['5940', '5951'];
+	let zpOpen: Record<string, boolean> = $state({});
+	let zpMode: Record<string, string> = $state({});
+	function zpByProduct(rows: any[], cols: any) {
+		const map = new Map<string, any>();
+		for (const r of rows) {
+			const sku = skuOf(r.part);
+			const g = map.get(sku) ?? { sku, description: r.description, c1: 0, c2: 0, c3: 0, ordenes: 0 };
+			g.c1 += Number(cols.c1(r)) || 0;
+			g.c2 += cols.c2 ? Number(cols.c2(r)) || 0 : 0;
+			g.c3 += Number(cols.c3(r)) || 0;
+			g.ordenes += 1;
+			map.set(sku, g);
+		}
+		return [...map.values()].sort((a, b) => a.sku.localeCompare(b.sku));
+	}
 	const zpView = $derived.by(() => {
 		if (!e) return [];
 		const prod = e.produccion || [];
 		const enPoder = prod.filter((r: any) => (r.enPoder || 0) > 0);
+		const faltCols = (done: (r: any) => number) => ({
+			l1: 'ORDERED', l2: 'DONE', l3: 'REMAINING',
+			c1: (r: any) => r.amount, c2: done, c3: (r: any) => Math.max((r.amount || 0) - (done(r) || 0), 0)
+		});
 		return [
-			{ en: 'Fabric cutting', es: 'Corte de tela', o: (e.corteTela || []).length, u: sum(e.corteTela, (r) => r.faltante), f: 'órdenes del bloque corteTela · Σ faltante' },
-			{ en: 'Screen printing', es: 'Serigrafía', o: (e.serigrafia || []).length, u: sum(e.serigrafia, (r) => r.faltante), f: 'bloque serigrafia · Σ faltante' },
-			{ en: 'PVC film cutting', es: 'Corte de PVC', o: (e.cortePvc || []).length, u: sum(e.cortePvc, (r) => r.faltante), f: 'bloque cortePvc · Σ faltante' },
-			{ en: 'Component cutting', es: 'Corte de componentes', o: (e.corteComponentes || []).length, u: sum(e.corteComponentes, (r) => r.faltante), f: 'bloque corteComponentes · Σ faltante' },
-			{ en: 'PET cutting', es: 'Corte de PET', o: (e.cortePet || []).length, u: sum(e.cortePet, (r) => Math.max((r.amount || 0) - (r.liberado || 0), 0)), f: 'bloque cortePet · Σ max(cantidad − liberado, 0)' },
-			{ en: 'Staged, not started', es: 'Kits surtidos sin arrancar', o: (e.kits || []).length, u: sum(e.kits, (r) => r.amount), f: 'bloque kits · Σ cantidad' },
-			{ en: 'Assembly', es: 'Ensamble', o: prod.length, u: sum(prod, (r) => Math.max((r.amount || 0) - (r.producido || 0) - (r.aceptado || 0), 0)), f: 'bloque produccion · Σ max(cantidad − producido − aceptado, 0) — SÍ resta lo que el contratista ya regresó' },
-			{ en: 'With outside contractors', es: 'En poder de contratistas', o: enPoder.length, u: sum(enPoder, (r) => r.enPoder), f: 'mismo bloque produccion, filas con enPoder > 0 · Σ enPoder — NO es etapa aparte: se traslapa con Ensamble' },
-			{ en: 'Quality-approved, not packed', es: 'Liberado sin empacar', o: (e.calidadLib || []).length, u: sum(e.calidadLib, (r) => r.sinPallet), f: 'bloque calidadLib (solo Z0) · Σ sinPallet' },
-			{ en: 'Finished goods at factory', es: 'Producto terminado en fábrica', o: fg?.skus ?? '…', u: fg?.units ?? '…', f: '/zenpet/finished-goods · inventario Z0 (31 SKUs, ceros incluidos)' },
-			{ en: 'Palletized, ready to ship', es: 'En pallet, listo', o: (e.empaque || []).length, u: sum(e.empaque, (r) => r.units), f: 'bloque empaque (pallets sin embarque) · Σ piezas' },
-			{ en: 'Shipped (last 60 days)', es: 'Embarcado (últimos 60 días)', o: e.enRoute?.pls ?? 0, u: e.enRoute?.units ?? 0, f: 'enRoute · packing lists exportadas — VENTANA MÓVIL: al cumplir 60 días un embarque se sale solo del número' }
+			{ key: 'corteTela', rows: e.corteTela || [], cols: faltCols((r: any) => r.capturado), en: 'Fabric cutting', es: 'Corte de tela', o: (e.corteTela || []).length, u: sum(e.corteTela, (r) => r.faltante), f: 'órdenes del bloque corteTela · Σ faltante' },
+			{ key: 'serigrafia', rows: e.serigrafia || [], cols: faltCols((r: any) => r.capturado), en: 'Screen printing', es: 'Serigrafía', o: (e.serigrafia || []).length, u: sum(e.serigrafia, (r) => r.faltante), f: 'bloque serigrafia · Σ faltante' },
+			{ key: 'cortePvc', rows: e.cortePvc || [], cols: faltCols((r: any) => r.producido), en: 'PVC film cutting', es: 'Corte de PVC', o: (e.cortePvc || []).length, u: sum(e.cortePvc, (r) => r.faltante), f: 'bloque cortePvc · Σ faltante' },
+			{ key: 'corteComponentes', rows: e.corteComponentes || [], cols: faltCols((r: any) => r.capturado), en: 'Component cutting', es: 'Corte de componentes', o: (e.corteComponentes || []).length, u: sum(e.corteComponentes, (r) => r.faltante), f: 'bloque corteComponentes · Σ faltante' },
+			{ key: 'cortePet', rows: e.cortePet || [], cols: faltCols((r: any) => r.liberado), en: 'PET cutting', es: 'Corte de PET', o: (e.cortePet || []).length, u: sum(e.cortePet, (r) => Math.max((r.amount || 0) - (r.liberado || 0), 0)), f: 'bloque cortePet · Σ max(cantidad − liberado, 0)' },
+			{ key: 'kits', rows: e.kits || [], cols: { l1: 'ORDERED', l2: '', l3: 'STAGED', c1: (r: any) => r.amount, c2: null, c3: (r: any) => r.amount }, en: 'Staged, not started', es: 'Kits surtidos sin arrancar', o: (e.kits || []).length, u: sum(e.kits, (r) => r.amount), f: 'bloque kits · Σ cantidad' },
+			{ key: 'produccion', rows: prod, withCol: true, cols: faltCols((r: any) => (r.producido || 0) + (r.aceptado || 0)), en: 'Assembly', es: 'Ensamble', o: prod.length, u: sum(prod, (r) => Math.max((r.amount || 0) - (r.producido || 0) - (r.aceptado || 0), 0)), f: 'bloque produccion · Σ max(cantidad − producido − aceptado, 0) — SÍ resta lo que el contratista ya regresó' },
+			{ key: 'enPoder', rows: enPoder, cols: { l1: 'SURTIDO', l2: 'ACEPTADO', l3: 'EN PODER', c1: (r: any) => r.surtido, c2: (r: any) => r.aceptado, c3: (r: any) => r.enPoder }, en: 'With outside contractors', es: 'En poder de contratistas', o: enPoder.length, u: sum(enPoder, (r) => r.enPoder), f: 'mismo bloque produccion, filas con enPoder > 0 · Σ enPoder — NO es etapa aparte: se traslapa con Ensamble' },
+			{ key: 'calidadLib', rows: e.calidadLib || [], cols: { l1: 'RELEASED', l2: 'PACKED', l3: 'NOT PACKED', c1: (r: any) => r.liberado, c2: (r: any) => r.enPallet, c3: (r: any) => r.sinPallet }, en: 'Quality-approved, not packed', es: 'Liberado sin empacar', o: (e.calidadLib || []).length, u: sum(e.calidadLib, (r) => r.sinPallet), f: 'bloque calidadLib (solo Z0) · Σ sinPallet — la base es lo LIBERADO, no lo ordenado' },
+			{ key: 'fg', en: 'Finished goods at factory', es: 'Producto terminado en fábrica', o: fg?.skus ?? '…', u: fg?.units ?? '…', f: '/zenpet/finished-goods · inventario Z0 (31 SKUs, ceros incluidos — un cero dice \"se acabó\")' },
+			{ key: 'empaque', en: 'Palletized, ready to ship', es: 'En pallet, listo', o: (e.empaque || []).length, u: sum(e.empaque, (r) => r.units), f: 'bloque empaque (pallets sin embarque) · Σ piezas' },
+			{ key: 'shipped', en: 'Shipped (last 60 days)', es: 'Embarcado (últimos 60 días)', o: e.enRoute?.pls ?? 0, u: e.enRoute?.units ?? 0, f: 'enRoute · packing lists exportadas — VENTANA MÓVIL: al cumplir 60 días un embarque se sale solo del número. Su pantalla NO tiene desglose de esta etapa' }
 		];
 	});
 	const zpCards = $derived.by(() => {
@@ -673,16 +695,139 @@
 						</TableHeader>
 						<TableBody>
 							{#each zpView as r}
-								<TableRow>
-									<TableCell class="font-medium">{r.en}</TableCell>
+								<TableRow
+									class="cursor-pointer"
+									onclick={() => (zpOpen[r.key] = !zpOpen[r.key])}
+								>
+									<TableCell class="font-medium">{zpOpen[r.key] ? '▾' : '▸'} {r.en}</TableCell>
 									<TableCell>{r.es}</TableCell>
 									<TableCell class="text-right">{r.o}</TableCell>
 									<TableCell class="text-right font-semibold">{r.u}</TableCell>
 									<TableCell class="max-w-md text-xs text-muted-foreground">{r.f}</TableCell>
 								</TableRow>
+								{#if zpOpen[r.key]}
+									<TableRow>
+										<TableCell colspan={5} class="bg-muted/30 p-3">
+											{#if r.rows}
+												<!-- etapas de trabajo pendiente: By product / By work order -->
+												<div class="mb-2 flex gap-2 text-xs">
+													<button
+														class="rounded border px-2 py-0.5 {(zpMode[r.key] ?? 'product') === 'product' ? 'bg-foreground text-background' : ''}"
+														onclick={() => (zpMode[r.key] = 'product')}>By product</button
+													>
+													<button
+														class="rounded border px-2 py-0.5 {zpMode[r.key] === 'order' ? 'bg-foreground text-background' : ''}"
+														onclick={() => (zpMode[r.key] = 'order')}>By work order</button
+													>
+													<span class="self-center text-muted-foreground">
+														la última columna siempre suma el total del renglón — es la primera comprobación
+													</span>
+												</div>
+												{#if (zpMode[r.key] ?? 'product') === 'product'}
+													<table class="w-full text-xs">
+														<thead><tr class="border-b text-left">
+															<th class="py-1">SKU</th><th>Producto (descripción ERP — ZenPet muestra su catálogo)</th>
+															<th class="text-right">{r.cols.l1}</th>
+															{#if r.cols.c2}<th class="text-right">{r.cols.l2}</th>{/if}
+															<th class="text-right">{r.cols.l3}</th><th class="text-right">Órdenes</th>
+														</tr></thead>
+														<tbody>
+															{#each zpByProduct(r.rows, r.cols) as g}
+																<tr class="border-b border-dashed">
+																	<td class="py-1 font-mono">{g.sku}
+																		{#if CHECK_SKUS.includes(g.sku)}<span class="ml-1 rounded bg-amber-200 px-1 text-[10px] font-bold">CHECK</span>{/if}
+																	</td>
+																	<td>{g.description}</td>
+																	<td class="text-right">{g.c1}</td>
+																	{#if r.cols.c2}<td class="text-right">{g.c2}</td>{/if}
+																	<td class="text-right font-semibold">{g.c3}</td>
+																	<td class="text-right">{g.ordenes}</td>
+																</tr>
+															{/each}
+														</tbody>
+													</table>
+													{#if zpByProduct(r.rows, r.cols).some((g) => CHECK_SKUS.includes(g.sku))}
+														<p class="mt-1 rounded bg-amber-100 p-1.5 text-[11px]">
+															<b>CHECK:</b> los SKUs 5940 y 5951 tienen descripción "E-COLLAR" en el job, pero el
+															catálogo y el maestro de materiales dicen Tick Tornado / Hock Wrap — ZenPet los muestra
+															con el nombre del catálogo hasta que se corrija aquí.
+														</p>
+													{/if}
+												{:else}
+													<table class="w-full text-xs">
+														<thead><tr class="border-b text-left">
+															<th class="py-1">ORDER</th><th>Producto</th><th>PROGRAM</th>
+															{#if r.withCol}<th>WITH</th>{/if}
+															<th class="text-right">QTY ({r.cols.l3})</th>
+														</tr></thead>
+														<tbody>
+															{#each r.rows as row}
+																<tr class="border-b border-dashed">
+																	<td class="py-1">{row.ref}</td>
+																	<td>{row.description}</td>
+																	<td>{row.programation}</td>
+																	{#if r.withCol}<td>{(row.surtido || 0) > 0 ? 'Contractors' : 'In-house'}</td>{/if}
+																	<td class="text-right font-semibold">{r.cols.c3(row)}</td>
+																</tr>
+															{/each}
+														</tbody>
+													</table>
+												{/if}
+											{:else if r.key === 'fg'}
+												<table class="w-full text-xs">
+													<thead><tr class="border-b text-left"><th class="py-1">SKU</th><th>Producto</th><th class="text-right">Unidades</th></tr></thead>
+													<tbody>
+														{#each fg?.items || [] as m}
+															<tr class="border-b border-dashed {Number(m.units) === 0 ? 'text-muted-foreground' : ''}">
+																<td class="py-1 font-mono">{skuOf(m.code)}</td>
+																<td>{m.description}</td>
+																<td class="text-right {Number(m.units) === 0 ? '' : 'font-semibold'}">{m.units}</td>
+															</tr>
+														{/each}
+													</tbody>
+												</table>
+												<p class="mt-1 text-[11px] text-muted-foreground">Los ceros salen en gris pero SALEN — un cero dice "se acabó"; esconderlo hace parecer que el producto no existe.</p>
+											{:else if r.key === 'empaque'}
+												<table class="w-full text-xs">
+													<thead><tr class="border-b text-left"><th class="py-1">Pallet</th><th>Órdenes que contiene</th><th class="text-right">Cajas</th><th class="text-right">Unidades</th></tr></thead>
+													<tbody>
+														{#each e?.empaque || [] as pal}
+															<tr class="border-b border-dashed">
+																<td class="py-1">{pal.folio}</td><td>{pal.jobs}</td>
+																<td class="text-right">{pal.boxes}</td><td class="text-right font-semibold">{pal.units}</td>
+															</tr>
+														{/each}
+													</tbody>
+												</table>
+											{:else}
+												<p class="text-xs text-muted-foreground">
+													Esta etapa <b>no tiene desglose en la pantalla de ZenPet</b>: muestra el total
+													({e?.enRoute?.units ?? 0} pzs en {e?.enRoute?.pls ?? 0} packing lists) y avisa que la
+													fábrica reporta el total pero todavía no los embarques detrás de él.
+												</p>
+											{/if}
+										</TableCell>
+									</TableRow>
+								{/if}
 							{/each}
 						</TableBody>
 					</Table>
+				</div>
+
+				<div class="rounded-md border p-3">
+					<h3 class="mb-1 font-semibold">Bladder stock (siempre visible abajo en su pantalla)</h3>
+					<p class="mb-1 text-xs text-muted-foreground">Sub-ensamble, no producto vendible — pero condiciona todos los collares inflables.</p>
+					<table class="w-full text-xs">
+						<thead><tr class="border-b text-left"><th class="py-1">Código</th><th>Talla</th><th class="text-right">Existencia</th></tr></thead>
+						<tbody>
+							{#each e?.bladderInventory || [] as b}
+								<tr class="border-b border-dashed">
+									<td class="py-1 font-mono">{b.code}</td><td>{b.description}</td>
+									<td class="text-right font-semibold">{b.units}</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
 				</div>
 
 				<div class="rounded-md border p-3 text-sm">
