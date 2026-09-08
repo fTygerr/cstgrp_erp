@@ -15,6 +15,7 @@ import { ProgressModule } from './routes/Progress/progress.module';
 import { MaintenanceModule } from './routes/Maintenance/maintenance.module';
 import { ContractorsModule } from './routes/Contractors/contractors.module';
 import { ZenPetModule } from './routes/ZenPet/zenpet.module';
+import { LegalModule } from './routes/Legal/legal.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ZenPetModule } from './routes/ZenPet/zenpet.module';
     MaintenanceModule,
     ContractorsModule,
     ZenPetModule,
+    LegalModule,
   ],
 })
 export class AppModule {}
