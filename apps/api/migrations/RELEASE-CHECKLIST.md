@@ -16,6 +16,11 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
+### Migrations to run on prod (already applied to testing)
+- [ ] `2026-09-08_precios_contratista_8dec.sql` — precios de contratista a
+  numeric(16,8) en contractor_prices/exitpass_jobs/jobs."contractorPrice"
+  (hasta 8 decimales; widening seguro).
+
 (nada pendiente — reset tras el release del 2026-09-07)
 
 ---
