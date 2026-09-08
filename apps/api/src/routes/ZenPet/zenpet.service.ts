@@ -219,24 +219,25 @@ export class ZenPetService {
     // 11. Acabado y calidad: producto terminado liberado por calidad.
     // Solo familia Z0 — los Z4 (bladders) y Z9 (collares ensamblados) son
     // subensambles, no producto terminado (Juan 01/09)
-    // liberado = calidad interna + entregas de contratista aceptadas (obs 02/09).
-    // Regla Juan 08/09: esta etapa rastrea SUBPRODUCTOS liberados sin empacar
-    // (subensambles: collares Z9, PET...), EXCEPTO bladders (tienen su propio
-    // bloque). El producto terminado Z0 vive en /finished-goods — así las dos
-    // etapas ya no se traslapan (el Z0 liberado entra al inventario de Z0).
+    // Regla Juan 08/09 (v2): esta etapa se toma del INVENTARIO de subproductos
+    // (los Z9 en existencia esperando empaque; al empacarse se convierten en
+    // Z0). Los bladders se excluyen (tienen su propio bloque). El cálculo por
+    // órdenes se quedaba inflado porque un job Z9 nunca se paletiza como Z9.
+    // Se conserva la MISMA forma de fila que antes (ref/part/liberado/enPallet/
+    // sinPallet) para no romper el parser del sistema de ZenPet.
     const calidadLib = await sql`
-      SELECT ${baseCols}, (jobs.calidad + jobs.contractor)::int AS liberado,
-        COALESCE(pal.palletized, 0) AS "enPallet",
-        (jobs.calidad + jobs.contractor - COALESCE(pal.palletized, 0))::int AS "sinPallet"
-      ${baseFrom}
-      LEFT JOIN LATERAL (
-        SELECT SUM(pc.amount)::int AS palletized FROM pallet_contents pc WHERE pc."jobId" = jobs.id
-      ) pal ON true
-      WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND (jobs.calidad + jobs.contractor) > 0
+      SELECT m.code AS ref, 'INVENTARIO' AS programation, m.code AS part,
+        m.description, ROUND(m.total::numeric)::int AS amount,
+        ROUND(m.total::numeric)::int AS liberado,
+        0 AS "enPallet",
+        ROUND(m.total::numeric)::int AS "sinPallet"
+      FROM materials m
+      WHERE m."clientId" = ${zp}
         AND COALESCE(m.type, case when m.product then 'producto' else 'materiaPrima' end) = 'subproducto'
-        AND COALESCE(m.code, jobs.part) NOT IN
+        AND m.code NOT IN
           ('ZEN-Z4-2524','ZEN-Z4-2525','ZEN-Z4-2526','ZEN-Z4-2527','ZEN-Z4-2528','ZEN-Z4-2529')
-      ORDER BY jobs.ref DESC`;
+        AND m.total::numeric > 0
+      ORDER BY m.code`;
 
     // 12/13. Empaque / PT listo: liberado y en pallet, listo para exportar
     const empaque = await sql`
