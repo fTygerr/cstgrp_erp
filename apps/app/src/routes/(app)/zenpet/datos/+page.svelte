@@ -37,6 +37,7 @@
 	const skuOf = (part: string) => (part || '').match(/(\d{4})$/)?.[1] || part || '?';
 	const CHECK_SKUS = ['5940', '5951'];
 	let zpOpen: Record<string, boolean> = $state({});
+	let zpFams: Record<string, boolean> = $state({});
 	let zpMode: Record<string, string> = $state({});
 	function zpByProduct(rows: any[], cols: any) {
 		const map = new Map<string, any>();
@@ -682,6 +683,45 @@
 						</div>
 					</div>
 				{/if}
+
+				<div class="rounded-md border p-3">
+					<h3 class="mb-1 font-semibold">Materia prima (arriba del flujo — próximamente en su pantalla)</h3>
+					<p class="mb-1 text-xs text-muted-foreground">
+						bloque rawByFamily · igual que la pestaña "Órdenes por etapa": familias con su unidad —
+						<b>nunca se suman entre sí</b> (Z1/Z3 son yardas, el resto piezas). Pícale a una familia
+						para ver sus materiales.
+					</p>
+					<Table divClass="h-auto overflow-visible">
+						<TableHeader>
+							<TableHead>Familia</TableHead>
+							<TableHead class="text-right">Materiales</TableHead>
+							<TableHead class="text-right">Existencia</TableHead>
+							<TableHead>Medida</TableHead>
+						</TableHeader>
+						<TableBody>
+							{#each e?.rawByFamily || [] as r}
+								<TableRow class="cursor-pointer" onclick={() => (zpFams[r.family] = !zpFams[r.family])}>
+									<TableCell class="font-semibold">{zpFams[r.family] ? '▾' : '▸'} {r.family}</TableCell>
+									<TableCell class="text-right">{r.materials}</TableCell>
+									<TableCell class="text-right font-semibold">{r.units}</TableCell>
+									<TableCell>{r.unit}</TableCell>
+								</TableRow>
+								{#if zpFams[r.family]}
+									{#each rawMats.filter((m: any) => m.family === r.family) as m}
+										<TableRow class="bg-muted/40">
+											<TableCell class="pl-8 text-xs">{m.code}</TableCell>
+											<TableCell class="max-w-72 truncate text-xs" title={m.description} colspan={1}
+												>{m.description}</TableCell
+											>
+											<TableCell class="text-right text-xs">{m.units}</TableCell>
+											<TableCell class="text-xs">{m.measurement}</TableCell>
+										</TableRow>
+									{/each}
+								{/if}
+							{/each}
+						</TableBody>
+					</Table>
+				</div>
 
 				<div class="rounded-md border p-3">
 					<h3 class="mb-1 font-semibold">Las 12 etapas de su pantalla — con su fórmula</h3>
