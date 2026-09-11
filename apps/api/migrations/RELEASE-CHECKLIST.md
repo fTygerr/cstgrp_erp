@@ -31,6 +31,9 @@ el 08-09 — línea anterior eliminada del pendiente)
 ---
 
 ## Done in previous releases
+- 2026-09-11 (3er cherry-pick): calidadLib con campos reales (liberado = Z9 en
+  existencia, enPallet = ya empacado como Z0, sinPallet = resto) — master
+  2bfa27f..e883139 = commit e9d5ba6 de dev. Solo query. Imp-Exp sigue DEV-ONLY.
 - 2026-09-11 (2º cherry-pick): finished goods netos de pallets + "Units by SKU"
   en Vista ZenPet (master f8eb486..2bfa27f = commit bd86770 de dev). Solo
   queries. Imp-Exp sigue DEV-ONLY.
