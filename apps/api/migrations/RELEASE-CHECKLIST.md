@@ -31,6 +31,9 @@ el 08-09 — línea anterior eliminada del pendiente)
 ---
 
 ## Done in previous releases
+- 2026-09-11 (2º cherry-pick): finished goods netos de pallets + "Units by SKU"
+  en Vista ZenPet (master f8eb486..2bfa27f = commit bd86770 de dev). Solo
+  queries. Imp-Exp sigue DEV-ONLY.
 - 2026-09-11: reglas v3 ZenPet (Juan por WhatsApp) a prod vía CHERRY-PICK
   (master 678522c..f8eb486 = commit 2b1b224 de dev sin el batch Imp-Exp).
   Solo queries, sin migración. produccion = solo ensamble; empaqueZ0 y
