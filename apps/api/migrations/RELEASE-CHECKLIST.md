@@ -17,15 +17,40 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
-- [ ] `2026-09-08_precios_contratista_8dec.sql` — precios de contratista a
-  numeric(16,8) en contractor_prices/exitpass_jobs/jobs."contractorPrice"
-  (hasta 8 decimales; widening seguro).
+- [ ] `2026-09-12_pago_precio_congelado.sql` — contractormovements.price (precio
+  congelado por entrega al generar el pago, regla Juan 11/09) + backfill de las
+  entregas ya pagadas con el precio del pase de su contratista (no cambia los
+  pagos 4/6/7/11). Aditiva. VA JUNTO con el commit "precio congelado" — correr
+  ANTES del deploy (el código lee cm.price).
+- [ ] `2026-09-11_impexp_status_openpo.sql` — ciclo del Packing List
+  (destinys.status generado/embarcado/cruzado/recibido + shippedAt/crossedAt/
+  receivedAt/receivedPallets/receivedComplete/receivedNotes), liga
+  preforms."destinyId" → destinys, y BACKFILL: todo PL existente con shipDate
+  ≤ hoy queda 'embarcado' (Juan: los PL históricos son embarques reales).
+  Aditiva; el código viejo sigue funcionando con ella puesta.
+  Sin seeds ni permisos nuevos (PO Abiertos usa `reports_orders`).
 
-(nada pendiente — reset tras el release del 2026-09-07)
+(la migración `2026-09-08_precios_contratista_8dec.sql` YA está en prod desde
+el 08-09 — línea anterior eliminada del pendiente)
 
 ---
 
 ## Done in previous releases
+- 2026-09-11 (4º cherry-pick): pagos de contratistas al precio del pase de salida
+  de SU contratista (jobs.contractorPrice era el del último pase, de cualquiera)
+  — master e883139..33f8f94 = commit 45a17e8 de dev. Sin migración. Pagos 6 y 11
+  salen corregidos (totales en vivo). Imp-Exp sigue DEV-ONLY.
+- 2026-09-11 (3er cherry-pick): calidadLib con campos reales (liberado = Z9 en
+  existencia, enPallet = ya empacado como Z0, sinPallet = resto) — master
+  2bfa27f..e883139 = commit e9d5ba6 de dev. Solo query. Imp-Exp sigue DEV-ONLY.
+- 2026-09-11 (2º cherry-pick): finished goods netos de pallets + "Units by SKU"
+  en Vista ZenPet (master f8eb486..2bfa27f = commit bd86770 de dev). Solo
+  queries. Imp-Exp sigue DEV-ONLY.
+- 2026-09-11: reglas v3 ZenPet (Juan por WhatsApp) a prod vía CHERRY-PICK
+  (master 678522c..f8eb486 = commit 2b1b224 de dev sin el batch Imp-Exp).
+  Solo queries, sin migración. produccion = solo ensamble; empaqueZ0 y
+  petInventario nuevos; calidadLib v3. El batch Imp-Exp (f205bdf, migración
+  2026-09-11_impexp_status_openpo.sql) sigue DEV-ONLY esperando a Juan.
 - 2026-09-07: obs 7-Sept a prod (visto bueno de Juan). Contratistas integrados en
   Historial, cronológico de la orden y módulo Producción; folio real en Capturar
   pallets. Sin migraciones. Merge master: e2b1433..9cd90ee.
