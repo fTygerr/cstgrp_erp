@@ -31,6 +31,10 @@ el 08-09 — línea anterior eliminada del pendiente)
 ---
 
 ## Done in previous releases
+- 2026-09-11 (4º cherry-pick): pagos de contratistas al precio del pase de salida
+  de SU contratista (jobs.contractorPrice era el del último pase, de cualquiera)
+  — master e883139..33f8f94 = commit 45a17e8 de dev. Sin migración. Pagos 6 y 11
+  salen corregidos (totales en vivo). Imp-Exp sigue DEV-ONLY.
 - 2026-09-11 (3er cherry-pick): calidadLib con campos reales (liberado = Z9 en
   existencia, enPallet = ya empacado como Z0, sinPallet = resto) — master
   2bfa27f..e883139 = commit e9d5ba6 de dev. Solo query. Imp-Exp sigue DEV-ONLY.
