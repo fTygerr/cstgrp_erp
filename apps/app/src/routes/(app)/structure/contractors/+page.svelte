@@ -51,6 +51,7 @@
 		<OptionsHead />
 		<TableHead class="w-full">Nombre</TableHead>
 		<TableHead>Activo</TableHead>
+		<TableHead>IVA</TableHead>
 	</TableHeader>
 	<TableBody>
 		{#each $contractors?.data as contractor, i}
@@ -75,6 +76,7 @@
 						<Check class="mx-auto size-4" />
 					{/if}
 				</TableCell>
+				<TableCell class="whitespace-nowrap">{Number(contractor.ivaRate ?? (contractor.iva ? 16 : 0)) ? `IVA ${Number(contractor.ivaRate ?? 16)}%` : 'Sin IVA'}</TableCell>
 			</TableRow>
 		{/each}
 	</TableBody>

@@ -11,12 +11,12 @@ export class ContractorsService {
   }
 
   async createContractor(body: z.infer<typeof createSchema>) {
-    await sql`insert into contractors ${sql(body)}`;
+    await sql`insert into contractors ${sql({ ...body, iva: body.ivaRate > 0 })}`;
     return;
   }
 
   async editContractor(body: z.infer<typeof editSchema>) {
-    await sql`update contractors set ${sql(body)} where id = ${body.id}`;
+    await sql`update contractors set ${sql({ ...body, iva: body.ivaRate > 0 })} where id = ${body.id}`;
     return;
   }
 

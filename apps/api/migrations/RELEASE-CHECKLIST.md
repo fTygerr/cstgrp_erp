@@ -17,11 +17,10 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
-- [ ] `2026-09-12_pago_precio_congelado.sql` — contractormovements.price (precio
-  congelado por entrega al generar el pago, regla Juan 11/09) + backfill de las
-  entregas ya pagadas con el precio del pase de su contratista (no cambia los
-  pagos 4/6/7/11). Aditiva. VA JUNTO con el commit "precio congelado" — correr
-  ANTES del deploy (el código lee cm.price).
+- [ ] `2026-09-12_contratistas_iva_tasa.sql` — contractors."ivaRate" (0/8/16) con
+  backfill 16 para los que tenían iva=true (CRISTOBAL, NANCY, TONIX en prod).
+  Aditiva; `iva` booleano se mantiene en sincronía. VA JUNTO con el commit
+  "IVA por tasa" — correr ANTES del deploy.
 - [ ] `2026-09-11_impexp_status_openpo.sql` — ciclo del Packing List
   (destinys.status generado/embarcado/cruzado/recibido + shippedAt/crossedAt/
   receivedAt/receivedPallets/receivedComplete/receivedNotes), liga
@@ -36,6 +35,12 @@ el 08-09 — línea anterior eliminada del pendiente)
 ---
 
 ## Done in previous releases
+- 2026-09-11 (5º cherry-pick): precio congelado por entrega al generar el pago
+  (regla Juan). Migración `2026-09-12_pago_precio_congelado.sql` aplicada a
+  testing y PROD (backfill 118/121 entregas pagadas; las 3 sin precio son del
+  pago folio 3, entregas de julio sin contratista ni pase — ya sumaban 0 antes).
+  Backup: pre-release-pagoprecio-20260911-2220.dump. Master 33f8f94..e405657
+  = commit a8fc8ca de dev. Imp-Exp sigue DEV-ONLY.
 - 2026-09-11 (4º cherry-pick): pagos de contratistas al precio del pase de salida
   de SU contratista (jobs.contractorPrice era el del último pase, de cualquiera)
   — master e883139..33f8f94 = commit 45a17e8 de dev. Sin migración. Pagos 6 y 11

@@ -144,7 +144,7 @@ export class PaymentsService {
 
     const rows = await sql`select cm.rejected, cm.accepted, cm.date, cm."orderId",
     (select name from contractors where id = cm."contractorId") as contractor,
-    (select iva from contractors where id = cm."contractorId") as iva,
+    (select COALESCE("ivaRate", 0) from contractors where id = cm."contractorId") as "ivaRate",
     ${this.deliveryPrice} as "deliveryPrice"
     FROM contractormovements cm
     JOIN jobs j ON j.id = cm."orderId"
@@ -247,18 +247,19 @@ export class PaymentsService {
         )
         .join('')}
         ${(() => {
-          // IVA 16% solo para contratistas con la opción habilitada (obs 02/09):
+          // IVA por tasa del contratista (obs 02/09; Juan 11/09: 0, 8 o 16%):
           // Total, renglón de IVA y gran total; el precio unitario no cambia.
           const subtotal = contractorsGroups[contractor].reduce(
             (acc, row) => acc + row.total,
             0,
           );
-          if (!contractorsGroups[contractor][0]?.iva)
+          const rate = Number(contractorsGroups[contractor][0]?.ivaRate || 0);
+          if (!rate)
             return `<tr><td colspan="7" class="total-cell">TOTAL: ${subtotal}</td></tr>`;
-          const iva = Math.round(subtotal * 0.16 * 100) / 100;
+          const iva = Math.round(subtotal * (rate / 100) * 100) / 100;
           return `
         <tr><td colspan="7" class="total-cell">TOTAL: ${subtotal}</td></tr>
-        <tr><td colspan="7" class="total-cell">IVA (16%): ${iva}</td></tr>
+        <tr><td colspan="7" class="total-cell">IVA (${rate}%): ${iva}</td></tr>
         <tr><td colspan="7" class="total-cell">GRAN TOTAL: ${Math.round((subtotal + iva) * 100) / 100}</td></tr>`;
         })()}
       </tbody>`;
@@ -271,7 +272,7 @@ export class PaymentsService {
       total:
         Math.round(
           rows.reduce(
-            (acc, row) => acc + row.total * (row.iva ? 1.16 : 1),
+            (acc, row) => acc + row.total * (1 + Number(row.ivaRate || 0) / 100),
             0,
           ) * 100,
         ) / 100,
