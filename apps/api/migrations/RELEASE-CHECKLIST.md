@@ -31,6 +31,11 @@ el 08-09 — línea anterior eliminada del pendiente)
 ---
 
 ## Done in previous releases
+- 2026-09-11: reglas v3 ZenPet (Juan por WhatsApp) a prod vía CHERRY-PICK
+  (master 678522c..f8eb486 = commit 2b1b224 de dev sin el batch Imp-Exp).
+  Solo queries, sin migración. produccion = solo ensamble; empaqueZ0 y
+  petInventario nuevos; calidadLib v3. El batch Imp-Exp (f205bdf, migración
+  2026-09-11_impexp_status_openpo.sql) sigue DEV-ONLY esperando a Juan.
 - 2026-09-07: obs 7-Sept a prod (visto bueno de Juan). Contratistas integrados en
   Historial, cronológico de la orden y módulo Producción; folio real en Capturar
   pallets. Sin migraciones. Merge master: e2b1433..9cd90ee.
