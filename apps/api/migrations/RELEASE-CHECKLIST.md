@@ -17,6 +17,10 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
+- [ ] `2026-09-12_contratistas_iva_tasa.sql` — contractors."ivaRate" (0/8/16) con
+  backfill 16 para los que tenían iva=true (CRISTOBAL, NANCY, TONIX en prod).
+  Aditiva; `iva` booleano se mantiene en sincronía. VA JUNTO con el commit
+  "IVA por tasa" — correr ANTES del deploy.
 - [ ] `2026-09-11_impexp_status_openpo.sql` — ciclo del Packing List
   (destinys.status generado/embarcado/cruzado/recibido + shippedAt/crossedAt/
   receivedAt/receivedPallets/receivedComplete/receivedNotes), liga

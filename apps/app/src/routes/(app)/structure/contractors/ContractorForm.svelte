@@ -12,6 +12,7 @@
 	import { showSuccess } from '$lib/utils/showToast';
 	import { refetch } from '$lib/utils/query';
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
+	import Select from '$lib/components/basic/Select.svelte';
 
 	interface Props {
 		show?: boolean;
@@ -22,11 +23,17 @@
 	let formData: any = $state({
 		name: '',
 		active: true,
-		iva: false
+		ivaRate: '0'
 	});
+	// IVA por tasa (Juan 11/09): sin IVA, 8% o 16%
+	const ivaOptions = [
+		{ value: '0', name: 'Sin IVA' },
+		{ value: '8', name: 'IVA 8%' },
+		{ value: '16', name: 'IVA 16%' }
+	];
 
 	function setFormData() {
-		formData = { iva: false, ...selectedPosition };
+		formData = { ...selectedPosition, ivaRate: String(selectedPosition.ivaRate ?? (selectedPosition.iva ? 16 : 0)) };
 	}
 
 	async function handleSubmit() {
@@ -58,8 +65,8 @@
 			<Label name="Activo">
 				<Checkbox name="text" bind:checked={formData.active} />
 			</Label>
-			<Label name="Aplica IVA (16%)">
-				<Checkbox name="text" bind:checked={formData.iva} />
+			<Label name="IVA en el pago">
+				<Select items={ivaOptions} bind:value={formData.ivaRate} />
 			</Label>
 		</DialogBody>
 		<DialogFooter submitFunc={handleSubmit} hideFunc={() => (show = false)} />
