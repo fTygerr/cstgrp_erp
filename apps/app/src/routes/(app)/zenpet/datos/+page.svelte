@@ -69,9 +69,8 @@
 			{ key: 'kits', rows: e.kits || [], cols: { l1: 'ORDERED', l2: '', l3: 'STAGED', c1: (r: any) => r.amount, c2: null, c3: (r: any) => r.amount }, en: 'Staged, not started', es: 'Kits surtidos sin arrancar', o: (e.kits || []).length, u: sum(e.kits, (r) => r.amount), f: 'bloque kits · Σ cantidad' },
 			{ key: 'produccion', rows: prod, withCol: true, cols: faltCols((r: any) => (r.producido || 0) + (r.aceptado || 0)), en: 'Assembly', es: 'Ensamble', o: prod.length, u: sum(prod, (r) => Math.max((r.amount || 0) - (r.producido || 0) - (r.aceptado || 0), 0)), f: 'bloque produccion · Σ max(cantidad − producido − aceptado, 0) — SÍ resta lo que el contratista ya regresó. Regla Juan 11/09: solo jobs Z9 + Z0 sin Z9 (E-Collar, ZenDog); los Z4 (corte PET) y los Z0 con Z9 (empaque) ya NO entran aquí' },
 			{ key: 'enPoder', rows: enPoder, cols: { l1: 'SURTIDO', l2: 'ACEPTADO', l3: 'EN PODER', c1: (r: any) => r.surtido, c2: (r: any) => r.aceptado, c3: (r: any) => r.enPoder }, en: 'With outside contractors', es: 'En poder de contratistas', o: enPoder.length, u: sum(enPoder, (r) => r.enPoder), f: 'mismo bloque produccion, filas con enPoder > 0 · Σ enPoder — NO es etapa aparte: se traslapa con Ensamble' },
-			{ key: 'empaqueZ0', rows: e.empaqueZ0 || [], cols: faltCols((r: any) => r.empacado), en: 'Packing (Z0 jobs)', es: 'Empaque por job (Z0 con Z9)', o: (e.empaqueZ0 || []).length, u: sum(e.empaqueZ0, (r) => r.faltante), f: 'NUEVO 11/09 (Juan: "Z0 lo compone su empaque y su Z9") · jobs Z0 cuyo producto tiene Z9 · Σ (cantidad − liberado). Antes estos jobs se sumaban en Ensamble junto con su job Z9 → el mismo collar contaba dos veces' },
 			{ key: 'calidadLib', rows: e.calidadLib || [], cols: { l1: 'ON HAND', l2: 'PENDING Z0', l3: 'NOT PACKED', c1: (r: any) => r.existencia ?? r.liberado, c2: (r: any) => r.pendienteZ0 ?? 0, c3: (r: any) => r.sinPallet }, en: 'Quality-approved, not packed', es: 'Subensambles liberados sin empacar', o: (e.calidadLib || []).length, u: sum(e.calidadLib, (r) => r.sinPallet), f: 'regla Juan 11/09 v3: SOLO códigos Z9 (los cortes de PET Z4-352x salen: son componente, bloque petInventario) · sinPallet = existencia − Z9 pendiente de jobs Z0 ya liberados (Juan hoy lo descuenta a mano; si el código da 0 es que su ajuste manual ya lo cubrió)' },
-			{ key: 'fg', en: 'Finished goods at factory', es: 'Producto terminado en fábrica', o: fg?.skus ?? '…', u: fg?.units ?? '…', f: '/zenpet/finished-goods · inventario Z0 (31 SKUs, ceros incluidos — un cero dice \"se acabó\")' },
+			{ key: 'fg', en: 'Finished goods at factory', es: 'Producto terminado en fábrica', o: fg?.skus ?? '…', u: fg?.units ?? '…', f: '/zenpet/finished-goods · inventario Z0 MENOS lo que ya está en pallet sin PL (regla 11/09: Palletized es otra etapa) · ceros incluidos — un cero dice \"se acabó\"' },
 			{ key: 'empaque', en: 'Palletized, ready to ship', es: 'En pallet, listo', o: (e.empaque || []).length, u: sum(e.empaque, (r) => r.units), f: 'bloque empaque (pallets sin embarque) · Σ piezas' },
 			{ key: 'shipped', en: 'Shipped (last 60 days)', es: 'Embarcado (últimos 60 días)', o: e.enRoute?.pls ?? 0, u: e.enRoute?.units ?? 0, f: 'enRoute · packing lists exportadas — VENTANA MÓVIL: al cumplir 60 días un embarque se sale solo del número. Su pantalla NO tiene desglose de esta etapa' }
 		];
@@ -85,6 +84,30 @@
 			inprod: { n: (Number(v['Assembly']?.u) || 0) + (Number(v['Staged, not started']?.u) || 0), sub: `${v['Assembly']?.o ?? 0} órdenes abiertas (ensamble + kits)` },
 			contractors: { n: v['With outside contractors']?.u ?? 0, sub: `${v['With outside contractors']?.o ?? 0} órdenes` }
 		};
+	});
+
+	// Units by SKU (11/09): 4 etapas disjuntas por SKU, con los nombres de ZenPet
+	const unitsBySku = $derived.by(() => {
+		const acc: Record<string, any> = {};
+		const row = (sku: string) => (acc[sku] ||= { sku, product: '', assembly: 0, contractors: 0, quality: 0, finished: 0, palletized: 0 });
+		for (const r of e?.produccion || []) {
+			const x = row(skuOf(r.part));
+			x.assembly += Math.max((r.amount || 0) - (r.producido || 0) - (r.aceptado || 0), 0);
+			x.contractors += r.enPoder || 0;
+			if (!x.product) x.product = r.description || '';
+		}
+		for (const r of e?.calidadLib || []) row(skuOf(r.part)).quality += r.sinPallet || 0;
+		for (const m of fg?.items || []) {
+			const x = row(skuOf(m.code));
+			x.finished += Number(m.units || 0);
+			x.palletized += Number(m.palletized || 0);
+			if (m.description) x.product = m.description;
+		}
+		const rows = Object.values(acc)
+			.filter((x: any) => x.assembly + x.quality + x.finished + x.palletized > 0)
+			.sort((a: any, b: any) => a.sku.localeCompare(b.sku));
+		const t = rows.reduce((s: any, x: any) => ({ assembly: s.assembly + x.assembly, contractors: s.contractors + x.contractors, quality: s.quality + x.quality, finished: s.finished + x.finished, palletized: s.palletized + x.palletized }), { assembly: 0, contractors: 0, quality: 0, finished: 0, palletized: 0 });
+		return { rows, t };
 	});
 
 	// Reglas de Juan (Observaciones 18-Ago): columnas por etapa
@@ -658,6 +681,45 @@
 					(<code>/zenpet/etapas</code> y <code>/zenpet/finished-goods</code>) — si un número de aquí no
 					cuadra con su pantalla, casi siempre es la <b>hora</b>: ellos ven una foto congelada que se
 					toma <b>miércoles 12:00 y viernes 17:00</b> (hora Tijuana); esta pestaña es en vivo.
+				</div>
+
+				<!-- Units by SKU (Hector 11/09): las 4 etapas disjuntas, con los nombres de ZenPet -->
+				<div class="rounded-md border p-3">
+					<div class="mb-1 flex items-center justify-between">
+						<h3 class="font-semibold">Units by SKU — Assembly → Quality-approved → Finished goods → Palletized</h3>
+						<Badge color="blue">one unit lives in exactly one column</Badge>
+					</div>
+					<p class="mb-2 text-xs text-muted-foreground">
+						<b>Assembly</b> = open assembly jobs, pieces not yet produced (Z9 jobs + Z0 jobs of products with no Z9) ·
+						<b>of which w/ contractors</b> = handed to a contractor, not yet returned (a slice of Assembly, not additive) ·
+						<b>Quality-approved, not packed</b> = Z9 bodies on hand − Z9 still owed by Z0 jobs already released ·
+						<b>Finished goods at factory</b> = Z0 on hand − pieces on pallets without packing list ·
+						<b>Palletized</b> = pieces on pallets without packing list.
+					</p>
+					<table class="w-full text-xs">
+						<thead><tr class="border-b text-left"><th class="py-1">SKU</th><th>Product</th><th class="text-right">Assembly</th><th class="text-right text-muted-foreground">of which w/ contractors</th><th class="text-right">Quality-approved, not packed</th><th class="text-right">Finished goods at factory</th><th class="text-right">Palletized</th></tr></thead>
+						<tbody>
+							{#each unitsBySku.rows as r}
+								<tr class="border-b border-dashed">
+									<td class="py-1 font-mono">{r.sku}</td>
+									<td class="max-w-72 truncate" title={r.product}>{r.product}</td>
+									<td class="text-right font-semibold">{r.assembly}</td>
+									<td class="text-right text-muted-foreground">{r.contractors}</td>
+									<td class="text-right font-semibold">{r.quality}</td>
+									<td class="text-right font-semibold">{r.finished}</td>
+									<td class="text-right font-semibold">{r.palletized}</td>
+								</tr>
+							{/each}
+							<tr class="font-semibold">
+								<td class="py-1" colspan="2">TOTAL</td>
+								<td class="text-right">{unitsBySku.t.assembly}</td>
+								<td class="text-right text-muted-foreground">{unitsBySku.t.contractors}</td>
+								<td class="text-right">{unitsBySku.t.quality}</td>
+								<td class="text-right">{unitsBySku.t.finished}</td>
+								<td class="text-right">{unitsBySku.t.palletized}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 
 				{#if zpCards}

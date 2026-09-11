@@ -329,15 +329,34 @@ export class ZenPetService {
   // un cambio de una línea (petición chat ZenPet 04/09).
   async getFinishedGoods() {
     const zp = await this.clientId();
+    // Regla 11/09 (Hector/Juan): "Finished goods at factory" = Z0 en existencia
+    // MENOS lo que ya está en pallet sin packing list (eso es "Palletized").
+    // El inventario Z0 solo baja al generar el PL, así que sin esta resta las
+    // piezas paletizadas contaban dos veces en el tablero de ZenPet
+    // (finished + palletized). units = neto; onHand/palletized aditivos.
     const items = await sql`
-      SELECT code, description, ROUND(total::numeric, 0) AS units, measurement
-      FROM materials
-      WHERE "clientId" = ${zp} AND code LIKE 'ZEN-Z0-%'
-        AND COALESCE(type, case when product then 'producto' else 'materiaPrima' end) = 'producto'
-      ORDER BY code`;
+      SELECT m.code, m.description, m.measurement,
+        GREATEST(ROUND(m.total::numeric, 0) - COALESCE(p.units, 0), 0) AS units,
+        ROUND(m.total::numeric, 0) AS "onHand",
+        COALESCE(p.units, 0) AS palletized
+      FROM materials m
+      LEFT JOIN LATERAL (
+        SELECT SUM(pc.amount)::int AS units
+        FROM pallet_contents pc
+        JOIN pallets pl ON pl.id = pc."palletId"
+        JOIN jobs j ON j.id = pc."jobId"
+        LEFT JOIN materialmovements mm ON j."movementId" = mm.id
+        WHERE pl."clientId" = ${zp} AND pl."destinyId" IS NULL
+          AND COALESCE(mm."materialId", -1) = m.id
+      ) p ON true
+      WHERE m."clientId" = ${zp} AND m.code LIKE 'ZEN-Z0-%'
+        AND COALESCE(m.type, case when m.product then 'producto' else 'materiaPrima' end) = 'producto'
+      ORDER BY m.code`;
     return {
       skus: items.length,
       units: items.reduce((acc, m) => acc + Number(m.units), 0),
+      onHand: items.reduce((acc, m) => acc + Number(m.onHand), 0),
+      palletized: items.reduce((acc, m) => acc + Number(m.palletized), 0),
       items,
     };
   }
