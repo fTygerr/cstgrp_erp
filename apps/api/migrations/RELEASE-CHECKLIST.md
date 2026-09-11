@@ -17,6 +17,11 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
+- [ ] `2026-09-12_pago_precio_congelado.sql` — contractormovements.price (precio
+  congelado por entrega al generar el pago, regla Juan 11/09) + backfill de las
+  entregas ya pagadas con el precio del pase de su contratista (no cambia los
+  pagos 4/6/7/11). Aditiva. VA JUNTO con el commit "precio congelado" — correr
+  ANTES del deploy (el código lee cm.price).
 - [ ] `2026-09-11_impexp_status_openpo.sql` — ciclo del Packing List
   (destinys.status generado/embarcado/cruzado/recibido + shippedAt/crossedAt/
   receivedAt/receivedPallets/receivedComplete/receivedNotes), liga

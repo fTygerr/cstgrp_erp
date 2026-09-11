@@ -18,18 +18,21 @@ import { idObjectSchema } from 'src/utils/schemas';
 export class PaymentsService {
   constructor(private readonly req: ContextProvider) {}
 
-  // Precio de la entrega (fix Juan 11/09): el precio del PASE DE SALIDA de ESE
-  // contratista para ESE job (el último a la fecha de la entrega; si no hay uno
-  // anterior, el último que exista). jobs."contractorPrice" guarda un solo
-  // precio por job — el del último pase, de cualquier contratista — y pagaba a
-  // NANCY con el precio de EVA. Fallback al precio del job si no hay pase.
-  // Requiere alias cm (contractormovements) y j (jobs) en la consulta.
-  private readonly deliveryPrice = sql`COALESCE((
-      select ej.price from exitpass_jobs ej
-      join "exitPass" e on e.id = ej."exitId"
-      where ej."jobId" = j.id and e."contractorId" = cm."contractorId"
-      order by (e.date <= cm.date) desc, e.date desc, ej.id desc
-      limit 1), j."contractorPrice")`;
+  // Precio de la entrega (regla Juan 11/09, 2ª versión): el precio se negocia
+  // al momento del PAGO. Al generar el pago se congela en cm.price el precio
+  // vigente de la lista del contratista para ese número de parte; mientras no
+  // haya pago (vista previa) se muestra el precio de lista actual. Fallbacks:
+  // precio del pase de salida de ese contratista, y por último el del job.
+  // Requiere alias cm (contractormovements), j (jobs) y m (materials) en la consulta.
+  private readonly deliveryPrice = sql`COALESCE(cm.price,
+      (select cp.price from contractor_prices cp
+        where cp."contractorId" = cm."contractorId" and cp.part = COALESCE(m.code, j.part)),
+      (select ej.price from exitpass_jobs ej
+        join "exitPass" e on e.id = ej."exitId"
+        where ej."jobId" = j.id and e."contractorId" = cm."contractorId"
+        order by (e.date <= cm.date) desc, e.date desc, ej.id desc
+        limit 1),
+      j."contractorPrice")`;
 
   async getAll(body: z.infer<typeof getAllPaymentsSchema>) {
     const rows = await sql`select p.*,
@@ -50,6 +53,8 @@ export class PaymentsService {
     (select COALESCE(SUM(cm.accepted * ${this.deliveryPrice}), 0)::numeric(12,2)
       from contractormovements cm
       join jobs j on j.id = cm."orderId"
+      left join materialmovements mm on j."movementId" = mm.id
+      left join materials m on mm."materialId" = m.id
       where cm."paymentId" = p.id) as total
     from "contractorPayments" p
     WHERE
@@ -72,26 +77,46 @@ export class PaymentsService {
         if (!delivery)
           throw new HttpException('Una entrega ya tiene pago', 400);
       }
+
+      // Congelar el precio de cada entrega con el precio vigente de la lista
+      // del contratista en este momento (regla Juan 11/09)
+      await sql`update contractormovements cm set price = sub.price
+        from (select cm.id, ${this.deliveryPrice} as price
+              from contractormovements cm
+              join jobs j on j.id = cm."orderId"
+              left join materialmovements mm on j."movementId" = mm.id
+              left join materials m on mm."materialId" = m.id
+              where cm."paymentId" = ${payment.id}) sub
+        where cm.id = sub.id`;
     });
   }
 
   async delete(body: z.infer<typeof idObjectSchema>) {
-    await sql`delete from "contractorPayments" where id = ${body.id}`;
+    await sql.begin(async (sql) => {
+      // al borrar el pago la entrega vuelve a estar libre y su precio se
+      // vuelve a tomar de la lista cuando se genere el siguiente pago
+      await sql`update contractormovements set price = null where "paymentId" = ${body.id}`;
+      await sql`delete from "contractorPayments" where id = ${body.id}`;
+    });
   }
 
   async getDeliveriesForPayment(
     body: z.infer<typeof getDeliveriesForPaymentSchema>,
   ) {
-    const deliveries = await sql`select id, rejected, accepted, date, 
-    (select ref from jobs where id = "orderId"),
-    (select description from jobs where id = "orderId"),
-    (select name from contractors where id = contractormovements."contractorId") as contractor
+    const deliveries = await sql`select cm.id, cm.rejected, cm.accepted, cm.date,
+    j.ref, j.description,
+    (select name from contractors where id = cm."contractorId") as contractor,
+    ${this.deliveryPrice} as price,
+    (cm.accepted * ${this.deliveryPrice})::numeric(12,2) as total
 
-    FROM contractormovements
-    WHERE date >= ${body.startDate} AND date <= ${body.endDate}
-    AND "paymentId" is null
-    AND approved = true
-    ORDER BY date ASC`;
+    FROM contractormovements cm
+    JOIN jobs j ON j.id = cm."orderId"
+    LEFT JOIN materialmovements mm ON j."movementId" = mm.id
+    LEFT JOIN materials m ON mm."materialId" = m.id
+    WHERE cm.date >= ${body.startDate} AND cm.date <= ${body.endDate}
+    AND cm."paymentId" is null
+    AND cm.approved = true
+    ORDER BY cm.date ASC`;
 
     return deliveries;
   }
@@ -123,6 +148,8 @@ export class PaymentsService {
     ${this.deliveryPrice} as "deliveryPrice"
     FROM contractormovements cm
     JOIN jobs j ON j.id = cm."orderId"
+    LEFT JOIN materialmovements mm ON j."movementId" = mm.id
+    LEFT JOIN materials m ON mm."materialId" = m.id
     WHERE cm."paymentId" = ${payment.id}
     ORDER BY cm.date ASC`;
 
