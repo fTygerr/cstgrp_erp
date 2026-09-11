@@ -255,11 +255,15 @@ export class ZenPetService {
     // descuenta a mano), así que sinPallet = existencia − pendiente de esos Z0.
     // Forma de fila intacta; llaves extra (existencia, pendienteZ0) aditivas.
     const calidadLib = await sql`
+      -- Campos con su significado real (Hector 11/09, para que la tabla de
+      -- ZenPet lea bien sin cambiar su script): liberado = Z9 en existencia,
+      -- enPallet = ya empacado como Z0 (pendiente de descontar), sinPallet =
+      -- existencia − empacado (piso 0). El total de la etapa sigue = Σ sinPallet.
       SELECT m.code AS ref, 'INVENTARIO' AS programation, m.code AS part,
         m.description,
-        GREATEST(ROUND(m.total::numeric) - p.pend, 0)::int AS amount,
-        GREATEST(ROUND(m.total::numeric) - p.pend, 0)::int AS liberado,
-        0 AS "enPallet",
+        ROUND(m.total::numeric)::int AS amount,
+        ROUND(m.total::numeric)::int AS liberado,
+        p.pend::int AS "enPallet",
         GREATEST(ROUND(m.total::numeric) - p.pend, 0)::int AS "sinPallet",
         ROUND(m.total::numeric)::int AS existencia,
         p.pend::int AS "pendienteZ0"
