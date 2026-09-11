@@ -26,6 +26,12 @@ export class PreformController {
     return this.preformService.get();
   }
 
+  // PLs disponibles para ligar (antes de ':id' para que no lo capture)
+  @Get('pl-options')
+  getPlOptions() {
+    return this.preformService.getPlOptions();
+  }
+
   @Get(':id')
   getOne(@Param(new ZodPiPe(idObjectSchema)) params) {
     return this.preformService.getOne(params);

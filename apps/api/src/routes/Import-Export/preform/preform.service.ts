@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import Mustache from 'mustache';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { ContextProvider } from 'src/interceptors/context.provider';
 import sql from 'src/utils/db';
 import { z } from 'zod/v4';
@@ -16,7 +16,49 @@ export class PreformService {
   constructor(private readonly req: ContextProvider) {}
 
   async get() {
-    return await sql`select id, "noFactura", date from preforms order by date desc`;
+    return await sql`select p.id, p."noFactura", p.date, p.pedimento, p.regimen, p."destinyId",
+      d."packSlip", d.status as "plStatus"
+      from preforms p left join destinys d on d.id = p."destinyId"
+      order by p.date desc, p.id desc`;
+  }
+
+  // PLs ligables: los últimos 120 días más el ya ligado a la proforma en edición
+  async getPlOptions() {
+    return await sql`select d.id as value,
+      d."packSlip" || ' · ' || to_char(d."shipDate", 'DD/MM/YYYY') || ' · ' ||
+        COALESCE((select string_agg(distinct c.name, ', ') from order_destiny od
+          left join jobs j on j.id = od."orderId" left join materials m on m.id = od."materialId"
+          left join clients c on c.id = COALESCE(j."clientId", m."clientId")
+          where od."destinyId" = d.id), '') as name,
+      d.status
+      from destinys d
+      where d."packSlip" is not null and (d.so like 'PS-%' or d.exported is not null)
+        and (d."shipDate" >= current_date - 120 or exists (select 1 from preforms p where p."destinyId" = d.id))
+      order by d."packSlip"::int desc`;
+  }
+
+  // Liga proforma → PL: el PL pasa a "cruzado" (si aún no está recibido), toma
+  // la fecha del pedimento y el número de factura/EXP si no lo tenía.
+  private async linkPl(sql, destinyId: number | null | undefined, body: { noFactura: string; date: string }) {
+    if (!destinyId) return;
+    const [pl] = await sql`select id, "packSlip", status, invoice from destinys where id = ${destinyId}`;
+    if (!pl) throw new HttpException('Packing list no existente', 400);
+    await sql`update destinys set
+      status = CASE WHEN status = 'recibido' THEN status ELSE 'cruzado' END,
+      "shippedAt" = COALESCE("shippedAt", ${body.date}::timestamp),
+      "crossedAt" = ${body.date},
+      invoice = CASE WHEN COALESCE(invoice, '') = '' THEN ${body.noFactura} ELSE invoice END
+      where id = ${destinyId}`;
+    await this.req.record(`Ligó la proforma ${body.noFactura} al packing list ${pl.packSlip}`, sql);
+  }
+
+  private async unlinkPl(sql, destinyId: number | null | undefined) {
+    if (!destinyId) return;
+    // al quitar/cambiar la liga, el PL regresa a embarcado (si no fue recibido)
+    await sql`update destinys set
+      status = CASE WHEN status = 'cruzado' THEN 'embarcado' ELSE status END,
+      "crossedAt" = null
+      where id = ${destinyId} and not exists (select 1 from preforms p where p."destinyId" = ${destinyId})`;
   }
 
   async getOne(body: z.infer<typeof idObjectSchema>) {
@@ -26,15 +68,27 @@ export class PreformService {
   }
 
   async post(body: z.infer<typeof createPreformSchema>) {
-    await sql`insert into preforms ${sql(body)}`;
+    await sql.begin(async (sql) => {
+      await sql`insert into preforms ${sql(body)}`;
+      await this.linkPl(sql, body.destinyId, body);
+    });
   }
 
   async put(body: z.infer<typeof editPreformSchema>) {
-    await sql`update preforms set ${sql(body)} where id = ${body.id}`;
+    await sql.begin(async (sql) => {
+      const [prev] = await sql`select "destinyId" from preforms where id = ${body.id}`;
+      await sql`update preforms set ${sql(body)} where id = ${body.id}`;
+      if (prev?.destinyId && prev.destinyId !== body.destinyId) await this.unlinkPl(sql, prev.destinyId);
+      await this.linkPl(sql, body.destinyId, body);
+    });
   }
 
   async delete(body: z.infer<typeof idObjectSchema>) {
-    await sql`delete from preforms where id = ${body.id}`;
+    await sql.begin(async (sql) => {
+      const [prev] = await sql`select "destinyId" from preforms where id = ${body.id}`;
+      await sql`delete from preforms where id = ${body.id}`;
+      await this.unlinkPl(sql, prev?.destinyId);
+    });
   }
 
   async download(body: z.infer<typeof idObjectSchema>) {

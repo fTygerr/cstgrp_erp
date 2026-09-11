@@ -17,11 +17,16 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
-- [ ] `2026-09-08_precios_contratista_8dec.sql` — precios de contratista a
-  numeric(16,8) en contractor_prices/exitpass_jobs/jobs."contractorPrice"
-  (hasta 8 decimales; widening seguro).
+- [ ] `2026-09-11_impexp_status_openpo.sql` — ciclo del Packing List
+  (destinys.status generado/embarcado/cruzado/recibido + shippedAt/crossedAt/
+  receivedAt/receivedPallets/receivedComplete/receivedNotes), liga
+  preforms."destinyId" → destinys, y BACKFILL: todo PL existente con shipDate
+  ≤ hoy queda 'embarcado' (Juan: los PL históricos son embarques reales).
+  Aditiva; el código viejo sigue funcionando con ella puesta.
+  Sin seeds ni permisos nuevos (PO Abiertos usa `reports_orders`).
 
-(nada pendiente — reset tras el release del 2026-09-07)
+(la migración `2026-09-08_precios_contratista_8dec.sql` YA está en prod desde
+el 08-09 — línea anterior eliminada del pendiente)
 
 ---
 

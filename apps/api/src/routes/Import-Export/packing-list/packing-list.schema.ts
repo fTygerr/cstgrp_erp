@@ -103,4 +103,16 @@ export const createPackingListSchema = z.object({
 export const getPackingListsSchema = z.object({
   packSlip: z.string().nullish(),
   clientId: z.string().nullish(),
+  status: z.enum(['generado', 'embarcado', 'cruzado', 'recibido']).nullish(),
+});
+
+// Ciclo del PL (Hector/Juan 11-Sep): generado → embarcado → cruzado → recibido.
+// "Salió" no lleva fecha: la pone el servidor (hora real de la acción).
+export const plIdSchema = z.object({ id: idSchema });
+export const receivePlSchema = z.object({
+  id: idSchema,
+  receivedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Fecha invalida'),
+  receivedPallets: z.coerce.number().min(0).nullish(),
+  receivedComplete: z.boolean(),
+  receivedNotes: z.string().max(500).nullish(),
 });

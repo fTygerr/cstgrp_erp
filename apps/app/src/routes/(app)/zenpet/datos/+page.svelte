@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { formatDate } from '$lib/utils/functions';
 	import api from '$lib/utils/server';
 	import { createQuery } from '@tanstack/svelte-query';
 	import { Badge } from '$lib/components/ui/badge';
@@ -71,8 +72,8 @@
 			{ key: 'enPoder', rows: enPoder, cols: { l1: 'SURTIDO', l2: 'ACEPTADO', l3: 'EN PODER', c1: (r: any) => r.surtido, c2: (r: any) => r.aceptado, c3: (r: any) => r.enPoder }, en: 'With outside contractors', es: 'En poder de contratistas', o: enPoder.length, u: sum(enPoder, (r) => r.enPoder), f: 'mismo bloque produccion, filas con enPoder > 0 · Σ enPoder — NO es etapa aparte: se traslapa con Ensamble' },
 			{ key: 'calidadLib', rows: e.calidadLib || [], cols: { l1: 'RELEASED', l2: 'PACKED', l3: 'NOT PACKED', c1: (r: any) => r.liberado, c2: (r: any) => r.enPallet, c3: (r: any) => r.sinPallet }, en: 'Quality-approved, not packed', es: 'Subensambles liberados sin empacar', o: (e.calidadLib || []).length, u: sum(e.calidadLib, (r) => r.sinPallet), f: 'bloque calidadLib = INVENTARIO de subproductos Z9 en existencia (sin bladders) · Σ existencia — al empacarse se vuelven Z0 y pasan a Finished goods; regla Juan 08/09 v2' },
 			{ key: 'fg', en: 'Finished goods at factory', es: 'Producto terminado en fábrica', o: fg?.skus ?? '…', u: fg?.units ?? '…', f: '/zenpet/finished-goods · inventario Z0 (31 SKUs, ceros incluidos — un cero dice \"se acabó\")' },
-			{ key: 'empaque', en: 'Palletized, ready to ship', es: 'En pallet, listo', o: (e.empaque || []).length, u: sum(e.empaque, (r) => r.units), f: 'bloque empaque (pallets sin embarque) · Σ piezas' },
-			{ key: 'shipped', en: 'Shipped (last 60 days)', es: 'Embarcado (últimos 60 días)', o: e.enRoute?.pls ?? 0, u: e.enRoute?.units ?? 0, f: 'enRoute · packing lists exportadas — VENTANA MÓVIL: al cumplir 60 días un embarque se sale solo del número. Su pantalla NO tiene desglose de esta etapa' }
+			{ key: 'empaque', rows: e.empaqueJobs || [], cols: { l1: 'ORDERED', l2: 'BOXES', l3: 'ON PALLET', c1: (r: any) => r.amount, c2: (r: any) => r.boxes || 0, c3: (r: any) => r.enPallet }, en: 'Palletized, ready to ship', es: 'En pallet, listo', o: (e.empaque || []).length, u: sum(e.empaque, (r) => r.units), f: 'bloque empaque (pallets sin embarque) · Σ piezas — NUEVO 11-Sep: llave empaqueJobs con el desglose por job/PO (antes solo por pallet)' },
+			{ key: 'shipped', rows: (e.embarques || []).filter((r: any) => r.status !== 'generado'), cols: { l1: 'CROSSED', l2: 'RECEIVED', l3: 'SHIPPED', c1: (r: any) => (r.status === 'cruzado' || r.status === 'recibido' ? r.units : 0), c2: (r: any) => (r.status === 'recibido' ? r.units : 0), c3: (r: any) => r.units }, en: 'Shipped (last 60 days)', es: 'Embarcado (últimos 60 días)', o: e.enRoute?.pls ?? 0, u: e.enRoute?.units ?? 0, f: 'enRoute · packing lists exportadas — VENTANA MÓVIL de 60 días. NUEVO 11-Sep: llave embarques con el desglose por job/PO/pack slip y el estatus real del PL (embarcado · cruzado · recibido)' }
 		];
 	});
 	const zpCards = $derived.by(() => {
@@ -829,16 +830,35 @@
 												<p class="mt-1 text-[11px] text-muted-foreground">Los ceros salen en gris pero SALEN — un cero dice "se acabó"; esconderlo hace parecer que el producto no existe.</p>
 											{:else if r.key === 'empaque'}
 												<table class="w-full text-xs">
-													<thead><tr class="border-b text-left"><th class="py-1">Pallet</th><th>Órdenes que contiene</th><th class="text-right">Cajas</th><th class="text-right">Unidades</th></tr></thead>
+													<thead><tr class="border-b text-left"><th class="py-1">Job</th><th>PO</th><th>Producto</th><th>Pallet(s)</th><th class="text-right">Cajas</th><th class="text-right">En pallet</th></tr></thead>
 													<tbody>
-														{#each e?.empaque || [] as pal}
+														{#each e?.empaqueJobs || [] as j}
 															<tr class="border-b border-dashed">
-																<td class="py-1">{pal.folio}</td><td>{pal.jobs}</td>
-																<td class="text-right">{pal.boxes}</td><td class="text-right font-semibold">{pal.units}</td>
+																<td class="py-1">{j.ref}</td><td>{j.programation}</td>
+																<td class="max-w-64 truncate" title={j.description}>{j.description}</td>
+																<td>{j.pallets}</td>
+																<td class="text-right">{j.boxes}</td><td class="text-right font-semibold">{j.enPallet}</td>
 															</tr>
 														{/each}
 													</tbody>
 												</table>
+												<p class="mt-1 text-[11px] text-muted-foreground">Desglose por job (llave <code>empaqueJobs</code>, 11-Sep). Por pallet: {(e?.empaque || []).map((p: any) => p.folio).join(', ')}.</p>
+											{:else if r.key === 'shipped'}
+												<table class="w-full text-xs">
+													<thead><tr class="border-b text-left"><th class="py-1">Pack slip</th><th>Fecha</th><th>Job</th><th>PO</th><th>Producto</th><th class="text-right">Piezas</th><th>Estatus</th></tr></thead>
+													<tbody>
+														{#each (e?.embarques || []).filter((x: any) => x.status !== 'generado') as x}
+															<tr class="border-b border-dashed">
+																<td class="py-1 font-semibold">{x.packSlip}</td><td>{formatDate(x.shipDate)}</td>
+																<td>{x.ref}</td><td>{x.programation}</td>
+																<td class="max-w-64 truncate" title={x.description}>{x.description}</td>
+																<td class="text-right font-semibold">{x.units}</td>
+																<td>{x.status}{x.receivedAt ? ' ' + formatDate(x.receivedAt) : x.crossedAt ? ' ' + formatDate(x.crossedAt) : ''}</td>
+															</tr>
+														{/each}
+													</tbody>
+												</table>
+												<p class="mt-1 text-[11px] text-muted-foreground">Desglose por job y pack slip (llave <code>embarques</code>, 11-Sep) con el ciclo real del PL: embarcado → cruzado (pedimento) → recibido. Los PL "generado" (sin salir) no cuentan como embarcados.</p>
 											{:else}
 												<p class="text-xs text-muted-foreground">
 													Esta etapa <b>no tiene desglose en la pantalla de ZenPet</b>: muestra el total
@@ -852,6 +872,29 @@
 							{/each}
 						</TableBody>
 					</Table>
+				</div>
+
+				<div class="rounded-md border p-3">
+					<div class="mb-1 flex items-center justify-between">
+						<h3 class="font-semibold">Open POs (NUEVO 11-Sep · llave <code>openPos</code>)</h3>
+						<Badge color="blue">{(e?.openPos || []).length} PO · {(e?.openPos || []).reduce((a: number, r: any) => a + Number(r.open || 0), 0)} pzs abiertas</Badge>
+					</div>
+					<p class="mb-2 text-xs text-muted-foreground">
+						Pedido = Σ jobs con ese PO · Embarcado = piezas en packing lists ya marcados "Salió" (o cruzados/recibidos) · Abierto = Pedido − Embarcado · Liberado = calidad + contratista. Misma consulta que Reportes → PO Abiertos.
+					</p>
+					<table class="w-full text-xs">
+						<thead><tr class="border-b text-left"><th class="py-1">PO</th><th>Líneas</th><th>Entrega</th><th class="text-right">Pedido</th><th class="text-right">Embarcado</th><th class="text-right">En PL sin salir</th><th class="text-right">Abierto</th><th class="text-right">Liberado</th><th>Último embarque</th></tr></thead>
+						<tbody>
+							{#each e?.openPos || [] as po}
+								<tr class="border-b border-dashed">
+									<td class="py-1 font-semibold">{po.po}</td><td>{po.lines}</td><td>{formatDate(po.due)}</td>
+									<td class="text-right">{po.ordered}</td><td class="text-right">{po.shipped}</td><td class="text-right">{po.inPl}</td>
+									<td class="text-right font-semibold">{po.open}</td><td class="text-right">{po.released}</td>
+									<td>{po.lastShip ? formatDate(po.lastShip) : ''}</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
 				</div>
 
 				<div class="rounded-md border p-3">

@@ -82,6 +82,7 @@
 				<Accordion.Content>
 					{#if hasAccess('reports_orders')}
 						<Accordion.Option href="/reports/orders" />
+						<Accordion.Option href="/reports/open-pos" />
 					{/if}
 					{#if hasAccess('reports_areas')}
 						<Accordion.Option href="/reports/productivity" />

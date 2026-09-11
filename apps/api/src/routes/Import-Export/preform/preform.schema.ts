@@ -14,6 +14,9 @@ export const createPreformSchema = z.object({
   pedimento: z.string().nullish(),
   exchangeRate: priceSchema,
   comments: z.string().nullish(),
+  // packing list que ampara este pedimento (11-Sep): al ligarlo el PL pasa a
+  // "cruzado" y toma la fecha del pedimento
+  destinyId: intSchema.nullish(),
 
   exteriorData: z.array(
     z.object({

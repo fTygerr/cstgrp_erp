@@ -15,6 +15,7 @@
 	import { refetch } from '$lib/utils/query';
 	import PreformsForm from './PreformsForm.svelte';
 	import { formatDate } from '$lib/utils/functions';
+	import { Badge } from '$lib/components/ui/badge';
 
 	let showDelete = $state(false);
 	let showForm = $state(false);
@@ -78,7 +79,11 @@
 <CusTable>
 	<TableHeader>
 		<OptionsHead />
-		<TableHead class="w-[100%]">Factura</TableHead>
+		<TableHead>Factura</TableHead>
+		<TableHead>Fecha</TableHead>
+		<TableHead>Pedimento</TableHead>
+		<TableHead>Régimen</TableHead>
+		<TableHead class="w-[100%]">Packing List</TableHead>
 	</TableHeader>
 	<TableBody>
 		{#each preforms as preform, i}
@@ -94,8 +99,15 @@
 						}
 					]}
 				/>
-				<TableCell>{preform.noFactura}</TableCell>
+				<TableCell class="font-semibold">{preform.noFactura}</TableCell>
 				<TableCell>{formatDate(preform.date)}</TableCell>
+				<TableCell>{preform.pedimento || ''}</TableCell>
+				<TableCell>{preform.regimen === 'IN Importación' ? 'Import' : preform.regimen === 'RT Exportación' ? 'Export' : preform.regimen || ''}</TableCell>
+				<TableCell>
+					{#if preform.packSlip}
+						<Badge color="purple">PL {preform.packSlip}</Badge>
+					{/if}
+				</TableCell>
 			</TableRow>
 		{/each}
 	</TableBody>
