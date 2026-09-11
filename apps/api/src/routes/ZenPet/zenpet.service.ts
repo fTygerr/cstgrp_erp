@@ -215,7 +215,29 @@ export class ZenPetService {
       ) ep ON true
       WHERE jobs."clientId" = ${zp} AND jobs.completed = false AND jobs.part IS NOT NULL
         AND (jobs.produccion > 0 OR COALESCE(ep.surtido, 0) - jobs.contractor > 0)
+        -- Regla Juan 11/09: Ensamble = jobs Z9 (y los Z0 que NO tienen Z9, p.ej.
+        -- E-Collar/ZenDog, cuyo job Z0 es su ensamble). Los Z0 con Z9 gemelo son
+        -- EMPAQUE (bloque empaqueZ0); los Z4 (cortes de PET) son Corte de PET.
+        AND COALESCE(m.code, jobs.part) NOT LIKE 'ZEN-Z4-%'
+        AND NOT (COALESCE(m.code, jobs.part) LIKE 'ZEN-Z0-%' AND EXISTS (
+          SELECT 1 FROM materials z9 WHERE z9."clientId" = ${zp}
+            AND z9.code = 'ZEN-Z9-' || substring(COALESCE(m.code, jobs.part) from 8)))
       ORDER BY jobs.ref DESC`;
+
+    // 10b. EMPAQUE por job (Juan 11/09: "Z0 lo compone su empaque y su Z9"):
+    // jobs Z0 abiertos cuyo producto tiene subensamble Z9 — el job Z0 es la
+    // etapa de empacar el Z9. empacado = liberado por calidad + contratista.
+    const empaqueZ0 = await sql`
+      SELECT ${baseCols},
+        (jobs.calidad + jobs.contractor)::int AS empacado,
+        GREATEST(jobs.amount - jobs.calidad - jobs.contractor, 0)::int AS faltante,
+        'ZEN-Z9-' || substring(COALESCE(m.code, jobs.part) from 8) AS "z9"
+      ${baseFrom}
+      WHERE jobs."clientId" = ${zp} AND jobs.completed = false
+        AND COALESCE(m.code, jobs.part) LIKE 'ZEN-Z0-%'
+        AND EXISTS (SELECT 1 FROM materials z9 WHERE z9."clientId" = ${zp}
+          AND z9.code = 'ZEN-Z9-' || substring(COALESCE(m.code, jobs.part) from 8))
+      ORDER BY jobs.programation, jobs.ref`;
 
     // 11. Acabado y calidad: producto terminado liberado por calidad.
     // Solo familia Z0 — los Z4 (bladders) y Z9 (collares ensamblados) son
@@ -226,19 +248,39 @@ export class ZenPetService {
     // órdenes se quedaba inflado porque un job Z9 nunca se paletiza como Z9.
     // Se conserva la MISMA forma de fila que antes (ref/part/liberado/enPallet/
     // sinPallet) para no romper el parser del sistema de ZenPet.
+    // Regla Juan 11/09 (v3): (a) SOLO códigos Z9 — los cortes de PET (Z4-352x,
+    // tipo subproducto) son componente y se liberan al inventario por su lado,
+    // no aquí (van en petInventario); (b) los Z0 ya liberados por calidad
+    // consumieron su Z9 aunque la línea del job siga pendiente (hoy Juan lo
+    // descuenta a mano), así que sinPallet = existencia − pendiente de esos Z0.
+    // Forma de fila intacta; llaves extra (existencia, pendienteZ0) aditivas.
     const calidadLib = await sql`
       SELECT m.code AS ref, 'INVENTARIO' AS programation, m.code AS part,
-        m.description, ROUND(m.total::numeric)::int AS amount,
-        ROUND(m.total::numeric)::int AS liberado,
+        m.description,
+        GREATEST(ROUND(m.total::numeric) - p.pend, 0)::int AS amount,
+        GREATEST(ROUND(m.total::numeric) - p.pend, 0)::int AS liberado,
         0 AS "enPallet",
-        ROUND(m.total::numeric)::int AS "sinPallet"
+        GREATEST(ROUND(m.total::numeric) - p.pend, 0)::int AS "sinPallet",
+        ROUND(m.total::numeric)::int AS existencia,
+        p.pend::int AS "pendienteZ0"
       FROM materials m
-      WHERE m."clientId" = ${zp}
-        AND COALESCE(m.type, case when m.product then 'producto' else 'materiaPrima' end) = 'subproducto'
-        AND m.code NOT IN
-          ('ZEN-Z4-2524','ZEN-Z4-2525','ZEN-Z4-2526','ZEN-Z4-2527','ZEN-Z4-2528','ZEN-Z4-2529')
-        AND m.total::numeric > 0
+      LEFT JOIN LATERAL (
+        SELECT COALESCE(SUM(LEAST(ABS(mm.amount), j.calidad + j.contractor)), 0) AS pend
+        FROM materialmovements mm JOIN jobs j ON j.id = mm."jobId"
+        WHERE mm."materialId" = m.id AND mm.active = false
+          AND j.part LIKE 'ZEN-Z0-%' AND (j.calidad + j.contractor) > 0
+      ) p ON true
+      WHERE m."clientId" = ${zp} AND m.code LIKE 'ZEN-Z9-%'
+        AND (m.total::numeric > 0 OR p.pend > 0)
       ORDER BY m.code`;
+
+    // Cortes de PET en existencia (componente, Juan 11/09) — antes se colaban
+    // en calidadLib por ser tipo subproducto. Unidad: CORTES, no conos.
+    const petInventario = await sql`
+      SELECT code, description, ROUND(total::numeric)::int AS units
+      FROM materials WHERE "clientId" = ${zp} AND code IN
+        ('ZEN-Z4-3520','ZEN-Z4-3521','ZEN-Z4-3522','ZEN-Z4-3523')
+      ORDER BY code`;
 
     // 12/13. Empaque / PT listo: liberado y en pallet, listo para exportar
     const empaque = await sql`
@@ -320,6 +362,8 @@ export class ZenPetService {
       embarques,
       openPos,
       openPoLines,
+      empaqueZ0,
+      petInventario,
     };
   }
 
