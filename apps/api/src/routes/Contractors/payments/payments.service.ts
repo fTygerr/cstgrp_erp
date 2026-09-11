@@ -18,6 +18,19 @@ import { idObjectSchema } from 'src/utils/schemas';
 export class PaymentsService {
   constructor(private readonly req: ContextProvider) {}
 
+  // Precio de la entrega (fix Juan 11/09): el precio del PASE DE SALIDA de ESE
+  // contratista para ESE job (el último a la fecha de la entrega; si no hay uno
+  // anterior, el último que exista). jobs."contractorPrice" guarda un solo
+  // precio por job — el del último pase, de cualquier contratista — y pagaba a
+  // NANCY con el precio de EVA. Fallback al precio del job si no hay pase.
+  // Requiere alias cm (contractormovements) y j (jobs) en la consulta.
+  private readonly deliveryPrice = sql`COALESCE((
+      select ej.price from exitpass_jobs ej
+      join "exitPass" e on e.id = ej."exitId"
+      where ej."jobId" = j.id and e."contractorId" = cm."contractorId"
+      order by (e.date <= cm.date) desc, e.date desc, ej.id desc
+      limit 1), j."contractorPrice")`;
+
   async getAll(body: z.infer<typeof getAllPaymentsSchema>) {
     const rows = await sql`select p.*,
     (select string_agg(distinct c.name, ', ')
@@ -34,7 +47,7 @@ export class PaymentsService {
     (select COALESCE(SUM(cm.rejected), 0)::int
       from contractormovements cm
       where cm."paymentId" = p.id) as rejected,
-    (select COALESCE(SUM(cm.accepted * j."contractorPrice"), 0)::numeric(12,2)
+    (select COALESCE(SUM(cm.accepted * ${this.deliveryPrice}), 0)::numeric(12,2)
       from contractormovements cm
       join jobs j on j.id = cm."orderId"
       where cm."paymentId" = p.id) as total
@@ -88,8 +101,8 @@ export class PaymentsService {
     const rows = await sql`select cm.id, cm.date, cm.accepted, cm.rejected,
       (select name from contractors where id = cm."contractorId") as contractor,
       j.ref, COALESCE(m.code, j.part) as part, j.description,
-      j."contractorPrice" as price,
-      (cm.accepted * j."contractorPrice")::numeric(12,2) as total
+      ${this.deliveryPrice} as price,
+      (cm.accepted * ${this.deliveryPrice})::numeric(12,2) as total
     from contractormovements cm
     join jobs j on j.id = cm."orderId"
     left join materialmovements mm on j."movementId" = mm.id
@@ -104,14 +117,14 @@ export class PaymentsService {
       await sql`select * from "contractorPayments" where id = ${body.id}`;
     if (!payment) throw new HttpException('Pago no encontrado', 400);
 
-    const rows = await sql`select rejected, accepted, date, "orderId",
-
-    (select name from contractors where id = contractormovements."contractorId") as contractor,
-    (select iva from contractors where id = contractormovements."contractorId") as iva
-
-    FROM contractormovements
-    WHERE "paymentId" = ${payment.id}
-    ORDER BY date ASC`;
+    const rows = await sql`select cm.rejected, cm.accepted, cm.date, cm."orderId",
+    (select name from contractors where id = cm."contractorId") as contractor,
+    (select iva from contractors where id = cm."contractorId") as iva,
+    ${this.deliveryPrice} as "deliveryPrice"
+    FROM contractormovements cm
+    JOIN jobs j ON j.id = cm."orderId"
+    WHERE cm."paymentId" = ${payment.id}
+    ORDER BY cm.date ASC`;
 
     for (const row of rows) {
       const [job] = await sql`
@@ -125,8 +138,8 @@ export class PaymentsService {
       row.ref = job.ref;
       row.part = job.part;
       row.description = job.description;
-      row.price = job.contractorPrice;
-      row.total = row.accepted * job.contractorPrice;
+      row.price = row.deliveryPrice ?? job.contractorPrice;
+      row.total = row.accepted * row.price;
     }
 
     const browser = await puppeteer.launch({
