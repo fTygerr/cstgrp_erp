@@ -2,6 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import path from 'path';
 import { promises as fs } from 'fs';
 import sql from 'src/utils/db';
+import { getOpenPoLines, getOpenPoSummary } from 'src/utils/openpos';
 
 @Injectable()
 export class ZenPetService {
@@ -307,6 +308,26 @@ export class ZenPetService {
         AND (d.so LIKE 'PS-%' OR d.exported IS NOT NULL)
         AND d."shipDate" >= (now() - interval '60 days')`;
 
+    // Llaves ADITIVAS (Hector 11/09 → prod 14/09): desglose por job de lo
+    // paletizado (antes solo por pallet) y PO abiertos. Las llaves viejas
+    // (empaque, enRoute) se conservan para el parser de ZenPet.
+    const empaqueJobs = await sql`
+      SELECT jobs.ref, jobs.programation, COALESCE(m.code, jobs.part) AS part, jobs.description,
+        jobs.amount::int, SUM(pc.amount)::int AS "enPallet", SUM(pc.boxes)::int AS boxes,
+        string_agg(p.folio::text, ', ' ORDER BY p.folio) AS pallets,
+        bool_or(p."exportOrderId" IS NOT NULL) AS "enOrden"
+      FROM pallet_contents pc
+      JOIN pallets p ON p.id = pc."palletId"
+      JOIN jobs ON jobs.id = pc."jobId"
+      LEFT JOIN materialmovements mm ON jobs."movementId" = mm.id
+      LEFT JOIN materials m ON mm."materialId" = m.id
+      WHERE p."clientId" = ${zp} AND p."destinyId" IS NULL
+      GROUP BY jobs.id, m.code ORDER BY jobs.programation, jobs.ref`;
+
+    // PO abiertos: consulta compartida en utils/openpos.ts
+    const openPos = await getOpenPoSummary(zp, true);
+    const openPoLines = await getOpenPoLines(zp, false);
+
     return {
       generatedAt: new Date(),
       environment: process.env.DB_NAME || 'testing',
@@ -324,6 +345,9 @@ export class ZenPetService {
       enRoute,
       empaqueZ0,
       petInventario,
+      empaqueJobs,
+      openPos,
+      openPoLines,
     };
   }
 
@@ -376,6 +400,17 @@ export class ZenPetService {
       WHERE "clientId" = ${zp} AND COALESCE(type, case when product then 'producto' else 'materiaPrima' end) = 'materiaPrima'
         AND code LIKE 'ZEN-Z%'
       ORDER BY code`;
+  }
+
+  // PO abiertos del cliente (pedido − embarcado por PO y por job)
+  async getOpenPos() {
+    const zp = await this.clientId();
+    const [summary, lines] = await Promise.all([
+      getOpenPoSummary(zp, true),
+      getOpenPoLines(zp, false),
+    ]);
+    const pos = new Set(summary.map((r) => r.po));
+    return { generatedAt: new Date(), summary, lines: lines.filter((l) => pos.has(l.po)) };
   }
 
   async getFormulas() {
