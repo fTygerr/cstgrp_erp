@@ -31,6 +31,12 @@ el 08-09 — línea anterior eliminada del pendiente)
 ---
 
 ## Done in previous releases
+- 2026-09-14: paletizado por job (empaqueJobs) + Open POs (openPos/openPoLines,
+  GET /zenpet/open-pos) + bloques en Vista ZenPet, a prod como commit PROPIO
+  en master (54aa75c) SIN el estatus de PL: utils/openpos.ts en master usa
+  SHIPPED = packSlip IS NOT NULL e inPl = 0. Al mergear dev (Imp-Exp) resolver
+  openpos.ts, zenpet.service.ts y datos/+page.svelte A FAVOR DE DEV. Sin
+  migración. Imp-Exp sigue DEV-ONLY.
 - 2026-09-11 (6º cherry-pick): IVA por tasa por contratista (0/8/16, Juan).
   Migración `2026-09-12_contratistas_iva_tasa.sql` aplicada a testing y PROD
   (backfill 16 a CRISTOBAL, NANCY, TONIX). Backup pre-release-ivatasa-20260911-2257.
