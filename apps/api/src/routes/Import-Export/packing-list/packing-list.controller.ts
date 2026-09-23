@@ -22,6 +22,8 @@ import {
   getPackingListsSchema,
   previewPackingListSchema,
   updatePlDataSchema,
+  plIdSchema,
+  receivePlSchema,
 } from './packing-list.schema';
 import { idObjectSchema } from 'src/utils/schemas';
 
@@ -81,6 +83,22 @@ export class PackingListController {
   @Put('data')
   updatePlData(@Body(new ZodPiPe(updatePlDataSchema)) body) {
     return this.packingListService.updatePlData(body);
+  }
+
+  // Ciclo del PL (11-Sep): salió / revertir salida / recibido
+  @Put('ship')
+  ship(@Body(new ZodPiPe(plIdSchema)) body) {
+    return this.packingListService.ship(body);
+  }
+
+  @Put('unship')
+  unship(@Body(new ZodPiPe(plIdSchema)) body) {
+    return this.packingListService.unship(body);
+  }
+
+  @Put('receive')
+  receive(@Body(new ZodPiPe(receivePlSchema)) body) {
+    return this.packingListService.receive(body);
   }
 
   @Get('download')

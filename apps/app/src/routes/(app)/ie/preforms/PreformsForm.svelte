@@ -32,6 +32,11 @@
 	let { show = $bindable(false), selectedRow = $bindable() }: Props = $props();
 
 	let clients: any[] = $state([]);
+	// PLs ligables (11-Sep): al ligar, el PL pasa a "cruzado" con la fecha del pedimento
+	let plOptions: any[] = $state([]);
+	async function fetchPlOptions() {
+		plOptions = (await api.get('/ie/preforms/pl-options')).data;
+	}
 
 	const emptyData = {
 		noFactura: '',
@@ -40,6 +45,7 @@
 		pedimento: '',
 		exchangeRate: '',
 		comments: '',
+		destinyId: '',
 		exteriorData: [
 			{ name: 'DTA', amount: '' },
 			{ name: 'PRV', amount: 290 },
@@ -109,7 +115,10 @@
 	});
 
 	$effect(() => {
-		if (show) fetchClients();
+		if (show) {
+			fetchClients();
+			fetchPlOptions();
+		}
 	});
 
 	function addRow() {
@@ -207,6 +216,14 @@
 				</Label>
 				<Label name="Tipo de cambio">
 					<Input bind:value={formData.exchangeRate} class={isFilled()} />
+				</Label>
+				<Label name="Packing List que ampara (opcional)">
+					<Select
+						items={plOptions}
+						bind:value={formData.destinyId}
+						allowDeselect
+						placeholder="Sin ligar"
+					/>
 				</Label>
 			</div>
 

@@ -15,17 +15,14 @@ import sql from 'src/utils/db';
 // Solo se consideran programaciones numéricas (el PO real); las etiquetas por
 // mes (AGOSTO, SEPTIEMBRE…) no son PO y se excluyen.
 
-// VERSIÓN PROD (sin estatus de PL): embarcado = cualquier packing list con pack
-// slip. Cuando se libere el batch Imp-Exp (destinys.status) esta constante pasa
-// a filtrar por embarcado/cruzado/recibido y "inPl" cobra sentido.
-const SHIPPED = sql`d."packSlip" IS NOT NULL`;
+const SHIPPED = sql`d."packSlip" IS NOT NULL AND d.status IN ('embarcado','cruzado','recibido')`;
 
 export async function getOpenPoLines(clientId?: number | string, onlyOpen = false) {
   return sql`
     WITH ship AS (
       SELECT od."orderId",
         SUM(od.amount) FILTER (WHERE ${SHIPPED})::int AS shipped,
-        0::int AS "inPl",
+        SUM(od.amount) FILTER (WHERE d."packSlip" IS NOT NULL AND d.status = 'generado')::int AS "inPl",
         MAX(d."shipDate") FILTER (WHERE ${SHIPPED}) AS "lastShip",
         string_agg(d."packSlip" || ': ' || od.amount || ' (' || to_char(d."shipDate", 'DD-Mon') || ')', ' | ' ORDER BY d."shipDate")
           FILTER (WHERE ${SHIPPED}) AS shipments
@@ -53,7 +50,7 @@ export async function getOpenPoSummary(clientId?: number | string, onlyOpen = fa
     WITH ship AS (
       SELECT od."orderId",
         SUM(od.amount) FILTER (WHERE ${SHIPPED})::int AS shipped,
-        0::int AS "inPl",
+        SUM(od.amount) FILTER (WHERE d."packSlip" IS NOT NULL AND d.status = 'generado')::int AS "inPl",
         MAX(d."shipDate") FILTER (WHERE ${SHIPPED}) AS "lastShip"
       FROM order_destiny od JOIN destinys d ON d.id = od."destinyId"
       WHERE d."packSlip" IS NOT NULL

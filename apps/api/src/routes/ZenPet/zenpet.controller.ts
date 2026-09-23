@@ -25,7 +25,7 @@ export class ZenPetController {
     return this.zenpetService.getFinishedGoods();
   }
 
-  // PO abiertos del cliente: pedido − embarcado por PO y por job
+  // PO abiertos del cliente: pedido − embarcado por PO y por job (11-Sep)
   @Get('open-pos')
   getOpenPos() {
     return this.zenpetService.getOpenPos();

@@ -308,9 +308,10 @@ export class ZenPetService {
         AND (d.so LIKE 'PS-%' OR d.exported IS NOT NULL)
         AND d."shipDate" >= (now() - interval '60 days')`;
 
-    // Llaves ADITIVAS (Hector 11/09 → prod 14/09): desglose por job de lo
-    // paletizado (antes solo por pallet) y PO abiertos. Las llaves viejas
-    // (empaque, enRoute) se conservan para el parser de ZenPet.
+    // ── Llaves ADITIVAS (11-Sep, Hector/Juan): mismas etapas con desglose por
+    // job para que el tablero de ZenPet muestre piezas por producto/PO en
+    // Palletized y Shipped (antes: solo pallets y total). Las llaves viejas
+    // (empaque, enRoute) se conservan hasta que su chat confirme la migración.
     const empaqueJobs = await sql`
       SELECT jobs.ref, jobs.programation, COALESCE(m.code, jobs.part) AS part, jobs.description,
         jobs.amount::int, SUM(pc.amount)::int AS "enPallet", SUM(pc.boxes)::int AS boxes,
@@ -324,7 +325,25 @@ export class ZenPetService {
       WHERE p."clientId" = ${zp} AND p."destinyId" IS NULL
       GROUP BY jobs.id, m.code ORDER BY jobs.programation, jobs.ref`;
 
-    // PO abiertos: consulta compartida en utils/openpos.ts
+    // Embarques por job (últimos 60 días) con el ciclo real del PL:
+    // generado (en PL, no ha salido) · embarcado · cruzado · recibido
+    const embarques = await sql`
+      SELECT jobs.ref, jobs.programation, COALESCE(m.code, jobs.part) AS part, jobs.description,
+        od.amount::int AS units, od.boxes::int AS boxes,
+        d."packSlip", d.status, d."shipDate", d."shippedAt", d."crossedAt", d."receivedAt",
+        d."receivedComplete", d.invoice,
+        (SELECT string_agg(pf.pedimento, ', ') FROM preforms pf WHERE pf."destinyId" = d.id) AS pedimento
+      FROM order_destiny od
+      JOIN destinys d ON d.id = od."destinyId"
+      JOIN jobs ON jobs.id = od."orderId"
+      LEFT JOIN materialmovements mm ON jobs."movementId" = mm.id
+      LEFT JOIN materials m ON mm."materialId" = m.id
+      WHERE jobs."clientId" = ${zp} AND d."packSlip" IS NOT NULL
+        AND (d.so LIKE 'PS-%' OR d.exported IS NOT NULL)
+        AND d."shipDate" >= (now() - interval '60 days')
+      ORDER BY d."shipDate" DESC, d."packSlip" DESC, jobs.programation, jobs.ref`;
+
+    // PO abiertos: misma consulta que Reportes → PO Abiertos (utils/openpos.ts)
     const openPos = await getOpenPoSummary(zp, true);
     const openPoLines = await getOpenPoLines(zp, false);
 
@@ -343,11 +362,12 @@ export class ZenPetService {
       calidadLib,
       empaque,
       enRoute,
-      empaqueZ0,
-      petInventario,
       empaqueJobs,
+      embarques,
       openPos,
       openPoLines,
+      empaqueZ0,
+      petInventario,
     };
   }
 
@@ -402,7 +422,7 @@ export class ZenPetService {
       ORDER BY code`;
   }
 
-  // PO abiertos del cliente (pedido − embarcado por PO y por job)
+  // PO abiertos (11-Sep): {summary, lines} — igual al reporte del ERP
   async getOpenPos() {
     const zp = await this.clientId();
     const [summary, lines] = await Promise.all([
@@ -410,7 +430,11 @@ export class ZenPetService {
       getOpenPoLines(zp, false),
     ]);
     const pos = new Set(summary.map((r) => r.po));
-    return { generatedAt: new Date(), summary, lines: lines.filter((l) => pos.has(l.po)) };
+    return {
+      generatedAt: new Date(),
+      summary,
+      lines: lines.filter((l) => pos.has(l.po)),
+    };
   }
 
   async getFormulas() {

@@ -17,24 +17,33 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
-- [ ] `2026-09-12_contratistas_iva_tasa.sql` — contractors."ivaRate" (0/8/16) con
-  backfill 16 para los que tenían iva=true (CRISTOBAL, NANCY, TONIX en prod).
-  Aditiva; `iva` booleano se mantiene en sincronía. VA JUNTO con el commit
-  "IVA por tasa" — correr ANTES del deploy.
-- [ ] `2026-09-11_impexp_status_openpo.sql` — ciclo del Packing List
-  (destinys.status generado/embarcado/cruzado/recibido + shippedAt/crossedAt/
-  receivedAt/receivedPallets/receivedComplete/receivedNotes), liga
-  preforms."destinyId" → destinys, y BACKFILL: todo PL existente con shipDate
-  ≤ hoy queda 'embarcado' (Juan: los PL históricos son embarques reales).
-  Aditiva; el código viejo sigue funcionando con ella puesta.
-  Sin seeds ni permisos nuevos (PO Abiertos usa `reports_orders`).
-
-(la migración `2026-09-08_precios_contratista_8dec.sql` YA está en prod desde
-el 08-09 — línea anterior eliminada del pendiente)
+(nada pendiente — reset tras el release del 2026-09-23)
 
 ---
 
 ## Done in previous releases
+- 2026-09-23: **batch Imp-Exp a prod** (visto bueno de Juan en app2). MERGE real
+  dev → master (no cherry-pick): ciclo del Packing List (generado → embarcado →
+  cruzado → recibido), Proforma ligada al PL, desglose de embarques por job en
+  el feed ZenPet (llave `embarques`) y Reportes → PO Abiertos (`reports_orders`).
+  Migración `2026-09-11_impexp_status_openpo.sql` aplicada a prod: backfill de
+  los 6 packing lists existentes a 'embarcado' (todos con shipDate ≤ hoy, así
+  que los números de Open PO NO se movieron con el cambio de definición).
+  Backup: pre-release-impexp-20260923-1526.dump. Los 5 conflictos previstos
+  (openpos.ts, zenpet.service.ts, zenpet.controller.ts, datos/+page.svelte y
+  este archivo) se resolvieron A FAVOR DE DEV — dev era superconjunto estricto.
+  OJO nueva semántica: "embarcado" en Open PO ahora significa PL marcado
+  "Salió" (o cruzado/recibido), ya no "existe el PL". Ramas iguales.
+- 2026-09-14: paletizado por job (empaqueJobs) + Open POs (openPos/openPoLines,
+  GET /zenpet/open-pos) + bloques en Vista ZenPet, a prod como commit PROPIO
+  en master (54aa75c) SIN el estatus de PL: utils/openpos.ts en master usa
+  SHIPPED = packSlip IS NOT NULL e inPl = 0. Al mergear dev (Imp-Exp) resolver
+  openpos.ts, zenpet.service.ts y datos/+page.svelte A FAVOR DE DEV. Sin
+  migración. Imp-Exp sigue DEV-ONLY.
+- 2026-09-11 (6º cherry-pick): IVA por tasa por contratista (0/8/16, Juan).
+  Migración `2026-09-12_contratistas_iva_tasa.sql` aplicada a testing y PROD
+  (backfill 16 a CRISTOBAL, NANCY, TONIX). Backup pre-release-ivatasa-20260911-2257.
+  Master e405657..f29da80 = commit c8e09af de dev. Imp-Exp sigue DEV-ONLY.
 - 2026-09-11 (5º cherry-pick): precio congelado por entrega al generar el pago
   (regla Juan). Migración `2026-09-12_pago_precio_congelado.sql` aplicada a
   testing y PROD (backfill 118/121 entregas pagadas; las 3 sin precio son del

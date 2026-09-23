@@ -17,13 +17,53 @@
 	import { formatDate } from '$lib/utils/functions';
 	import { getClients, getOptions } from '$lib/utils/queries';
 	import { userData } from '$lib/utils/store';
-	import { Eye, FileDown, Package, Pencil } from 'lucide-svelte';
+	import { Eye, FileDown, Package, Pencil, Truck, Undo2, PackageCheck } from 'lucide-svelte';
 	import EditPLDialog from './EditPLDialog.svelte';
+	import ReceivePLDialog from './ReceivePLDialog.svelte';
+	import { showError } from '$lib/utils/showToast';
+
+	// Ciclo del PL (11-Sep): generado → embarcado → cruzado → recibido
+	const statusInfo: Record<string, { text: string; color: any }> = {
+		generado: { text: 'Generado', color: 'yellow' },
+		embarcado: { text: 'Embarcado', color: 'blue' },
+		cruzado: { text: 'Cruzado', color: 'purple' },
+		recibido: { text: 'Recibido', color: 'green' }
+	};
+	const statusItems = Object.entries(statusInfo).map(([value, v]) => ({ value, name: v.text }));
+	let showReceive = $state(false);
+	let toReceive: any = $state(null);
+	let confirmShip: any = $state(null);
+	let showShip = $state(false);
+
+	async function shipPl() {
+		try {
+			await api.put('/ie/packing-list/ship', { id: confirmShip.id });
+			showSuccess(`Packing list ${confirmShip.packSlip} marcado como embarcado`);
+			showShip = false;
+			refetch(['packing-lists']);
+		} catch (err: any) {
+			if (err.response?.status !== 400) throw err;
+		}
+	}
+	async function unshipPl(pl: any) {
+		try {
+			await api.put('/ie/packing-list/unship', { id: pl.id });
+			showSuccess(`Embarque del packing list ${pl.packSlip} revertido`);
+			refetch(['packing-lists']);
+		} catch (err: any) {
+			if (err.response?.status !== 400) throw err;
+		}
+	}
+	function fmtDateTime(v?: string) {
+		if (!v) return '';
+		const d = new Date(v);
+		return d.toLocaleString('es-MX', { timeZone: 'America/Tijuana', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+	}
 
 	const clientsQuery = createQuery({ queryKey: ['inventory-clients'], queryFn: getClients });
 	const clients = $derived(getOptions($clientsQuery?.data));
 
-	let filters = $state({ packSlip: '', clientId: '' });
+	let filters = $state({ packSlip: '', clientId: '', status: '' });
 	let showDelete = $state(false);
 	let toDelete: any = $state(null);
 	let showEdit = $state(false);
@@ -62,6 +102,14 @@
 			placeholder="Cliente"
 			class="min-w-36 max-w-44"
 		/>
+		<Select
+			menu
+			items={statusItems}
+			bind:value={filters.status}
+			allowDeselect
+			placeholder="Estatus"
+			class="min-w-36 max-w-44"
+		/>
 	</div>
 </MenuBar>
 
@@ -76,7 +124,9 @@
 		<TableHead>PO</TableHead>
 		<TableHead>Cantidad</TableHead>
 		<TableHead>Pallets</TableHead>
-		<TableHead>Fecha</TableHead>
+		<TableHead>Fecha embarque</TableHead>
+		<TableHead>Estatus</TableHead>
+		<TableHead>Pedimento</TableHead>
 	</TableHeader>
 	<TableBody>
 		{#each $lists?.data || [] as pl}
@@ -92,7 +142,7 @@
 								showEdit = true;
 							}
 						},
-						...(canEdit
+						...(canEdit && pl.status !== 'cruzado' && pl.status !== 'recibido'
 							? [
 									{
 										name: 'Modificar',
@@ -101,6 +151,33 @@
 											toEdit = pl;
 											plViewOnly = false;
 											showEdit = true;
+										}
+									}
+								]
+							: []),
+						...(canEdit && pl.status === 'generado'
+							? [
+									{
+										name: 'Salió (marcar embarcado)',
+										icon: Truck,
+										fn: () => {
+											confirmShip = pl;
+											showShip = true;
+										}
+									}
+								]
+							: []),
+						...(canEdit && pl.status === 'embarcado'
+							? [{ name: 'Revertir salida', icon: Undo2, fn: () => unshipPl(pl) }]
+							: []),
+						...(canEdit && (pl.status === 'embarcado' || pl.status === 'cruzado')
+							? [
+									{
+										name: 'Recibido por el cliente',
+										icon: PackageCheck,
+										fn: () => {
+											toReceive = pl;
+											showReceive = true;
 										}
 									}
 								]
@@ -126,7 +203,7 @@
 								})
 						}
 					]}
-					deleteFunc={canDelete
+					deleteFunc={canDelete && pl.status !== 'cruzado' && pl.status !== 'recibido'
 						? () => {
 								toDelete = pl;
 								showDelete = true;
@@ -143,15 +220,39 @@
 				<TableCell>{pl.pallets}</TableCell>
 				<TableCell>
 					{#if pl.shipDate}
-						<Badge color="gray">{formatDate(pl.shipDate)}</Badge>
+						<Badge color="gray" title={pl.shippedAt ? 'Salió: ' + fmtDateTime(pl.shippedAt) : 'Fecha capturada al generar el PL'}
+							>{formatDate(pl.shipDate)}</Badge
+						>
 					{/if}
 				</TableCell>
+				<TableCell>
+					<div class="flex flex-col gap-0.5">
+						<Badge color={statusInfo[pl.status]?.color || 'gray'}>{statusInfo[pl.status]?.text || pl.status}</Badge>
+						{#if pl.crossedAt}
+							<span class="text-[11px] text-muted-foreground">Cruzó {formatDate(pl.crossedAt)}</span>
+						{/if}
+						{#if pl.receivedAt}
+							<span class="text-[11px] text-muted-foreground"
+								>Recibido {formatDate(pl.receivedAt)}{pl.receivedComplete === false ? ' (parcial)' : ''}</span
+							>
+						{/if}
+					</div>
+				</TableCell>
+				<TableCell class="max-w-36 truncate text-xs" title={pl.pedimento || ''}>{pl.pedimento || ''}</TableCell>
 			</TableRow>
 		{/each}
 	</TableBody>
 </CusTable>
 
 <EditPLDialog bind:show={showEdit} pl={toEdit} viewOnly={plViewOnly} />
+<ReceivePLDialog bind:show={showReceive} pl={toReceive} />
+
+<DeletePopUp
+	bind:show={showShip}
+	deleteFunc={shipPl}
+	warning={true}
+	text={`Marcar el packing list ${confirmShip?.packSlip} como EMBARCADO (salió hoy)? La fecha y hora se registran automáticamente.`}
+/>
 
 <DeletePopUp
 	bind:show={showDelete}

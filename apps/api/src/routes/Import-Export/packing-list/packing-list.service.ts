@@ -12,6 +12,8 @@ import {
   getPackingListsSchema,
   previewPackingListSchema,
   updatePlDataSchema,
+  plIdSchema,
+  receivePlSchema,
 } from './packing-list.schema';
 import path from 'path';
 import { promises as fs } from 'fs';
@@ -404,9 +406,10 @@ export class PackingListService {
   async updatePlData(body: z.infer<typeof updatePlDataSchema>) {
     await sql.begin(async (sql) => {
       const [destiny] = await sql`
-        select id, so, "packSlip", orders from destinys where id = ${body.id}
+        select id, so, "packSlip", orders, status from destinys where id = ${body.id}
         and (so LIKE 'PS-%' OR exported IS NOT NULL)`;
       if (!destiny) throw new HttpException('Packing list no existente', 400);
+      this.assertUnlocked(destiny);
 
       const changes: Record<string, any> = {};
       for (const key of [
@@ -659,12 +662,83 @@ export class PackingListService {
     return result;
   }
 
+  // ── Ciclo del PL (Hector/Juan 11-Sep-2026) ───────────────────────────────
+  // generado → embarcado → cruzado → recibido. Una vez cruzado (pedimento
+  // ligado) o recibido, los datos y cantidades quedan bloqueados.
+  private assertUnlocked(destiny: { status?: string; packSlip?: string; so?: string }) {
+    if (destiny.status === 'cruzado' || destiny.status === 'recibido')
+      throw new HttpException(
+        `El packing list ${destiny.packSlip || destiny.so} ya ${destiny.status === 'recibido' ? 'fue recibido' : 'cruzó'}; sus datos están bloqueados`,
+        400,
+      );
+  }
+
+  private async getPl(sql, id: number) {
+    const [destiny] = await sql`
+      select id, so, "packSlip", status, "shipDate" from destinys where id = ${id}
+      and (so LIKE 'PS-%' OR exported IS NOT NULL)`;
+    if (!destiny) throw new HttpException('Packing list no existente', 400);
+    return destiny;
+  }
+
+  // "Salió": la fecha la pone el servidor (hora real, fecha en horario de la fábrica)
+  async ship(body: z.infer<typeof plIdSchema>) {
+    await sql.begin(async (sql) => {
+      const pl = await this.getPl(sql, body.id);
+      if (pl.status !== 'generado')
+        throw new HttpException(`El packing list ${pl.packSlip} ya está ${pl.status}`, 400);
+      await sql`update destinys set status = 'embarcado', "shippedAt" = now(),
+        "shipDate" = (now() AT TIME ZONE 'America/Tijuana')::date where id = ${body.id}`;
+      await this.req.record(`Marcó como embarcado el packing list ${pl.packSlip}`, sql);
+    });
+    return;
+  }
+
+  // Revertir "Salió" (error de captura); solo mientras no haya cruzado
+  async unship(body: z.infer<typeof plIdSchema>) {
+    await sql.begin(async (sql) => {
+      const pl = await this.getPl(sql, body.id);
+      if (pl.status !== 'embarcado')
+        throw new HttpException(`Solo se puede revertir un packing list embarcado (está ${pl.status})`, 400);
+      await sql`update destinys set status = 'generado', "shippedAt" = null where id = ${body.id}`;
+      await this.req.record(`Revirtió el embarque del packing list ${pl.packSlip}`, sql);
+    });
+    return;
+  }
+
+  // Recibo del cliente (lo que Iván confirma por correo). Se permite desde
+  // embarcado o cruzado; si el pedimento se liga después, no regresa el estatus.
+  async receive(body: z.infer<typeof receivePlSchema>) {
+    await sql.begin(async (sql) => {
+      const pl = await this.getPl(sql, body.id);
+      if (pl.status === 'generado')
+        throw new HttpException(`El packing list ${pl.packSlip} aún no se ha marcado como embarcado`, 400);
+      if (pl.status === 'recibido')
+        throw new HttpException(`El packing list ${pl.packSlip} ya fue recibido`, 400);
+      await sql`update destinys set ${sql({
+        status: 'recibido',
+        receivedAt: body.receivedAt,
+        receivedPallets: body.receivedPallets ?? null,
+        receivedComplete: body.receivedComplete,
+        receivedNotes: body.receivedNotes ?? null,
+      })} where id = ${body.id}`;
+      await this.req.record(
+        `Registró el recibo del packing list ${pl.packSlip} (${body.receivedComplete ? 'completo' : 'parcial'})`,
+        sql,
+      );
+    });
+    return;
+  }
+
   // Listado del submódulo Packing List
   async getPackingLists(body: z.infer<typeof getPackingListsSchema>) {
     return sql`select destinys.id,
       COALESCE(NULLIF(destinys."packSlip", ''), destinys.so) as "packSlip",
       destinys."shipDate",
       destinys."plType",
+      destinys.status, destinys."shippedAt", destinys."crossedAt", destinys."receivedAt",
+      destinys."receivedComplete", destinys."receivedPallets", destinys.invoice,
+      (select string_agg(pf.pedimento, ', ') from preforms pf where pf."destinyId" = destinys.id) as pedimento,
       string_agg(distinct COALESCE(clients.name, matclients.name), ', ') as client,
       string_agg(distinct jobs.ref, ', ') as jobs,
       string_agg(distinct COALESCE(materials.code, jobs.part, linemat.code), ', ') as parts,
@@ -683,6 +757,7 @@ export class PackingListService {
       left join materials linemat on linemat.id = order_destiny."materialId"
       left join clients matclients on matclients.id = linemat."clientId"
       where (destinys.so LIKE 'PS-%' OR destinys.exported IS NOT NULL)
+      ${body.status ? sql`AND destinys.status = ${body.status}` : sql``}
       ${body.packSlip ? sql`AND COALESCE(NULLIF(destinys."packSlip", ''), destinys.so) ILIKE ${'%' + body.packSlip + '%'}` : sql``}
       ${body.clientId ? sql`AND destinys.id in (
         select od2."destinyId" from order_destiny od2
@@ -699,9 +774,10 @@ export class PackingListService {
   async deletePl(body: z.infer<typeof idObjectSchema>) {
     await sql.begin(async (sql) => {
       const [destiny] = await sql`
-        select id, so, "packSlip" from destinys where id = ${body.id}
+        select id, so, "packSlip", status from destinys where id = ${body.id}
         and (so LIKE 'PS-%' OR exported IS NOT NULL)`;
       if (!destiny) throw new HttpException('Packing list no existente', 400);
+      this.assertUnlocked(destiny);
 
       const movements = await sql`
         select "materialId" from materialmovements
