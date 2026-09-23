@@ -245,6 +245,7 @@
 							<TableHead>Parte</TableHead>
 							<TableHead class="w-full">Descripción</TableHead>
 							<TableHead>Cliente</TableHead>
+							<TableHead>PO</TableHead>
 							<TableHead>Cantidad</TableHead>
 							<TableHead>Pallets</TableHead>
 							{#if showDesglose}
@@ -265,6 +266,8 @@
 										>{line.description}</TableCell
 									>
 									<TableCell>{line.client}</TableCell>
+									<!-- obs 23-Sep p.6: PO = programación en los clientes marcados -->
+									<TableCell>{line.po || ''}</TableCell>
 									<TableCell>{line.amount}</TableCell>
 									<TableCell>{Number(line.pallets).toFixed(2)}</TableCell>
 									{#if showDesglose}
