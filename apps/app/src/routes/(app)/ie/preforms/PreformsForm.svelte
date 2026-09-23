@@ -143,6 +143,25 @@
 		{ value: 'RT Exportación', name: 'Export', color: 'red' }
 	];
 
+	// PRV / IVA-PRV por régimen (Juan 23-Sep-2026): la tarifa de importación subió
+	// a 330; exportación sigue en 290. El IVA/PRV es el 16% del PRV.
+	const prvPorRegimen: Record<string, number> = {
+		'IN Importación': 330,
+		'RT Exportación': 290
+	};
+
+	function aplicarPrv(regimen: string) {
+		const prv = prvPorRegimen[regimen];
+		if (!prv) return;
+		formData.exteriorData = formData.exteriorData.map((row: any) =>
+			row.name === 'PRV'
+				? { ...row, amount: prv }
+				: row.name === 'IVA/PRV'
+					? { ...row, amount: Math.round(prv * 0.16) }
+					: row
+		);
+	}
+
 	const filledFields = [
 		'VALIDACION ELECTRONICA',
 		'VENTANILLA UNICA',
@@ -190,6 +209,7 @@
 						bind:value={formData.regimen}
 						onValueChange={(v) => {
 							formData.usData = [];
+							aplicarPrv(formData.regimen);
 							if (formData.regimen === 'IN Importación') {
 								formData.usData = [{ name: 'SHIPPER AMERICANO', amount: '' }];
 								formData.almacenData = [
