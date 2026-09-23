@@ -189,6 +189,19 @@ export class MovementsService {
   }
 
   async postSupplies(body: z.infer<typeof suppliesSchema>) {
+    // Obs 23-Sep (Juan) punto 5: por este apartado sólo pueden salir los
+    // materiales marcados como Insumo (mismo candado que ya existe en
+    // Requisiciones → Insumos desde el 31-ago; aquí faltaba).
+    const [material] =
+      await sql`select id, code, type from materials where code = ${body.code}`;
+    if (!material)
+      throw new HttpException(`El material ${body.code} no existe.`, 400);
+    if (material.type !== 'insumo')
+      throw new HttpException(
+        `${material.code} no está marcado como Insumo. Por este apartado sólo pueden salir insumos; cámbialo en Almacén → Inventario o usa el movimiento que corresponda.`,
+        400,
+      );
+
     try {
       await sql.begin(async (sql) => {
         const [movement] =

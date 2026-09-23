@@ -491,7 +491,11 @@ export class PackingListService {
     const lines = palletIds.length
       ? await sql`
         SELECT pc."jobId", j.ref, COALESCE(m.code, j.part) AS part,
-          j.description, c.name AS client,
+          j.description, c.name AS client, j.programation,
+          -- Obs 23-Sep p.6: el PO que llevará el PL (programación en los
+          -- clientes marcados, hoy ZenPet), visible ya en la vista previa
+          CASE WHEN COALESCE(c."poFromProgramation", false)
+               THEN COALESCE(j.programation, '') ELSE '' END AS po,
           SUM(pc.amount)::int AS amount,
           ROUND(SUM(pc.amount::numeric / pt.total), 4) AS pallets
         FROM pallet_contents pc
@@ -504,7 +508,8 @@ export class PackingListService {
           SELECT SUM(amount)::numeric AS total FROM pallet_contents WHERE "palletId" = p.id
         ) pt ON true
         WHERE pc."palletId" IN ${sql(palletIds)}
-        GROUP BY pc."jobId", j.ref, m.code, j.part, j.description, c.name
+        GROUP BY pc."jobId", j.ref, m.code, j.part, j.description, c.name,
+          j.programation, c."poFromProgramation"
         ORDER BY j.ref`
       : [];
 
@@ -578,12 +583,22 @@ export class PackingListService {
           JOIN destinys d ON d.id = od."destinyId"
           WHERE od."orderId" = ${line.jobId} AND d.exported IS NULL
             AND COALESCE(od.po, '') != '' LIMIT 1`;
+        // Obs 23-Sep (Juan) punto 6: para los clientes marcados con
+        // "poFromProgramation" (hoy ZenPet) el PO del PL es la PROGRAMACIÓN de
+        // la orden. Para los demás sigue igual: el PO capturado en el stub.
+        const [job] = await sql`
+          SELECT j.programation, COALESCE(c."poFromProgramation", false) AS "poFromProg"
+          FROM jobs j LEFT JOIN clients c ON c.id = j."clientId"
+          WHERE j.id = ${line.jobId}`;
+        const po = job?.poFromProg
+          ? job.programation || stub?.po || ''
+          : stub?.po || '';
         await sql`INSERT INTO order_destiny ${sql({
           orderId: line.jobId,
           destinyId: destiny.id,
           amount: line.amount,
           date: body.shipDate,
-          po: stub?.po || '',
+          po,
           pallets: line.pallets,
         })}`;
       }

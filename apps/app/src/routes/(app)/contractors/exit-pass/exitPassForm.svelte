@@ -48,6 +48,10 @@
 		remaining?: number | string;
 		code: string;
 		description?: string;
+		// obs 23-Sep (Juan): más detalle al escoger el job
+		programation?: string;
+		produccion?: number | string;
+		assigned?: number | string;
 	}
 
 	interface JobRow {
@@ -237,9 +241,11 @@
 				<Table divClass="h-auto overflow-visible">
 					<TableHeader>
 						<TableHead class="w-1/3">Job</TableHead>
+						<TableHead class="">Programación</TableHead>
 						<TableHead class="">Parte</TableHead>
 						<TableHead class="w-full">Descripción</TableHead>
 						<TableHead class="">Cantidad</TableHead>
+						<TableHead class="">Disponible</TableHead>
 						<TableHead class="">Cant. contratista</TableHead>
 						<TableHead class="w-1 p-0"></TableHead>
 					</TableHeader>
@@ -282,9 +288,27 @@
 																	jobRows = [...jobRows];
 																}}
 															>
-																{job.ref}{job.remaining != null && Number(job.remaining) < Number(job.amount)
-																	? ` — restante ${job.remaining}`
-																	: ''}
+																<!-- obs 23-Sep (Juan): producto, descripción, programación,
+																	 cantidad de la orden, disponible y ya surtida -->
+																<div class="flex w-full flex-col gap-0.5 py-1">
+																	<div class="flex items-baseline justify-between gap-2">
+																		<span class="font-semibold">{job.ref}</span>
+																		<span class="text-xs text-muted-foreground"
+																			>{job.programation ?? ''}</span
+																		>
+																	</div>
+																	<div class="truncate text-xs">
+																		{job.code}{job.description ? ' · ' + job.description : ''}
+																	</div>
+																	<div class="flex gap-3 text-xs tabular-nums text-muted-foreground">
+																		<span>Orden: {job.amount}</span>
+																		<span class="font-medium text-foreground"
+																			>Disponible: {job.remaining ?? ''}</span
+																		>
+																		<span>Ya surtida: {job.assigned ?? 0}</span>
+																		<span>En planta: {job.produccion ?? 0}</span>
+																	</div>
+																</div>
 															</Command.Item>
 														{/each}
 													</Command.Group>
@@ -294,6 +318,9 @@
 									</Popover.Root>
 								</TableCell>
 								<TableCell class="border-l px-2 text-sm tabular-nums">
+									{jobById(jobRows[i].jobId)?.programation ?? ''}
+								</TableCell>
+								<TableCell class="border-l px-2 text-sm tabular-nums">
 									{jobById(jobRows[i].jobId)?.code ?? ''}
 								</TableCell>
 								<TableCell class="max-w-48 truncate border-l px-2 text-sm">
@@ -301,6 +328,9 @@
 								</TableCell>
 								<TableCell class="border-l px-2 text-sm tabular-nums">
 									{jobById(jobRows[i].jobId)?.amount ?? ''}
+								</TableCell>
+								<TableCell class="border-l px-2 text-sm font-medium tabular-nums">
+									{jobById(jobRows[i].jobId)?.remaining ?? ''}
 								</TableCell>
 								<TableCell class="p-0 px-[1px]">
 									<Input

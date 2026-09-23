@@ -76,6 +76,18 @@ export class RequisitionsService {
     );
     const requested = Math.abs(Number(body.requested));
 
+    // Obs 23-Sep (Juan) punto 1: si no hay existencia suficiente no se deja
+    // hacer la requisición y se avisa cuánto hay realmente.
+    // materials.amount = suma de movimientos activos (existencia en almacén).
+    const [material] =
+      await sql`select id, code, amount, measurement from materials where code = ${body.code}`;
+    if (!material) throw new HttpException('Material no existente', 400);
+    if (Number(material.amount) < requested)
+      throw new HttpException(
+        `No hay suficiente material para surtir la requisición. Existencia de ${material.code}: ${Number(material.amount)} ${material.measurement || ''} (se pidieron ${requested})`.trim(),
+        400,
+      );
+
     const inserted = await sql.begin(async (sql) => {
       const [inserted] =
         await sql`insert into requisitions (folio, petitioner, "user", motive, area, "materialId", jobs, requested, necesary) values

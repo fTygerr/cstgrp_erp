@@ -17,7 +17,12 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
-(nada pendiente — reset tras el release del 2026-09-23)
+- [ ] `2026-09-23_obs2309_po_programacion.sql` — clients."poFromProgramation"
+  (boolean, default false) + se marca true a ZENPET. Obs 23-Sep punto 6: en el
+  Packing List de esos clientes la columna PO trae la PROGRAMACIÓN de la orden.
+  Aditiva; el código viejo no la usa. Aplicada a TESTING el 23-Sep.
+  NO es el rediseño de 3 campos (Programación/Job/PO) que Juan propone — eso
+  sigue pendiente de decisión de Hector.
 
 ---
 

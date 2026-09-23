@@ -73,6 +73,9 @@ export class ExitPassService {
     await sql.begin(async (sql) => {
       let passId: number;
       const touchedJobs = new Set<number>();
+      // cantidad que este pase ya traía por job (sólo al editar): permite
+      // conservar o BAJAR un pase de una orden ya sobregirada, nunca subirlo
+      const previousAmounts = new Map<number, number>();
 
       if (edit) {
         const [updatedPass] =
@@ -84,8 +87,11 @@ export class ExitPassService {
         passId = updatedPass.id;
 
         const previous = await sql`delete from exitpass_jobs
-          where "exitId" = ${passId} returning "jobId"`;
-        for (const row of previous) touchedJobs.add(Number(row.jobId));
+          where "exitId" = ${passId} returning "jobId", amount`;
+        for (const row of previous) {
+          touchedJobs.add(Number(row.jobId));
+          previousAmounts.set(Number(row.jobId), Number(row.amount) || 0);
+        }
       } else {
         const [insertedPass] =
           await sql`insert into "exitPass" ("date", "contractorId", "folio") values
@@ -97,11 +103,17 @@ export class ExitPassService {
         // saldo: lo asignado en OTROS pases no puede excederse (obs Juan 10/08)
         const [{ assigned }] = await sql`select COALESCE(sum(amount), 0)::int as assigned
           from exitpass_jobs where "jobId" = ${job.id}`;
-        const [{ amount: total }] =
-          await sql`select amount from jobs where id = ${job.id}`;
-        if (assigned + job.contractorAmount > Number(total))
+        const [{ amount: total, produccion }] =
+          await sql`select amount, produccion from jobs where id = ${job.id}`;
+        // Obs 23-Sep: el tope también descuenta lo ya producido en planta
+        const enPlanta = Number(produccion) || 0;
+        const yaTraia = previousAmounts.get(Number(job.id)) ?? 0;
+        if (
+          assigned + enPlanta + job.contractorAmount > Number(total) &&
+          job.contractorAmount > yaTraia
+        )
           throw new HttpException(
-            `${job.ref}: la cantidad excede el restante (${Number(total) - assigned} de ${total})`,
+            `${job.ref}: la cantidad excede el restante (${Math.max(Number(total) - assigned - enPlanta, 0)} disponible de ${total}; ${enPlanta} ya producidas en planta y ${assigned} con contratistas)`,
             400,
           );
 
@@ -141,16 +153,25 @@ export class ExitPassService {
   async getJobs(body: z.infer<typeof getJobsSchema>) {
     if (!body.contractorId) return [];
 
+    // Obs 23-Sep (Juan): lo disponible para un contratista debe descontar TAMBIÉN
+    // lo que ya se produjo en planta (jobs.produccion), no sólo lo asignado a
+    // contratistas. Antes sólo restaba los pases y el sistema ofrecía de más
+    // (ej. S-16952: 1512 de orden, 480 hechas en planta y 1032 con contratista,
+    // y aun así ofrecía otras 480 → sobreproducción).
+    // jobs."prodAmount" es columna generada = amount - "contractorAmount",
+    // así que prodAmount - produccion = amount - contratistas - planta.
     const jobs = await sql`
     SELECT * FROM (
-      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description, jobs.amount,
-        jobs.amount - COALESCE((select sum(ej.amount) from exitpass_jobs ej where ej."jobId" = jobs.id), 0) as remaining
+      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description,
+        jobs.amount, jobs.programation, jobs.produccion,
+        COALESCE((select sum(ej.amount) from exitpass_jobs ej where ej."jobId" = jobs.id), 0) as assigned,
+        jobs."prodAmount" - jobs.produccion as remaining
       from jobs
       left join materialmovements on jobs."movementId" = materialmovements.id
       left join materials on materialmovements."materialId" = materials.id
       order by due desc, ref desc
       limit 500
-    ) 
+    )
       WHERE code is not null
       AND remaining > 0
       AND code in (select part from contractor_prices where "contractorId" = ${body.contractorId})
@@ -162,9 +183,16 @@ export class ExitPassService {
   async getJobsForExitPass(exitId: number) {
     return sql`
       select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description, jobs.amount,
+        jobs.programation, jobs.produccion,
         ej.amount as "contractorAmount",
-        jobs.amount - COALESCE((select sum(e2.amount) from exitpass_jobs e2
-          where e2."jobId" = jobs.id and e2."exitId" != ${exitId}), 0) as remaining
+        -- Obs 23-Sep: el tope descuenta planta + otros pases. Piso en lo que YA
+        -- trae este pase para que las órdenes ya sobregiradas sigan editables
+        -- (si no, el guardar de un pase viejo quedaría bloqueado).
+        GREATEST(
+          jobs.amount - jobs.produccion - COALESCE((select sum(e2.amount) from exitpass_jobs e2
+            where e2."jobId" = jobs.id and e2."exitId" != ${exitId}), 0),
+          ej.amount
+        ) as remaining
       from exitpass_jobs ej
       join jobs on jobs.id = ej."jobId"
       left join materialmovements on jobs."movementId" = materialmovements.id
