@@ -17,16 +17,20 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
-- [ ] `2026-09-23_obs2309_po_programacion.sql` — clients."poFromProgramation"
-  (boolean, default false) + se marca true a ZENPET. Obs 23-Sep punto 6: en el
-  Packing List de esos clientes la columna PO trae la PROGRAMACIÓN de la orden.
-  Aditiva; el código viejo no la usa. Aplicada a TESTING el 23-Sep.
-  NO es el rediseño de 3 campos (Programación/Job/PO) que Juan propone — eso
-  sigue pendiente de decisión de Hector.
+(nada pendiente — reset tras el release del 2026-09-24)
 
 ---
 
 ## Done in previous releases
+- 2026-09-24: **obs 23-Sep a prod** (visto bueno de Juan por WhatsApp). Merge ff
+  master e09fa88..119e981. Migración `2026-09-23_obs2309_po_programacion.sql`
+  aplicada a prod (clients."poFromProgramation", ZENPET en true). Backup
+  pre-release-obs2309-20260924-2050.dump. Entró: candado de existencia en
+  Requisiciones, disponible real en pases de salida (planta + contratistas) con
+  el detalle en el picker, candado de insumos en Movimientos, PO = programación
+  en el PL de ZenPet, y el fix del total de pallets (26.0001 → 26; antes ceil
+  daba 27). Ramas iguales. PENDIENTE de decisión: rediseño 3 campos
+  Programación/Job/PO (Juan pidió dejarlo para después).
 - 2026-09-23: **batch Imp-Exp a prod** (visto bueno de Juan en app2). MERGE real
   dev → master (no cherry-pick): ciclo del Packing List (generado → embarcado →
   cruzado → recibido), Proforma ligada al PL, desglose de embarques por job en
