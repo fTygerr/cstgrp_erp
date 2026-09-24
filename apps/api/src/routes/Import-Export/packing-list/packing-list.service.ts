@@ -645,6 +645,9 @@ export class PackingListService {
         exported: headerData.find((item) => item.key === 'ie_exported')?.data,
         soldTo: headerData.find((item) => item.key === 'ie_sold_to')?.data,
         orders: orders,
+        // Obs 23-Sep p.4: se guarda el CONTEO REAL de pallets del PL para que
+        // el PDF no dependa de sumar fracciones (de ahí salía 27 contra 26).
+        totalPallets: palletIds.length,
         shipVia: shipper?.name || '',
         consignee: consignee?.legalName || '',
         destination: destination || null,
@@ -876,14 +879,21 @@ export class PackingListService {
       boxes:
         data.totalBoxes ??
         data.orders?.reduce((acc, order) => acc + lineBoxes(order), 0),
+      // Obs 23-Sep (Juan) punto 4: el PL 2868 traía 27 pallets contra 26 del
+      // registro. La causa es redondeo: la parte de pallet de cada renglón se
+      // guarda con 4 decimales, así que 26 pallets reales suman 26.0001 y el
+      // Math.ceil los volvía 27. Se redondea la suma a 2 decimales ANTES de
+      // subir al entero, así 26.0001 → 26 y un 26.5 real sigue dando 27.
       pallets:
         data.totalPallets != null
           ? Number(data.totalPallets)
           : Math.ceil(
-              data.orders?.reduce(
-                (acc, order) => acc + Number(order.pallets || 0),
-                0,
-              ),
+              Math.round(
+                (data.orders?.reduce(
+                  (acc, order) => acc + Number(order.pallets || 0),
+                  0,
+                ) || 0) * 100,
+              ) / 100,
             ),
       type:
         data.plType === 'materiaPrima'
