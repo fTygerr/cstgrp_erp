@@ -158,20 +158,25 @@ export class ExitPassService {
     // contratistas. Antes sólo restaba los pases y el sistema ofrecía de más
     // (ej. S-16952: 1512 de orden, 480 hechas en planta y 1032 con contratista,
     // y aun así ofrecía otras 480 → sobreproducción).
-    // jobs."prodAmount" es columna generada = amount - "contractorAmount",
-    // así que prodAmount - produccion = amount - contratistas - planta.
+    //
+    // 29-Sep: el restante se calcula contra exitpass_jobs (`assigned`) y NO
+    // contra jobs."prodAmount". prodAmount es columna generada sobre el caché
+    // jobs."contractorAmount", y ese caché se quedaba en 0 al editar la orden
+    // → ofrecía la orden completa (Juan: S-16975 ofrecía 941 en vez de 144).
+    // Leyendo los pases directo, el listado es correcto aunque el caché falle.
     const jobs = await sql`
     SELECT * FROM (
-      select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description,
-        jobs.amount, jobs.programation, jobs.produccion,
-        COALESCE((select sum(ej.amount) from exitpass_jobs ej where ej."jobId" = jobs.id), 0) as assigned,
-        jobs."prodAmount" - jobs.produccion as remaining
-      from jobs
-      left join materialmovements on jobs."movementId" = materialmovements.id
-      left join materials on materialmovements."materialId" = materials.id
-      order by due desc, ref desc
-      limit 500
-    )
+      SELECT *, (amount - produccion - assigned) as remaining FROM (
+        select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description,
+          jobs.amount, jobs.programation, jobs.produccion,
+          COALESCE((select sum(ej.amount) from exitpass_jobs ej where ej."jobId" = jobs.id), 0) as assigned
+        from jobs
+        left join materialmovements on jobs."movementId" = materialmovements.id
+        left join materials on materialmovements."materialId" = materials.id
+        order by due desc, ref desc
+        limit 500
+      ) base
+    ) calc
       WHERE code is not null
       AND remaining > 0
       AND code in (select part from contractor_prices where "contractorId" = ${body.contractorId})

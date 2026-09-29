@@ -274,7 +274,15 @@ export class JobsService {
         produccionTime: body.produccionTime,
         calidadTime: body.calidadTime,
         serigrafiaTime: body.serigrafiaTime,
-        contractorAmount: 0,
+        // OJO (29-Sep): aquí venía `contractorAmount: 0`. Era una herencia de
+        // antes del multi pase de salida (10-ago), cuando la cantidad del
+        // contratista se guardaba directo en el job. Hoy la verdad vive en
+        // exitpass_jobs y esta columna es sólo un caché que mantiene
+        // resyncJob(); editar la orden la ponía en 0 y NADA la reconstruía,
+        // así que "prodAmount" (= amount − contractorAmount) se inflaba hasta
+        // la cantidad completa y el pase de salida ofrecía de más
+        // (Juan 29-sep: la S-16975 ofrecía 941 cuando debía ofrecer 144).
+        // También afectaba metas de Producción/Calidad y el flag completed.
       })} where id = ${body.id} returning id, ref, programation, part`;
 
       // Keep the product movement's material in sync with the part number
