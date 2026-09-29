@@ -166,7 +166,7 @@ export class ExitPassService {
     // Leyendo los pases directo, el listado es correcto aunque el caché falle.
     const jobs = await sql`
     SELECT * FROM (
-      SELECT *, (amount - produccion - assigned) as remaining FROM (
+      SELECT *, (amount - produccion - assigned)::int as remaining FROM (
         select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description,
           jobs.amount, jobs.programation, jobs.produccion,
           COALESCE((select sum(ej.amount) from exitpass_jobs ej where ej."jobId" = jobs.id), 0) as assigned
@@ -197,7 +197,7 @@ export class ExitPassService {
           jobs.amount - jobs.produccion - COALESCE((select sum(e2.amount) from exitpass_jobs e2
             where e2."jobId" = jobs.id and e2."exitId" != ${exitId}), 0),
           ej.amount
-        ) as remaining
+        )::int as remaining
       from exitpass_jobs ej
       join jobs on jobs.id = ej."jobId"
       left join materialmovements on jobs."movementId" = materialmovements.id
