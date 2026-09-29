@@ -17,11 +17,19 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
-(nada pendiente — reset tras el release del 2026-09-24)
+(nada pendiente — el resync del 29-sep YA se corrió en testing y prod)
 
 ---
 
 ## Done in previous releases
+- 2026-09-29: fix del caché `jobs."contractorAmount"` (bug que reportó Juan: el
+  pase de salida ofrecía 941 de la S-16975 en vez de 144). jobs.update ya no lo
+  pone en 0 al editar la orden, y el listado del pase calcula el restante
+  contra exitpass_jobs en vez de prodAmount. Script
+  `2026-09-29_resync_contractoramount.sql` corrido en TESTING (0 filas, nada
+  desfasado) y PROD (5 órdenes: S-16836, S-16838, S-16839, S-16898, S-16899;
+  quedaron con restante 0 y completed=true). Backup
+  pre-resync-contractor-20260929-2339.dump. El script es idempotente.
 - 2026-09-24: **obs 23-Sep a prod** (visto bueno de Juan por WhatsApp). Merge ff
   master e09fa88..119e981. Migración `2026-09-23_obs2309_po_programacion.sql`
   aplicada a prod (clients."poFromProgramation", ZENPET en true). Backup
