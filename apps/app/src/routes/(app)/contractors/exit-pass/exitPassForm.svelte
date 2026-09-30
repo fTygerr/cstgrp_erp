@@ -115,7 +115,7 @@
 						.toLowerCase()
 						.includes(q)
 			)
-			.slice(0, 50);
+			.slice(0, 200);
 	}
 
 	function addJobRow() {
@@ -220,7 +220,7 @@
 </script>
 
 <Dialog bind:open={show}>
-	<DialogContent class="sm:max-w-3xl">
+	<DialogContent class="sm:max-w-5xl">
 		<DialogHeader
 			title={formData?.id ? 'Pase de salida #' + formData.folio : 'Registrar pase de salida'}
 		/>
@@ -240,7 +240,7 @@
 				<span class="text-sm font-medium leading-none">Jobs</span>
 				<Table divClass="h-auto overflow-visible">
 					<TableHeader>
-						<TableHead class="w-1/3">Job</TableHead>
+						<TableHead class="w-32 min-w-32">Job</TableHead>
 						<TableHead class="">Programación</TableHead>
 						<TableHead class="">Parte</TableHead>
 						<TableHead class="w-full">Descripción</TableHead>
@@ -252,12 +252,12 @@
 					<TableBody>
 						{#each jobRows as _, i}
 							<TableRow>
-								<TableCell class="p-0 px-[1px]">
+								<TableCell class="w-32 min-w-32 p-0 px-[1px]">
 									<Popover.Root bind:open={jobRows[i].popoverOpen}>
 										<Command.Root shouldFilter={false}>
 											<Popover.Trigger>
 												<Input
-													class="rounded-none border-none !opacity-100"
+													class="w-full rounded-none border-none !opacity-100"
 													type="text"
 													autocomplete="off"
 													bind:value={jobRows[i].search}

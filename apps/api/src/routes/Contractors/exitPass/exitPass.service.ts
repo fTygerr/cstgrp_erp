@@ -168,7 +168,7 @@ export class ExitPassService {
     SELECT * FROM (
       SELECT *, (amount - produccion - assigned)::int as remaining FROM (
         select jobs.id, jobs.ref, COALESCE(materials.code, jobs.part) as code, jobs.description,
-          jobs.amount, jobs.programation, jobs.produccion,
+          jobs.amount, jobs.programation, jobs.produccion, jobs.due,
           COALESCE((select sum(ej.amount) from exitpass_jobs ej where ej."jobId" = jobs.id), 0) as assigned
         from jobs
         left join materialmovements on jobs."movementId" = materialmovements.id
@@ -180,6 +180,10 @@ export class ExitPassService {
       WHERE code is not null
       AND remaining > 0
       AND code in (select part from contractor_prices where "contractorId" = ${body.contractorId})
+      -- Petición Juan 30-Sep: el listado se muestra de la orden MÁS VIEJA a la
+      -- más nueva. El "limit 500" de adentro sigue en desc a propósito: toma
+      -- las 500 más recientes (las vigentes) y aquí se voltean para mostrar.
+      ORDER BY due ASC NULLS LAST, ref ASC
     `;
 
     return jobs;
