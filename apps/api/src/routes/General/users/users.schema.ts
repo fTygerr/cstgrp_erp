@@ -35,7 +35,12 @@ export const permissionsList = {
   exports: permType,
   jobs: permType,
   labels: permType,
+  // `quality` se conserva por compatibilidad (usuarios viejos lo traen) pero
+  // ya NO guarda ninguna ruta: Juan pidió un permiso por submódulo (06-Oct).
   quality: permType,
+  quality_pallets: permType,
+  quality_registered_pallets: permType,
+  quality_registered_exports: permType,
   ie_options: permType,
   ie_packing_list: permType,
   maintenance: permType,

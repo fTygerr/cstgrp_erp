@@ -169,7 +169,7 @@
 			</Accordion.Item>
 		{/if}
 
-		{#if hasAccess('quality')}
+		{#if hasAccess('prod_calidad') || hasAccess('quality_pallets') || hasAccess('quality_registered_pallets') || hasAccess('quality_registered_exports')}
 			<Accordion.Item value="quality" class="border-none">
 				<Accordion.Trigger
 					class="mb-[1px]  h-8 rounded-md p-2 text-sm hover:bg-muted hover:no-underline"
@@ -178,10 +178,19 @@
 					Calidad
 				</Accordion.Trigger>
 				<Accordion.Content>
-					<Accordion.Option href="/quality/liberation" />
-					<Accordion.Option href="/quality/pallets" />
-					<Accordion.Option href="/quality/registered-pallets" />
-					<Accordion.Option href="/quality/registered-exports" />
+					<!-- permiso por submódulo (Juan 06-Oct) -->
+					{#if hasAccess('prod_calidad')}
+						<Accordion.Option href="/quality/liberation" />
+					{/if}
+					{#if hasAccess('quality_pallets')}
+						<Accordion.Option href="/quality/pallets" />
+					{/if}
+					{#if hasAccess('quality_registered_pallets')}
+						<Accordion.Option href="/quality/registered-pallets" />
+					{/if}
+					{#if hasAccess('quality_registered_exports')}
+						<Accordion.Option href="/quality/registered-exports" />
+					{/if}
 				</Accordion.Content>
 			</Accordion.Item>
 		{/if}

@@ -17,7 +17,12 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
-(nada pendiente — el resync del 29-sep YA se corrió en testing y prod)
+- [ ] `2026-10-06_permisos_calidad_por_submodulo.sql` — 3 llaves nuevas en
+  users.permissions (quality_pallets, quality_registered_pallets,
+  quality_registered_exports), cada usuario con el MISMO nivel que ya tenía en
+  `quality`. **CORRER ANTES de levantar el backend**: el AuthGuard lee
+  permissions[llave] y una llave ausente da 403 en todo Calidad.
+  Idempotente. Aplicada a TESTING el 06-oct.
 
 ---
 

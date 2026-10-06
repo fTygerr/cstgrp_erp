@@ -77,7 +77,7 @@
 		<OptionsHead />
 		<TableHead colspan={1}>-</TableHead>
 		<TableHead colspan={6}>General</TableHead>
-		<TableHead colspan={1}>Calidad</TableHead>
+		<TableHead colspan={3}>Calidad</TableHead>
 		<TableHead colspan={3}>Reportes</TableHead>
 		<TableHead colspan={4}>RRHH</TableHead>
 		<TableHead colspan={7}>Producción</TableHead>
@@ -96,7 +96,9 @@
 		<TableHead class="w-[12.5%]">Directorio</TableHead>
 		<TableHead class="w-[12.5%]">Docs</TableHead>
 		<TableHead class="w-[12.5%]">Labels</TableHead>
-		<TableHead class="w-[12.5%]">-</TableHead>
+		<TableHead class="w-[12.5%]">Pallets</TableHead>
+		<TableHead class="w-[12.5%]">P. Registrados</TableHead>
+		<TableHead class="w-[12.5%]">Exp. Registradas</TableHead>
 		<TableHead class="w-[12.5%]">Ordenes</TableHead>
 		<TableHead class="w-[12.5%]">Productividad</TableHead>
 		<TableHead class="w-[12.5%]">Historial</TableHead>
@@ -107,7 +109,7 @@
 		<TableHead class="w-[12.5%]">Corte</TableHead>
 		<TableHead class="w-[12.5%]">Cortes Varios</TableHead>
 		<TableHead class="w-[12.5%]">Producción</TableHead>
-		<TableHead class="w-[12.5%]">Calidad</TableHead>
+		<TableHead class="w-[12.5%]">Liberación</TableHead>
 		<TableHead class="w-[12.5%]">Serigrafía</TableHead>
 		<TableHead class="w-[12.5%]">Historial</TableHead>
 		<TableHead class="w-[12.5%]">Jobs</TableHead>
@@ -198,10 +200,28 @@
 				<TableCell class="p-1.5 text-center"
 					><Badge
 						class="flex h-full w-full items-center justify-center p-1"
-						color={getBadgeColor(user.permissions.quality)}
+						color={getBadgeColor(user.permissions.quality_pallets)}
 					>
-						{@const SvelteComponent_1 = badgeTexts[user.permissions.quality]}
-						<SvelteComponent_1 class="size-3.5" />
+						{@const SvelteComponent_q1 = badgeTexts[user.permissions.quality_pallets]}
+						<SvelteComponent_q1 class="size-3.5" />
+					</Badge></TableCell
+				>
+				<TableCell class="p-1.5 text-center"
+					><Badge
+						class="flex h-full w-full items-center justify-center p-1"
+						color={getBadgeColor(user.permissions.quality_registered_pallets)}
+					>
+						{@const SvelteComponent_q2 = badgeTexts[user.permissions.quality_registered_pallets]}
+						<SvelteComponent_q2 class="size-3.5" />
+					</Badge></TableCell
+				>
+				<TableCell class="p-1.5 text-center"
+					><Badge
+						class="flex h-full w-full items-center justify-center p-1"
+						color={getBadgeColor(user.permissions.quality_registered_exports)}
+					>
+						{@const SvelteComponent_q3 = badgeTexts[user.permissions.quality_registered_exports]}
+						<SvelteComponent_q3 class="size-3.5" />
 					</Badge></TableCell
 				>
 				<TableCell class="p-1.5 text-center"

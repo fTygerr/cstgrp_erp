@@ -115,8 +115,20 @@
 
 			<div class={cardClass}>
 				<h3 class="col-span-full w-full pl-0.5 font-semibold">Calidad</h3>
-				<Label name="P. Calidad (todos los submódulos)">
-					<Select items={permissions} bind:value={formData.permissions.quality} />
+				<Label name="P. Liberación">
+					<Select items={permissions} bind:value={formData.permissions.prod_calidad} />
+				</Label>
+				<Label name="P. Pallets">
+					<Select items={permissions} bind:value={formData.permissions.quality_pallets} />
+				</Label>
+				<Label name="P. Pallets Registrados">
+					<Select items={permissions} bind:value={formData.permissions.quality_registered_pallets} />
+				</Label>
+				<Label name="P. Exportaciones Registradas">
+					<Select
+						items={permissions}
+						bind:value={formData.permissions.quality_registered_exports}
+					/>
 				</Label>
 			</div>
 
@@ -162,9 +174,6 @@
 				</Label>
 				<Label name="P. Producción">
 					<Select items={permissions} bind:value={formData.permissions.prod_produccion} />
-				</Label>
-				<Label name="P. Calidad">
-					<Select items={permissions} bind:value={formData.permissions.prod_calidad} />
 				</Label>
 				<Label name="P. Serigrafía">
 					<Select items={permissions} bind:value={formData.permissions.prod_serigrafia} />
