@@ -17,16 +17,15 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
-- [ ] `2026-10-06_permisos_calidad_por_submodulo.sql` — 3 llaves nuevas en
-  users.permissions (quality_pallets, quality_registered_pallets,
-  quality_registered_exports), cada usuario con el MISMO nivel que ya tenía en
-  `quality`. **CORRER ANTES de levantar el backend**: el AuthGuard lee
-  permissions[llave] y una llave ausente da 403 en todo Calidad.
-  Idempotente. Aplicada a TESTING el 06-oct.
+(nada pendiente — reset tras el release del 2026-10-06)
 
 ---
 
 ## Done in previous releases
+- 2026-10-06: permisos de Calidad por submódulo (petición Juan). Migración
+  `2026-10-06_permisos_calidad_por_submodulo.sql` corrida en TESTING y PROD
+  (25 usuarios; cada quien conservó su nivel de `quality`). Backup
+  pre-permisos-calidad-20261006. Merge ff master 5fb3b56..d4d98a6.
 - 2026-09-29: fix del caché `jobs."contractorAmount"` (bug que reportó Juan: el
   pase de salida ofrecía 941 de la S-16975 en vez de 144). jobs.update ya no lo
   pone en 0 al editar la orden, y el listado del pase calcula el restante
