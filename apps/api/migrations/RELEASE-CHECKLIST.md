@@ -22,6 +22,10 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ---
 
 ## Done in previous releases
+- 2026-10-06 (2º release del día): historial de inventario con un renglón por
+  liberación real y su fecha (Juan). SIN migración y SIN backfill: el desglose
+  se reconstruye al leer, desde ordermovements y contractormovements.
+  Merge ff master 3b9d6e2..f0fbe4d.
 - 2026-10-06: permisos de Calidad por submódulo (petición Juan). Migración
   `2026-10-06_permisos_calidad_por_submodulo.sql` corrida en TESTING y PROD
   (25 usuarios; cada quien conservó su nivel de `quality`). Backup
