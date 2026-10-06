@@ -41,8 +41,10 @@ WHERE id = ${id} returning *`;
     "amount" = (select (calidad + contractor) from jobs where id = ${id}),
     "realAmount" = (select (calidad + contractor) from jobs where id = ${id}),
     "activeDate" = COALESCE(
-      (select max(date) from ordermovements where "progressId" = ${id} and calidad <> 0),
-      "activeDate")
+      GREATEST(
+        (select max(date) from ordermovements where "progressId" = ${id} and calidad <> 0),
+        (select max(date) from contractormovements where "orderId" = ${id} and approved = true)
+      ), "activeDate")
     where id = (select "movementId" from jobs where id = ${id}) returning "materialId"`;
 
   if (updatedMovement)

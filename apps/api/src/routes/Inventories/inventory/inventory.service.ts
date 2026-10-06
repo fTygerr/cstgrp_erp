@@ -14,57 +14,95 @@ export class InventoryService {
     return inventory;
   }
 
+  // Historial del material. Petición Juan 06-Oct: una orden puede liberarse en
+  // VARIAS fechas (capturas de calidad y/o entregas de contratista), pero el
+  // sistema guarda UN SOLO movimiento de producto por orden (jobs."movementId")
+  // al que le sobrescribe el acumulado — por eso dos entregas de 8,000 salían
+  // como un renglón de 16,000, y con la fecha de alta de la orden.
+  //
+  // Aquí ese movimiento se ABRE en una fila por liberación real, con su fecha.
+  // No se toca ningún dato: las fechas y cantidades ya viven en ordermovements
+  // (calidad) y contractormovements (contratistas), así que el historial viejo
+  // también queda bien sin reescribir inventario.
+  //
+  // Red de seguridad: si lo reconstruido no suma exactamente el movimiento, esa
+  // orden se muestra como hasta hoy (un solo renglón).
   async getMaterialMovements(body: z.infer<typeof idObjectSchema>) {
-    const movements = await sql`SELECT
-        materialmovements."activeDate",
+    const movements = await sql`
+      WITH base AS (
+        SELECT mm.id, mm."activeDate", mm.amount, mm."realAmount", mm.extra, mm.active,
+               mm."jobId", mm."importId", mm."reqId", mm."purchaseId", mm."orderDestinyId",
+               mm.type, j.id AS prod_job_id
+        FROM materialmovements mm
+        LEFT JOIN jobs j ON j."movementId" = mm.id
+        WHERE mm."materialId" = ${body.id} AND mm.active IS TRUE
+      ),
+      releases AS (
+        SELECT b.id AS src_id, om.date::date AS d,
+               ROUND(om.calidad::numeric, 2) AS qty, om.id AS kid, 1 AS kind
+        FROM base b
+        JOIN ordermovements om ON om."progressId" = b.prod_job_id
+          AND om.calidad IS NOT NULL AND om.calidad <> 0
+        WHERE b.prod_job_id IS NOT NULL
+        UNION ALL
+        SELECT b.id, cm.date::date,
+               ROUND(cm.accepted::numeric, 2), cm.id, 2
+        FROM base b
+        JOIN contractormovements cm ON cm."orderId" = b.prod_job_id AND cm.approved = TRUE
+        WHERE b.prod_job_id IS NOT NULL
+      ),
+      recon AS (SELECT src_id, SUM(qty) AS total FROM releases GROUP BY src_id),
+      ledger AS (
+        SELECT b.id AS ord_id, 0 AS sub, b."activeDate", b.amount, b."realAmount",
+               b.extra, b.active, b."jobId", b."importId", b."reqId", b."purchaseId",
+               b."orderDestinyId", b.type
+        FROM base b
+        LEFT JOIN recon r ON r.src_id = b.id
+        WHERE r.src_id IS NULL OR r.total <> b.amount
+        UNION ALL
+        SELECT rel.src_id, rel.kind * 1000000 + rel.kid, rel.d, rel.qty, rel.qty,
+               b.extra, b.active, b."jobId", b."importId", b."reqId", b."purchaseId",
+               b."orderDestinyId", b.type
+        FROM releases rel
+        JOIN base b ON b.id = rel.src_id
+        JOIN recon r ON r.src_id = rel.src_id AND r.total = b.amount
+      )
+      SELECT
+        ledger."activeDate",
         jobs.programation,
         COALESCE(
           CASE
             WHEN destinys.id IS NULL THEN NULL
             ELSE CONCAT('PL-', COALESCE(NULLIF(NULLIF(destinys."packSlip", ''), '-'), destinys.so))
           END,
-          jobs.ref, 
-          imports.ref, 
-          CASE
-            WHEN requisitions.folio IS NULL THEN NULL
-            ELSE CONCAT('REQ-', requisitions.folio::text)
-          END,
-          CASE
-            WHEN purchaseorders.ref IS NULL THEN NULL
-            ELSE CONCAT('OC-', purchaseorders.ref::text)
-          END,
-          CASE materialmovements.type
+          jobs.ref,
+          imports.ref,
+          CASE WHEN requisitions.folio IS NULL THEN NULL ELSE CONCAT('REQ-', requisitions.folio::text) END,
+          CASE WHEN purchaseorders.ref IS NULL THEN NULL ELSE CONCAT('OC-', purchaseorders.ref::text) END,
+          CASE ledger.type
             WHEN 'return' THEN 'RETORNO'
             WHEN 'scrap' THEN 'SCRAP'
             WHEN 'consumable' THEN 'INSUMO'
             WHEN 'adjustment' THEN 'AJUSTE'
             ELSE ''
           END
-          ) as ref,
-        materialmovements.amount,
-        materialmovements.extra,
-        materialmovements."realAmount",
-        materialmovements.active,
-        SUM(materialmovements."realAmount") OVER (ORDER BY materialmovements."activeDate" ASC, materialmovements.id ASC) AS balance,
-        SUM(materialmovements."amount") OVER (ORDER BY materialmovements."activeDate" ASC, materialmovements.id ASC) AS "totalBalance",
-        SUM(materialmovements."amount" - materialmovements."realAmount") OVER (ORDER BY materialmovements."activeDate" ASC, materialmovements.id ASC) AS "leftoverAmount"
-
-        FROM materialmovements
-        JOIN materials ON materials.id = materialmovements."materialId"
-        LEFT JOIN jobs ON jobs.id = materialmovements."jobId"
-        LEFT JOIN imports ON imports.id = materialmovements."importId"
-        LEFT JOIN requisitions on requisitions.id = materialmovements."reqId"
-        LEFT JOIN purchaseorders on purchaseorders.id = materialmovements."purchaseId"
-        LEFT JOIN order_destiny on order_destiny.id = materialmovements."orderDestinyId"
-        LEFT JOIN destinys on destinys.id = order_destiny."destinyId"
-
-        WHERE
-            materials.id = ${body.id} 
-            AND materialmovements.active is true
-        ORDER BY
-            materialmovements."activeDate" DESC,
-            materialmovements.id DESC
-        LIMIT 300`;
+        ) as ref,
+        ledger.amount,
+        ledger.extra,
+        ledger."realAmount",
+        ledger.active,
+        SUM(ledger."realAmount") OVER (ORDER BY ledger."activeDate" ASC, ledger.ord_id ASC, ledger.sub ASC) AS balance,
+        SUM(ledger.amount) OVER (ORDER BY ledger."activeDate" ASC, ledger.ord_id ASC, ledger.sub ASC) AS "totalBalance",
+        SUM(ledger.amount - ledger."realAmount") OVER (ORDER BY ledger."activeDate" ASC, ledger.ord_id ASC, ledger.sub ASC) AS "leftoverAmount"
+      FROM ledger
+      LEFT JOIN jobs ON jobs.id = ledger."jobId"
+      LEFT JOIN imports ON imports.id = ledger."importId"
+      LEFT JOIN requisitions ON requisitions.id = ledger."reqId"
+      LEFT JOIN purchaseorders ON purchaseorders.id = ledger."purchaseId"
+      LEFT JOIN order_destiny ON order_destiny.id = ledger."orderDestinyId"
+      LEFT JOIN destinys ON destinys.id = order_destiny."destinyId"
+      ORDER BY ledger."activeDate" DESC, ledger.ord_id DESC, ledger.sub DESC
+      LIMIT 300`;
     return movements;
   }
 
