@@ -43,4 +43,5 @@ export const createExportOrderSchema = z.object({
 
 export const exportOrdersFilterSchema = z.object({
   id: z.string().nullable(),
+  status: z.enum(['sin PL', 'con PL', 'parcial', 'sin pallets']).nullish(),
 });

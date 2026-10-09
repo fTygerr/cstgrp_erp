@@ -15,10 +15,23 @@
 	import { showSuccess } from '$lib/utils/showToast';
 	import { FileDown } from 'lucide-svelte';
 	import { userData } from '$lib/utils/store';
+	import Select from '$lib/components/basic/Select.svelte';
+	import Badge from '$lib/components/ui/badge/badge.svelte';
 
-	let filters = $state({ id: '' });
+	// Estado del PL (Juan 09-Oct): se deriva de si los pallets de la orden ya
+	// se fueron en un packing list.
+	const statusOptions = [
+		{ value: 'sin PL', name: 'Sin PL', color: 'red' },
+		{ value: 'con PL', name: 'Con PL', color: 'green' },
+		{ value: 'parcial', name: 'Parcial', color: 'yellow' },
+		{ value: 'sin pallets', name: 'Sin pallets', color: 'gray' }
+	];
+	const statusColor = (s: string) =>
+		s === 'con PL' ? 'green' : s === 'parcial' ? 'yellow' : s === 'sin PL' ? 'red' : 'gray';
+
+	let filters = $state({ id: '', status: '' });
 	let showDelete = $state(false);
-	const canDelete = $derived(($userData?.permissions?.['quality'] || 0) >= 3);
+	const canDelete = $derived(($userData?.permissions?.['quality_registered_exports'] || 0) >= 3);
 	let toDelete: any = $state(null);
 
 	const orders = createQuery({
@@ -43,6 +56,13 @@
 <MenuBar>
 	<div class="flex flex-col gap-1.5 lg:flex-row">
 		<Input menu bind:value={filters.id} placeholder="No. de exportación" class="max-w-40" />
+		<Select
+			menu
+			items={statusOptions}
+			bind:value={filters.status}
+			placeholder="Estatus del PL"
+			class="max-w-44"
+		/>
 	</div>
 </MenuBar>
 
@@ -52,6 +72,7 @@
 		<TableHead>No.</TableHead>
 		<TableHead>Fecha</TableHead>
 		<TableHead>Cliente</TableHead>
+		<TableHead>Estatus</TableHead>
 		<TableHead>Job(s)</TableHead>
 		<TableHead>No. Parte</TableHead>
 		<TableHead>Descripción</TableHead>
@@ -85,6 +106,17 @@
 				<TableCell class="font-semibold">{order.id}</TableCell>
 				<TableCell>{formatDate(order.date)}</TableCell>
 				<TableCell>{order.client}</TableCell>
+				<TableCell>
+					<Badge color={statusColor(order.plStatus)}>
+						{order.plStatus === 'con PL'
+							? `PL ${order.packSlips ?? ''}`.trim()
+							: order.plStatus === 'parcial'
+								? `Parcial ${order.packSlips ?? ''}`.trim()
+								: order.plStatus === 'sin PL'
+									? 'Sin PL'
+									: 'Sin pallets'}
+					</Badge>
+				</TableCell>
 				<TableCell class="max-w-48 truncate">{order.jobs || ''}</TableCell>
 				<TableCell class="max-w-48 truncate">{order.parts || ''}</TableCell>
 				<TableCell class="max-w-56 truncate">{order.descriptions || ''}</TableCell>

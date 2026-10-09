@@ -291,11 +291,37 @@ export class PalletsService {
           WHERE p."exportOrderId" = eo.id) AS pieces,
         (SELECT COALESCE(SUM(pc.boxes), 0)::int FROM pallets p
           JOIN pallet_contents pc ON pc."palletId" = p.id
-          WHERE p."exportOrderId" = eo.id) AS boxes
+          WHERE p."exportOrderId" = eo.id) AS boxes,
+        -- Estado del PL (petición Juan 09-Oct). OJO: exportorders."destinyId"
+        -- NO sirve como indicador (está en NULL en todas); el dato bueno es si
+        -- los PALLETS de la orden ya se fueron en un packing list.
+        CASE
+          WHEN (SELECT COUNT(*) FROM pallets p WHERE p."exportOrderId" = eo.id) = 0
+            THEN 'sin pallets'
+          WHEN (SELECT COUNT(p."destinyId") FROM pallets p WHERE p."exportOrderId" = eo.id) = 0
+            THEN 'sin PL'
+          WHEN (SELECT COUNT(p."destinyId") FROM pallets p WHERE p."exportOrderId" = eo.id)
+             = (SELECT COUNT(*) FROM pallets p WHERE p."exportOrderId" = eo.id)
+            THEN 'con PL'
+          ELSE 'parcial'
+        END AS "plStatus",
+        (SELECT string_agg(DISTINCT COALESCE(NULLIF(NULLIF(d."packSlip", ''), '-'), d.so), ', ')
+          FROM pallets p JOIN destinys d ON d.id = p."destinyId"
+          WHERE p."exportOrderId" = eo.id) AS "packSlips"
       FROM exportorders eo
       JOIN clients ON clients.id = eo."clientId"
       WHERE TRUE
       ${query.id ? sql`AND eo.id = ${Number(query.id) || 0}` : sql``}
+      ${
+        query.status
+          ? sql`AND CASE
+              WHEN (SELECT COUNT(*) FROM pallets p WHERE p."exportOrderId" = eo.id) = 0 THEN 'sin pallets'
+              WHEN (SELECT COUNT(p."destinyId") FROM pallets p WHERE p."exportOrderId" = eo.id) = 0 THEN 'sin PL'
+              WHEN (SELECT COUNT(p."destinyId") FROM pallets p WHERE p."exportOrderId" = eo.id)
+                 = (SELECT COUNT(*) FROM pallets p WHERE p."exportOrderId" = eo.id) THEN 'con PL'
+              ELSE 'parcial' END = ${query.status}`
+          : sql``
+      }
       ORDER BY eo.id DESC
       LIMIT 150`;
   }

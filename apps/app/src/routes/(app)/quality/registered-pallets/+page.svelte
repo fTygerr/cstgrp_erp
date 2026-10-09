@@ -36,7 +36,7 @@
 	let showComment = $state(false);
 	let comment = $state('');
 	let showDelete = $state(false);
-	const canDelete = $derived(($userData?.permissions?.['quality'] || 0) >= 3);
+	const canDelete = $derived(($userData?.permissions?.['quality_registered_pallets'] || 0) >= 3);
 	let toDelete: any = $state(null);
 
 	const pallets = createQuery({
