@@ -51,6 +51,8 @@
 	});
 
 	const types = [
+		// Obs 09-Oct (Juan): "Todos" engloba los 4 tipos
+		{ name: 'Todos', value: 'todos', color: 'gray' },
 		{ name: 'Materia prima', value: 'materiaPrima', color: 'blue' },
 		{ name: 'Producto', value: 'producto', color: 'green' },
 		{ name: 'Subproducto', value: 'subproducto', color: 'orange' },
@@ -70,6 +72,7 @@
 			if (filters.clientId) {
 				if (parseInt(material.clientId) !== parseInt(filters.clientId)) return false;
 			}
+			if (filters.type === 'todos') return true;
 			const materialType =
 				material.type || (material.product ? 'producto' : 'materiaPrima');
 			return materialType === filters.type;
@@ -169,6 +172,7 @@
 	<TableHeader>
 		<OptionsHead />
 		<TableHead>Codigo</TableHead>
+		<TableHead>Tipo</TableHead>
 		<TableHead>Descripcion</TableHead>
 		<TableHead>Ubicacion</TableHead>
 		<TableHead>Sobrante</TableHead>
@@ -194,6 +198,12 @@
 				/>
 
 				<TableCell>{material.code}</TableCell>
+				<TableCell>
+					{@const t = material.type || (material.product ? 'producto' : 'materiaPrima')}
+					<Badge color={types.find((x) => x.value === t)?.color ?? 'gray'}>
+						{types.find((x) => x.value === t)?.name ?? t}
+					</Badge>
+				</TableCell>
 				<TableCell
 					class="w-full min-w-24 max-w-1 overflow-hidden text-ellipsis"
 					title={material.description}>{material.description}</TableCell

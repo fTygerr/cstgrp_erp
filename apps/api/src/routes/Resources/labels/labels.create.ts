@@ -390,12 +390,22 @@ export function createLabel(
     ctx.font = '30px Swiss';
     ctx.fillText(formatCodigoYamahaDate(info.date), x[2], y[2]);
 
-    ctx.font = '25px SwissBold';
+    // Obs 09-Oct (Juan): el número de job tiene que ser ~75% más grande para
+    // que se lea al imprimir. Antes compartía el `ctx.font` de 25px con
+    // "MADE IN MEXICO", así que hay que fijar la fuente por separado: si no,
+    // el otro texto también crecía y su centrado (que se calcula midiendo su
+    // propio ancho) se recorría.
+    ctx.font = '44px SwissBold';
     ctx.fillText(info.jobpo, x[5], y[5]);
+    const jobWidth = ctx.measureText(info.jobpo).width;
 
+    // "MADE IN MEXICO" conserva su tamaño. Con el job grande ya casi se tocaban
+    // (terminaba en 202 y este arrancaba en 208), así que se empuja a la
+    // derecha lo necesario para dejar 30px de aire, sin moverlo si no estorba.
+    ctx.font = '25px SwissBold';
     const madeText = 'MADE IN MEXICO';
     const madeWidth = ctx.measureText(madeText).width;
-    const madeX = (550 - madeWidth) / 2 + 20;
+    const madeX = Math.max((550 - madeWidth) / 2 + 20, x[5] + jobWidth + 30);
     ctx.fillText(madeText, madeX, y[4]);
   }
 
