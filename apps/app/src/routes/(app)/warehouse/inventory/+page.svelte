@@ -47,7 +47,8 @@
 	let filters = $state({
 		code: '',
 		clientId: '',
-		type: 'materiaPrima'
+		// Juan 12-Oct: que abra en "Todos" (antes abría en materia prima)
+		type: 'todos'
 	});
 
 	const types = [
