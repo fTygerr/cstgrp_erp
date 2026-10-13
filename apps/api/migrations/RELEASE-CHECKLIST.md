@@ -22,6 +22,9 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ---
 
 ## Done in previous releases
+- 2026-10-13: obs 9-Oct a prod (visto bueno de Juan). SIN migración: etiqueta
+  codigo-yamaha con el job a 44px y filtro "Todos" + columna Tipo en
+  Inventario, abriendo en "Todos". Merge ff master c083241..3fb8c50.
 - 2026-10-06 (2º release del día): historial de inventario con un renglón por
   liberación real y su fecha (Juan). SIN migración y SIN backfill: el desglose
   se reconstruye al leer, desde ordermovements y contractormovements.
