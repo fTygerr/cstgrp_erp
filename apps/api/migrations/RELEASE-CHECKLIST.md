@@ -22,6 +22,10 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ---
 
 ## Done in previous releases
+- 2026-11-03 (2º): Packing List — nivel 3 (hoy sólo Juan) puede "Modificar"
+  PLs Cruzado/Recibido, y "Modificar" edita el PO por línea (snapshot del PDF +
+  order_destiny.po; encabezado se rearma). SIN migración.
+  Merge ff master 6177740..cb0506d (push lo corrió Hector).
 - 2026-11-03: Pallets Registrados — un pallet que salió directo en un PL (sin
   orden de exportación, caso CSI-272/273 en el PL 2877) ya cuenta como
   exportado: filtro, badge "PL ####" y bloqueo de combinar/editar/borrar.
