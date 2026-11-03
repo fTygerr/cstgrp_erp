@@ -22,6 +22,10 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ---
 
 ## Done in previous releases
+- 2026-11-03: Pallets Registrados — un pallet que salió directo en un PL (sin
+  orden de exportación, caso CSI-272/273 en el PL 2877) ya cuenta como
+  exportado: filtro, badge "PL ####" y bloqueo de combinar/editar/borrar.
+  SIN migración. Merge ff master 379f452..5a3fe98 (pedido directo de Hector).
 - 2026-10-13: obs 9-Oct a prod (visto bueno de Juan). SIN migración: etiqueta
   codigo-yamaha con el job a 44px y filtro "Todos" + columna Tipo en
   Inventario, abriendo en "Todos". Merge ff master c083241..3fb8c50.
