@@ -48,7 +48,8 @@ export class PalletsService {
   async getPallets(query: z.infer<typeof palletsFilterSchema>) {
     return sql`
       SELECT pallets.id, pallets.folio, pallets.created_at, pallets."clientId",
-        clients.name AS client, pallets."exportOrderId",
+        clients.name AS client, pallets."exportOrderId", pallets."destinyId",
+        destinys."packSlip",
         (SELECT json_agg(json_build_object(
             'id', pc.id, 'ref', j.ref, 'programation', j.programation,
             'part', j.part, 'description', j.description,
@@ -57,6 +58,7 @@ export class PalletsService {
           WHERE pc."palletId" = pallets.id) AS contents
       FROM pallets
       JOIN clients ON clients.id = pallets."clientId"
+      LEFT JOIN destinys ON destinys.id = pallets."destinyId"
       WHERE TRUE
       ${query.folio ? sql`AND pallets.folio = ${Number(query.folio) || 0}` : sql``}
       ${query.clientId ? sql`AND pallets."clientId" = ${query.clientId}` : sql``}
@@ -72,8 +74,10 @@ export class PalletsService {
               WHERE pc."palletId" = pallets.id AND j.programation ILIKE ${'%' + query.programation + '%'})`
           : sql``
       }
-      ${query.pending === 'true' ? sql`AND pallets."exportOrderId" IS NULL` : sql``}
-      ${query.pending === 'false' ? sql`AND pallets."exportOrderId" IS NOT NULL` : sql``}
+      -- un pallet también cuenta como exportado si salió directo en un PL
+      -- (generado desde los jobs, sin orden de exportación; caso PL 2877)
+      ${query.pending === 'true' ? sql`AND pallets."exportOrderId" IS NULL AND pallets."destinyId" IS NULL` : sql``}
+      ${query.pending === 'false' ? sql`AND (pallets."exportOrderId" IS NOT NULL OR pallets."destinyId" IS NOT NULL)` : sql``}
       ORDER BY pallets.id DESC
       LIMIT 200`;
   }
@@ -109,7 +113,7 @@ export class PalletsService {
       for (const row of body.rows) {
         if (row.combineFolio) {
           const [target] = await sql`
-            SELECT pallets.id, pallets."exportOrderId",
+            SELECT pallets.id, pallets."exportOrderId", pallets."destinyId",
               (SELECT COUNT(*)::int FROM pallet_contents WHERE "palletId" = pallets.id) AS contents
             FROM pallets
             WHERE "clientId" = ${job.clientId} AND folio = ${row.combineFolio}`;
@@ -122,6 +126,11 @@ export class PalletsService {
           if (target.exportOrderId)
             throw new HttpException(
               `El pallet ${row.combineFolio} ya está en una exportación`,
+              400,
+            );
+          if (target.destinyId)
+            throw new HttpException(
+              `El pallet ${row.combineFolio} ya salió en un packing list`,
               400,
             );
           if (target.contents >= MAX_CONTENTS)
@@ -168,11 +177,13 @@ export class PalletsService {
 
   async updateContent(body: z.infer<typeof updateContentSchema>) {
     const [content] = await sql`
-      SELECT pc.id, p."exportOrderId" FROM pallet_contents pc
+      SELECT pc.id, p."exportOrderId", p."destinyId" FROM pallet_contents pc
       JOIN pallets p ON p.id = pc."palletId" WHERE pc.id = ${body.id}`;
     if (!content) throw new HttpException('Contenido no existente', 400);
     if (content.exportOrderId)
       throw new HttpException('El pallet ya está en una exportación', 400);
+    if (content.destinyId)
+      throw new HttpException('El pallet ya salió en un packing list', 400);
 
     await sql`UPDATE pallet_contents SET amount = ${body.amount}, boxes = ${body.boxes} WHERE id = ${body.id}`;
     return;
@@ -181,12 +192,14 @@ export class PalletsService {
   async deletePallet(body: z.infer<typeof idObjectSchema>) {
     await sql.begin(async (sql) => {
       const [pallet] = await sql`
-        SELECT pallets.id, pallets.folio, pallets."clientId", pallets."exportOrderId", clients.name AS client
+        SELECT pallets.id, pallets.folio, pallets."clientId", pallets."exportOrderId", pallets."destinyId", clients.name AS client
         FROM pallets JOIN clients ON clients.id = pallets."clientId"
         WHERE pallets.id = ${body.id}`;
       if (!pallet) throw new HttpException('Pallet no existente', 400);
       if (pallet.exportOrderId)
         throw new HttpException('El pallet ya está en una exportación', 400);
+      if (pallet.destinyId)
+        throw new HttpException('El pallet ya salió en un packing list', 400);
 
       await sql`DELETE FROM pallets WHERE id = ${body.id}`;
 

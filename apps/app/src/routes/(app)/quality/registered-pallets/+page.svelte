@@ -142,7 +142,7 @@
 								})
 						}
 					]}
-					deleteFunc={pallet.exportOrderId || !canDelete
+					deleteFunc={pallet.exportOrderId || pallet.destinyId || !canDelete
 						? undefined
 						: () => {
 								toDelete = pallet;
@@ -150,7 +150,7 @@
 							}}
 				/>
 				<TableCell>
-					{#if !pallet.exportOrderId}
+					{#if !pallet.exportOrderId && !pallet.destinyId}
 						<Checkbox checked={!!selected[pallet.id]} onCheckedChange={() => toggle(pallet)} />
 					{/if}
 				</TableCell>
@@ -165,6 +165,8 @@
 				<TableCell>
 					{#if pallet.exportOrderId}
 						<Badge color="green">Exportación {pallet.exportOrderId}</Badge>
+					{:else if pallet.destinyId}
+						<Badge color="green">PL {pallet.packSlip}</Badge>
 					{:else}
 						<Badge color="yellow">Pendiente</Badge>
 					{/if}
