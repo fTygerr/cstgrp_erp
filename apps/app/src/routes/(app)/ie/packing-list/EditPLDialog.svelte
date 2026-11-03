@@ -78,7 +78,7 @@
 				...data,
 				totalBoxes: Number(data.totalBoxes) || 0,
 				totalPallets: Number(data.totalPallets) || 0,
-				orders: orders.map((o) => ({ boxes: Number(o.boxes) || 0 }))
+				orders: orders.map((o) => ({ boxes: Number(o.boxes) || 0, po: (o.po || '').trim() }))
 			});
 			showSuccess(`Packing list ${pl.packSlip} actualizado`);
 			show = false;
@@ -168,6 +168,7 @@
 							<TableHead>Job</TableHead>
 							<TableHead>Parte</TableHead>
 							<TableHead>Cantidad</TableHead>
+							<TableHead class="w-36">PO</TableHead>
 							<TableHead class="w-28">Cajas</TableHead>
 						</TableHeader>
 						<TableBody>
@@ -176,6 +177,9 @@
 									<TableCell>{order.ref}</TableCell>
 									<TableCell>{order.part}</TableCell>
 									<TableCell>{order.amount}</TableCell>
+									<TableCell class="p-1">
+										<Input bind:value={order.po} />
+									</TableCell>
 									<TableCell class="p-1">
 										<Input type="number" bind:value={order.boxes} />
 									</TableCell>

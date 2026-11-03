@@ -406,10 +406,12 @@ export class PackingListService {
   async updatePlData(body: z.infer<typeof updatePlDataSchema>) {
     await sql.begin(async (sql) => {
       const [destiny] = await sql`
-        select id, so, "packSlip", orders, status from destinys where id = ${body.id}
+        select id, so, "packSlip", orders, status, po from destinys where id = ${body.id}
         and (so LIKE 'PS-%' OR exported IS NOT NULL)`;
       if (!destiny) throw new HttpException('Packing list no existente', 400);
-      this.assertUnlocked(destiny);
+      // Nivel 3 en Packing List puede corregir los datos de un PL ya cruzado o
+      // recibido (petición Juan 03-Nov: un PO mal capturado en un PL viejo)
+      if (!(await this.canEditLocked(sql))) this.assertUnlocked(destiny);
 
       const changes: Record<string, any> = {};
       for (const key of [
@@ -430,17 +432,40 @@ export class PackingListService {
       ])
         if (body[key] !== undefined) changes[key] = body[key];
 
+      // PO por línea: el snapshot lo imprime el PDF y order_destiny.po es el
+      // que se copia al siguiente PL del mismo job, así que van juntos
+      const poChanges: string[] = [];
       if (body.orders !== undefined && Array.isArray(destiny.orders))
-        changes.orders = destiny.orders.map((order: any, i: number) => ({
-          ...order,
-          boxes: body.orders?.[i]?.boxes ?? order.boxes ?? null,
-        }));
+        changes.orders = destiny.orders.map((order: any, i: number) => {
+          const po = body.orders?.[i]?.po ?? order.po ?? '';
+          if (po !== (order.po ?? ''))
+            poChanges.push(`${order.ref || order.part}: ${order.po || '(vacío)'} → ${po || '(vacío)'}`);
+          return { ...order, po, boxes: body.orders?.[i]?.boxes ?? order.boxes ?? null };
+        });
+
+      // si cambió algún PO de línea y el encabezado no se tocó a mano, se
+      // rearma como al generar el PL (POs distintos de las líneas)
+      if (poChanges.length && (body.po === undefined || body.po === (destiny.po ?? '')))
+        changes.po = [...new Set(changes.orders.map((o: any) => o.po).filter(Boolean))].join(', ');
 
       if (Object.keys(changes).length)
         await sql`update destinys set ${sql(changes)} where id = ${body.id}`;
 
+      if (poChanges.length)
+        for (const [i, order] of destiny.orders.entries()) {
+          const po = changes.orders[i].po;
+          if (po === (order.po ?? '')) continue;
+          await sql`update order_destiny set po = ${po}
+            where "destinyId" = ${body.id} and COALESCE(po, '') = ${order.po ?? ''}
+              and "orderId" in (select id from jobs where ref = ${order.ref ?? ''})`;
+        }
+
       await this.req.record(
-        `Modifico los datos del packing list ${destiny.packSlip || destiny.so}`,
+        `Modifico los datos del packing list ${destiny.packSlip || destiny.so}` +
+          (destiny.status === 'cruzado' || destiny.status === 'recibido'
+            ? ` (estaba ${destiny.status})`
+            : '') +
+          (poChanges.length ? `; PO ${poChanges.join(', ')}` : ''),
         sql,
       );
     });
@@ -689,6 +714,13 @@ export class PackingListService {
         `El packing list ${destiny.packSlip || destiny.so} ya ${destiny.status === 'recibido' ? 'fue recibido' : 'cruzó'}; sus datos están bloqueados`,
         400,
       );
+  }
+
+  private async canEditLocked(sql) {
+    const [user] = await sql`
+      select COALESCE((permissions->>'ie_packing_list')::int, 0) as level
+      from users where id = ${this.req.userId}`;
+    return (user?.level ?? 0) >= 3;
   }
 
   private async getPl(sql, id: number) {

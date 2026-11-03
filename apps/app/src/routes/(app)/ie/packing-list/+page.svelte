@@ -71,6 +71,8 @@
 	let plViewOnly = $state(false);
 	const canDelete = $derived(($userData?.permissions?.['ie_packing_list'] || 0) >= 3);
 	const canEdit = $derived(($userData?.permissions?.['ie_packing_list'] || 0) >= 2);
+	// nivel 3 puede corregir PLs ya cruzados o recibidos (Juan 03-Nov)
+	const canEditLocked = $derived(($userData?.permissions?.['ie_packing_list'] || 0) >= 3);
 
 	const lists = createQuery({
 		queryKey: ['packing-lists', { ...filters }],
@@ -142,7 +144,7 @@
 								showEdit = true;
 							}
 						},
-						...(canEdit && pl.status !== 'cruzado' && pl.status !== 'recibido'
+						...(canEdit && (canEditLocked || (pl.status !== 'cruzado' && pl.status !== 'recibido'))
 							? [
 									{
 										name: 'Modificar',

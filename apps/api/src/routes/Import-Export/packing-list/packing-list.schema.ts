@@ -70,7 +70,9 @@ export const updatePlDataSchema = z.object({
   destination: addressSchema.nullish(),
   totalBoxes: z.number().int().nullish(),
   totalPallets: z.number().nullish(),
-  orders: z.array(z.object({ boxes: z.number().int().nullish() })).nullish(),
+  orders: z
+    .array(z.object({ boxes: z.number().int().nullish(), po: z.string().nullish() }))
+    .nullish(),
 });
 
 export const downloadPackingListSchema = z.object({
