@@ -24,6 +24,34 @@
 		queryFn: async () => (await api.get('/zenpet/materials')).data
 	});
 	const rawMats = $derived($rawMatsQuery?.data || []);
+	// materia prima ordenada, aún no recibida (OC pendientes) — Hector 19-nov
+	const onOrderQuery = createQuery({
+		queryKey: ['zenpet-on-order'],
+		queryFn: async () => (await api.get('/zenpet/on-order')).data
+	});
+	const onOrder: any[] = $derived($onOrderQuery?.data || []);
+	const onOrderByFamily = $derived.by(() => {
+		type Fam = { family: string; codes: Set<string>; units: number; ums: Record<string, number> };
+		const map = new Map<string, Fam>();
+		for (const r of onOrder) {
+			const g: Fam = map.get(r.family) ?? { family: r.family, codes: new Set(), units: 0, ums: {} };
+			g.codes.add(r.code);
+			g.units += Number(r.units) || 0;
+			g.ums[r.measurement] = (g.ums[r.measurement] || 0) + 1;
+			map.set(r.family, g);
+		}
+		return [...map.values()]
+			.sort((a, b) => a.family.localeCompare(b.family))
+			.map((g) => ({
+				family: g.family,
+				materials: g.codes.size,
+				units: Math.round(g.units),
+				unit: Object.entries(g.ums).sort((a, b) => b[1] - a[1])[0]?.[0] ?? ''
+			}));
+	});
+	const daysSince = (d: string) =>
+		Math.floor((Date.now() - new Date(d + 'T12:00:00').getTime()) / 86400000);
+	let ooFams: Record<string, boolean> = $state({});
 	const fgQuery = createQuery({
 		queryKey: ['zenpet-finished-goods'],
 		queryFn: async () => (await api.get('/zenpet/finished-goods')).data
@@ -747,6 +775,55 @@
 						</div>
 					</div>
 				{/if}
+
+				<div class="rounded-md border p-3">
+					<h3 class="mb-1 font-semibold">Materia prima ordenada (en tránsito — aún no llega al almacén)</h3>
+					<p class="mb-1 text-xs text-muted-foreground">
+						renglones de órdenes de compra pendientes de recibir, ya en la unidad del material. Cuando
+						almacén recibe la orden, el renglón sale de aquí y entra a la existencia de abajo. Familias
+						con su unidad — <b>nunca se suman entre sí</b>. Pícale a una familia para ver cada material
+						con su orden y la fecha en que se ordenó.
+					</p>
+					<Table divClass="h-auto overflow-visible">
+						<TableHeader>
+							<TableHead>Familia</TableHead>
+							<TableHead class="text-right">Materiales</TableHead>
+							<TableHead class="text-right">Ordenado</TableHead>
+							<TableHead>Medida</TableHead>
+							<TableHead>Orden de compra</TableHead>
+							<TableHead>Fecha de orden</TableHead>
+							<TableHead class="text-right">Días</TableHead>
+						</TableHeader>
+						<TableBody>
+							{#each onOrderByFamily as r}
+								<TableRow class="cursor-pointer" onclick={() => (ooFams[r.family] = !ooFams[r.family])}>
+									<TableCell class="font-semibold">{ooFams[r.family] ? '▾' : '▸'} {r.family}</TableCell>
+									<TableCell class="text-right">{r.materials}</TableCell>
+									<TableCell class="text-right font-semibold">{r.units}</TableCell>
+									<TableCell>{r.unit}</TableCell>
+									<TableCell></TableCell>
+									<TableCell></TableCell>
+									<TableCell></TableCell>
+								</TableRow>
+								{#if ooFams[r.family]}
+									{#each onOrder.filter((m: any) => m.family === r.family) as m}
+										<TableRow class="bg-muted/40">
+											<TableCell class="pl-8 text-xs">{m.code}</TableCell>
+											<TableCell class="max-w-72 truncate text-xs" title={m.description}>{m.description}</TableCell>
+											<TableCell class="text-right text-xs">{m.units}</TableCell>
+											<TableCell class="text-xs">{m.measurement}</TableCell>
+											<TableCell class="text-xs">OC {m.order}</TableCell>
+											<TableCell class="text-xs">{m.orderedAt}</TableCell>
+											<TableCell class="text-right text-xs">{daysSince(m.orderedAt)}</TableCell>
+										</TableRow>
+									{/each}
+								{/if}
+							{:else}
+								<TableRow><TableCell colspan={7} class="text-xs text-muted-foreground">No hay materia prima ordenada pendiente de recibir.</TableCell></TableRow>
+							{/each}
+						</TableBody>
+					</Table>
+				</div>
 
 				<div class="rounded-md border p-3">
 					<h3 class="mb-1 font-semibold">Materia prima (arriba del flujo — próximamente en su pantalla)</h3>

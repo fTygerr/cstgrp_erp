@@ -19,6 +19,12 @@ export class ZenPetController {
     return this.zenpetService.getRawMaterials();
   }
 
+  // materia prima ordenada (OC pendientes de recibir), sólo para la página del ERP
+  @Get('on-order')
+  getOnOrder() {
+    return this.zenpetService.getOnOrder();
+  }
+
   // producto terminado Z0 (fase 13) — items + agregado {skus, units}
   @Get('finished-goods')
   getFinishedGoods() {

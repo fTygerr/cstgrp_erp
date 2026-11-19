@@ -422,6 +422,30 @@ export class ZenPetService {
       ORDER BY code`;
   }
 
+  // Materia prima ordenada y aún no recibida (Hector 19-nov): renglones de OC
+  // pendientes (materialmovements con "purchaseId" y active = false), ya en la
+  // unidad del material. Al recibirse en almacén el renglón se activa: sale de
+  // aquí y entra a la existencia de getRawMaterials. Uno por material × OC.
+  // Fecha de orden: la de la bitácora "Creo la orden N" porque editar una OC
+  // le sobrescribe created_at; si no hay bitácora, created_at.
+  async getOnOrder() {
+    const zp = await this.clientId();
+    return sql`
+      SELECT substring(m.code from 5 for 2) AS family, m.code, m.description, m.measurement,
+        ROUND(SUM(mm.amount)::numeric, 2) AS units, p.ref AS "order",
+        COALESCE((SELECT MIN(r.created_at) FROM records r WHERE r.text = 'Creo la orden ' || p.ref),
+          p.created_at)::date::text AS "orderedAt"
+      FROM materialmovements mm
+        JOIN purchaseorders p ON p.id = mm."purchaseId"
+        JOIN materials m ON m.id = mm."materialId"
+      WHERE mm.active = false AND mm.amount > 0
+        AND m."clientId" = ${zp}
+        AND COALESCE(m.type, case when m.product then 'producto' else 'materiaPrima' end) = 'materiaPrima'
+        AND m.code LIKE 'ZEN-Z%'
+      GROUP BY m.id, p.id
+      ORDER BY m.code, "orderedAt", p.ref`;
+  }
+
   // PO abiertos (11-Sep): {summary, lines} — igual al reporte del ERP
   async getOpenPos() {
     const zp = await this.clientId();
