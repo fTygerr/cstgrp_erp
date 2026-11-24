@@ -16,8 +16,22 @@ export const requisitionSchema = z.object({
   motive: z.string(),
   areaId: idSchema,
   code: z.string(),
-  requested: absoluteNumberSchema,
-  jobIds: z.array(z.string()).transform((v) => v.map((vv) => Number(vv))),
+  // Obs 20-Nov (Juan): cantidad requerida POR ORDEN. `items` es lo nuevo;
+  // requested + jobIds se aceptan aún por si un navegador trae el bundle viejo
+  // (reparto FIFO de siempre).
+  items: z
+    .array(
+      z.object({
+        id: z.coerce.number().int(),
+        amount: absoluteNumberSchema,
+      }),
+    )
+    .optional(),
+  requested: absoluteNumberSchema.optional(),
+  jobIds: z
+    .array(z.coerce.string())
+    .transform((v) => v.map((vv) => Number(vv)))
+    .optional(),
 });
 
 export const suppliesSchema = z.object({

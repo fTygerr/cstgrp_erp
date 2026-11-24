@@ -105,8 +105,19 @@ export class MovementsService {
       throw new HttpException('Este movimiento no se puede editar', 400);
 
     await sql.begin(async (sql) => {
-      const [result] =
-        await sql`UPDATE materialmovements SET active = ${!movement.active}, "activeDate" = ${movement.active ? null : new Date()} WHERE id = ${body.id} returning "materialId", "realAmount"`;
+      // Obs 20-Nov (Juan) punto 2: en movimientos de jobs, quitar el check
+      // guarda la fecha original y volver a darlo la recupera (antes se
+      // ponía la del día y un ajuste a un job viejo parecía reciente).
+      const isJob = !!movement.jobId;
+      const [result] = movement.active
+        ? await sql`UPDATE materialmovements SET active = false,
+            "prevActiveDate" = ${isJob ? sql`COALESCE("activeDate", "prevActiveDate")` : sql`NULL`},
+            "activeDate" = NULL
+            WHERE id = ${body.id} returning "materialId", "realAmount"`
+        : await sql`UPDATE materialmovements SET active = true,
+            "activeDate" = ${isJob ? sql`COALESCE("prevActiveDate", ${new Date()})` : new Date()},
+            "prevActiveDate" = NULL
+            WHERE id = ${body.id} returning "materialId", "realAmount"`;
 
       await updateMaterialAmount(result.materialId, sql);
 
@@ -126,7 +137,8 @@ export class MovementsService {
   async splitMovement(body: { id: number; amount: number }) {
     let result;
     await sql.begin(async (sql) => {
-      const [movement] = await sql`select * from materialmovements where id = ${body.id}`;
+      const [movement] =
+        await sql`select * from materialmovements where id = ${body.id}`;
       if (!movement) throw new HttpException('Movimiento no existente', 400);
       if (movement.active)
         throw new HttpException('El movimiento ya está completado', 400);
@@ -152,7 +164,8 @@ export class MovementsService {
         where id = ${body.id}`;
 
       await updateMaterialAmount(movement.materialId, sql);
-      const [{ code }] = await sql`select code from materials where id = ${movement.materialId}`;
+      const [{ code }] =
+        await sql`select code from materials where id = ${movement.materialId}`;
       await this.req.record(
         `Registro ${sign > 0 ? 'entrada' : 'salida'} parcial de ${body.amount} de ${code}`,
         sql,

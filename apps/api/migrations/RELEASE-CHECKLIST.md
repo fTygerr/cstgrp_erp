@@ -17,7 +17,13 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 ## PENDING for next release
 
 ### Migrations to run on prod (already applied to testing)
-(nada pendiente — reset tras el release del 2026-10-06)
+- [ ] `2026-11-24_obs2011_fecha_original_surtido.sql` — obs 20-Nov (Juan):
+  columna `materialmovements."prevActiveDate"` para conservar la fecha original
+  al quitar y volver a dar check. Idempotente. Corrida en TESTING el 24-nov.
+  **Correrla ANTES del deploy del backend** (el código ya la usa).
+- [ ] Antes de liberar el candado "una REQ abierta por material", que Juan
+  revise/limpie las requisiciones abiertas repetidas en prod (CORTE 9,
+  Efrain 3, Karen 3, CALIDAD 2 al 24-nov) o esos usuarios quedan bloqueados.
 
 ---
 

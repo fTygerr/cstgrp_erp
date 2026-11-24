@@ -132,7 +132,8 @@ export class JobsService {
 
     // Job/PO repetido se permite, pero avisando primero (obs 02/09 punto 4):
     // sin body.force regresa 409 y el frontend pide confirmación
-    const dupes = await sql`SELECT DISTINCT ref FROM jobs WHERE ref in ${sql(body.jobs)}`;
+    const dupes =
+      await sql`SELECT DISTINCT ref FROM jobs WHERE ref in ${sql(body.jobs)}`;
     if (dupes.length && !body.force)
       throw new HttpException(
         `Job/PO ya repetido: ${dupes.map((d) => d.ref).join(', ')}`,
@@ -324,10 +325,12 @@ export class JobsService {
         }
 
         if (inserted) {
+          // Obs 20-Nov (Juan) punto 2: quitar "Surtido" guarda la fecha y
+          // volver a marcarlo la recupera, igual que el check de Movimientos.
           if (inserted.active && !inserted.activeDate)
-            await sql`update materialmovements set "activeDate" = now() where id = ${inserted.id}`;
+            await sql`update materialmovements set "activeDate" = COALESCE("prevActiveDate", now()), "prevActiveDate" = null where id = ${inserted.id}`;
           if (!inserted.active && inserted.activeDate)
-            await sql`update materialmovements set "activeDate" = null where id = ${inserted.id}`;
+            await sql`update materialmovements set "prevActiveDate" = "activeDate", "activeDate" = null where id = ${inserted.id}`;
         }
         await updateMaterialAmount(material.materialId, sql);
       }

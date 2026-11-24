@@ -58,10 +58,31 @@
 		queryFn: getProdAreas
 	});
 
+	// Obs 20-Nov (Juan): la cantidad requerida se escribe por orden (igual o
+	// menor a lo que necesita) y "Material requerido" es la suma automática.
+	const toNum = (v: any) => (v === '' || v == null ? 0 : Number(v));
+	const overLimit = (row: any) => toNum(row.requested) > Number(row.amount);
+
+	function toggleRow(i: number, checked: boolean) {
+		jobs[i].selected = checked;
+		jobs[i].requested = checked ? Number(jobs[i].amount) : '';
+	}
+
+	function typeRow(i: number, value: string) {
+		jobs[i].requested = value;
+		jobs[i].selected = toNum(value) > 0;
+	}
+
 	async function handleSubmit() {
+		const items = jobs
+			.filter((v) => v.selected && toNum(v.requested) > 0)
+			.map((v) => ({ id: v.id, amount: toNum(v.requested) }));
 		await api.post('requisitions', {
-			...formData,
-			jobIds: jobs.filter((v) => v.selected).map((v) => v.id)
+			petitioner: formData.petitioner,
+			motive: formData.motive,
+			areaId: formData.areaId,
+			code: formData.code,
+			items
 		});
 
 		refetch(['requisitions']);
@@ -82,6 +103,10 @@
 
 	$effect(() => {
 		formData.necessary = jobs.reduce((prev, v) => (v.selected ? prev + Number(v.amount) : prev), 0);
+		formData.requested =
+			Math.round(
+				jobs.reduce((prev, v) => (v.selected ? prev + toNum(v.requested) : prev), 0) * 100
+			) / 100;
 	});
 </script>
 
@@ -106,8 +131,12 @@
 						class="disabled:opacity-100"
 					/>
 				</Label>
-				<Label name="Material requerido:" class="sm:col-span-2">
-					<Input bind:value={formData.requested} />
+				<Label name="Material requerido (suma de lo requerido por orden):" class="sm:col-span-2">
+					<Input
+						disabled
+						value={formData.requested + ' ' + formData.measurement}
+						class="font-semibold disabled:opacity-100"
+					/>
 				</Label>
 			</div>
 
@@ -117,6 +146,7 @@
 					<TableHead>Job</TableHead>
 					<TableHead>Due</TableHead>
 					<TableHead>Cantidad</TableHead>
+					<TableHead>Requerido</TableHead>
 					<TableHead class="w-min max-w-2"></TableHead>
 				</TableHeader>
 				<TableBody>
@@ -126,14 +156,32 @@
 							<TableCell>{row.ref}</TableCell>
 							<TableCell>{formatDate(row.due)}</TableCell>
 							<TableCell>{row.amount}</TableCell>
+							<TableCell class="w-40">
+								<Input
+									type="number"
+									min="0"
+									max={row.amount}
+									step="any"
+									value={row.requested ?? ''}
+									oninput={(e) => typeRow(i, e.currentTarget.value)}
+									class={'h-8 ' + (overLimit(row) ? 'border-red-500 text-red-600' : '')}
+								/>
+								{#if overLimit(row)}
+									<p class="mt-0.5 text-xs text-red-600">Máximo {row.amount}</p>
+								{/if}
+							</TableCell>
 							<TableCell class="w-min max-w-2">
-								<Checkbox bind:checked={jobs[i].selected} />
+								<Checkbox checked={jobs[i].selected} onCheckedChange={(v) => toggleRow(i, !!v)} />
 							</TableCell>
 						</TableRow>
 					{/each}
 				</TableBody>
 			</Table>
 		</DialogBody>
-		<DialogFooter submitFunc={handleSubmit} hideFunc={() => (show = false)} />
+		<DialogFooter
+			submitFunc={handleSubmit}
+			hideFunc={() => (show = false)}
+			disabled={!formData.requested || jobs.some(overLimit)}
+		/>
 	</DialogContent>
 </Dialog>
