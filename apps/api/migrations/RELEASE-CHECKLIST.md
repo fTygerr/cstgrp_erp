@@ -16,18 +16,20 @@ Release procedure (proven, used for Phase 1 on 2026-07-23):
 
 ## PENDING for next release
 
-### Migrations to run on prod (already applied to testing)
-- [ ] `2026-11-24_obs2011_fecha_original_surtido.sql` — obs 20-Nov (Juan):
-  columna `materialmovements."prevActiveDate"` para conservar la fecha original
-  al quitar y volver a dar check. Idempotente. Corrida en TESTING el 24-nov.
-  **Correrla ANTES del deploy del backend** (el código ya la usa).
-- [ ] Antes de liberar el candado "una REQ abierta por material", que Juan
-  revise/limpie las requisiciones abiertas repetidas en prod (CORTE 9,
-  Efrain 3, Karen 3, CALIDAD 2 al 24-nov) o esos usuarios quedan bloqueados.
+(nada pendiente)
 
 ---
 
 ## Done in previous releases
+- 2026-11-25: obs 20-Nov (Juan) a prod por instrucción de Hector: requisición
+  con cantidad por orden, fecha original al volver a dar check, una REQ
+  abierta por material por usuario. Migración
+  `2026-11-24_obs2011_fecha_original_surtido.sql` corrida en PROD antes del
+  deploy. Backup pre-obs2011-20261125-0027.dump. Merge ff master
+  a649810..211d042. OJO: se liberó con REQs abiertas repetidas en prod
+  (CALIDAD ZEN-Z6-4115; CORTE IN-0104 x6, IN-0105, ZEN-Z2-3103; Efrain
+  ZEN-Z3-2102): esos usuarios no pueden abrir otra de esos materiales hasta
+  que se surtan o borren.
 - 2026-11-03 (2º): Packing List — nivel 3 (hoy sólo Juan) puede "Modificar"
   PLs Cruzado/Recibido, y "Modificar" edita el PO por línea (snapshot del PDF +
   order_destiny.po; encabezado se rearma). SIN migración.
